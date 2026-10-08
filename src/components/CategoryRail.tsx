@@ -1,14 +1,6 @@
 import React from 'react';
 import { Department } from '../types';
 
-interface CategoryRailItem {
-  id: string;
-  label: string;
-  category: string;
-  image?: string;
-  count: number;
-}
-
 interface CategoryRailProps {
   currentDepartment: Department;
   currentCategory: string;
@@ -18,23 +10,22 @@ interface CategoryRailProps {
   onSelectDepartment: (dept: Department) => void;
 }
 
-// Category image map for rail thumbnails
-const CATEGORY_IMAGES: Record<string, string> = {
-  All: 'https://picsum.photos/seed/rail-all/120/120',
-  'T-Shirts & Tops': 'https://picsum.photos/seed/rail-tee/120/120',
-  Dresses: 'https://picsum.photos/seed/rail-dress/120/120',
-  'Jeans & Trousers': 'https://picsum.photos/seed/rail-jeans/120/120',
-  Shirts: 'https://picsum.photos/seed/rail-shirt/120/120',
-  Kidswear: 'https://picsum.photos/seed/rail-kids/120/120',
-  'Kurtas & Sets': 'https://picsum.photos/seed/rail-kurta/120/120',
-};
-
 export const CategoryRail: React.FC<CategoryRailProps> = ({
   currentCategory,
   categories,
   categoryCounts,
   onSelectCategory,
 }) => {
+  // Hide any category that currently has zero products
+  const visibleCategories = categories.filter((cat) => {
+    const count = categoryCounts[cat] ?? 0;
+    return count > 0;
+  });
+
+  if (visibleCategories.length === 0) {
+    return null;
+  }
+
   return (
     <nav 
       aria-label="Subcategories"
@@ -45,10 +36,9 @@ export const CategoryRail: React.FC<CategoryRailProps> = ({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        {categories.map((cat) => {
+        {visibleCategories.map((cat) => {
           const isSelected = currentCategory === cat;
           const count = categoryCounts[cat] ?? 0;
-          const imgUrl = CATEGORY_IMAGES[cat] || `https://picsum.photos/seed/rail-${cat.toLowerCase().replace(/\s+/g, '-')}/120/120`;
 
           return (
             <button
@@ -60,14 +50,13 @@ export const CategoryRail: React.FC<CategoryRailProps> = ({
                   : 'hover:bg-stone-50 border border-transparent text-stone-700'
               }`}
             >
-              {/* Thumbnail Image */}
-              <div className="w-10 h-10 sm:w-10 sm:h-10 rounded-lg overflow-hidden bg-stone-100 shrink-0 border border-stone-200/60">
-                <img
-                  src={imgUrl}
-                  alt={cat}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                  loading="lazy"
-                />
+              {/* Neutral tinted monogram badge instead of stock photo */}
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center shrink-0 text-xs font-serif-display font-bold transition-colors ${
+                isSelected
+                  ? 'bg-amber-200/80 text-amber-950 border border-amber-300'
+                  : 'bg-stone-100 text-stone-700 border border-stone-200/60 group-hover:bg-stone-200/70'
+              }`}>
+                {cat === 'All' ? '✦' : cat.slice(0, 2).toUpperCase()}
               </div>
 
               {/* Label & Count */}
@@ -80,7 +69,7 @@ export const CategoryRail: React.FC<CategoryRailProps> = ({
                     isSelected ? 'text-amber-800 font-semibold' : 'text-stone-400'
                   }`}
                 >
-                  {count} items
+                  {count} {count === 1 ? 'item' : 'items'}
                 </span>
               </div>
             </button>

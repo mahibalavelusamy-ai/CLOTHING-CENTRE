@@ -1,10 +1,14 @@
 import React from 'react';
-import { X, RotateCcw, SlidersHorizontal, Check } from 'lucide-react';
-import { Size } from '../types';
+import { X, RotateCcw, SlidersHorizontal } from 'lucide-react';
+import { Size, Department } from '../types';
+import { DEPARTMENT_CONFIG } from '../data/catalogConfig';
+import { formatPrice } from '../lib/format';
 
 interface FilterDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  currentDepartment?: Department;
+  availableSizes?: Size[];
   selectedSizes: Size[];
   onToggleSize: (size: Size) => void;
   priceRange: [number, number];
@@ -19,11 +23,11 @@ interface FilterDrawerProps {
   resultsCount: number;
 }
 
-const ALL_SIZES: Size[] = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
-
 export const FilterDrawer: React.FC<FilterDrawerProps> = ({
   isOpen,
   onClose,
+  currentDepartment = 'all',
+  availableSizes,
   selectedSizes,
   onToggleSize,
   priceRange,
@@ -38,6 +42,11 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
   resultsCount,
 }) => {
   if (!isOpen) return null;
+
+  const isSizeAvailable = (s: Size) => {
+    if (!availableSizes) return true;
+    return availableSizes.includes(s);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -105,37 +114,145 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             </select>
           </div>
 
-          {/* Sizes */}
-          <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
-                Available Sizes
-              </label>
-              {selectedSizes.length > 0 && (
-                <span className="text-[11px] text-stone-500 font-medium">
-                  {selectedSizes.length} selected
-                </span>
+          {/* Sizes: Hide for Sarees, filter by department, group for all */}
+          {currentDepartment !== 'sarees' && (
+            <div>
+              <div className="flex items-center justify-between mb-2.5">
+                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                  Available Sizes
+                </label>
+                {selectedSizes.length > 0 && (
+                  <span className="text-[11px] text-stone-500 font-medium">
+                    {selectedSizes.length} selected
+                  </span>
+                )}
+              </div>
+
+              {currentDepartment === 'kurtis' && (
+                <div className="grid grid-cols-3 gap-2">
+                  {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).map((size) => {
+                    const isSelected = selectedSizes.includes(size);
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => onToggleSize(size)}
+                        className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                            : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {currentDepartment === 'kids' && (
+                <div className="grid grid-cols-3 gap-2">
+                  {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).map((size) => {
+                    const isSelected = selectedSizes.includes(size);
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => onToggleSize(size)}
+                        className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                            : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {currentDepartment === 'all' && (
+                <div className="space-y-4">
+                  {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).length > 0 && (
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
+                        Kurtis & Chudidars
+                      </span>
+                      <div className="grid grid-cols-3 gap-2">
+                        {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).map((size) => {
+                          const isSelected = selectedSizes.includes(size);
+                          return (
+                            <button
+                              key={size}
+                              onClick={() => onToggleSize(size)}
+                              className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                              }`}
+                            >
+                              {size}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).length > 0 && (
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
+                        Kidswear (Age Sizes)
+                      </span>
+                      <div className="grid grid-cols-3 gap-2">
+                        {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).map((size) => {
+                          const isSelected = selectedSizes.includes(size);
+                          return (
+                            <button
+                              key={size}
+                              onClick={() => onToggleSize(size)}
+                              className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                              }`}
+                            >
+                              {size}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {DEPARTMENT_CONFIG.sarees.sizes.filter(isSizeAvailable).length > 0 && (
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
+                        Sarees
+                      </span>
+                      <div className="grid grid-cols-2 gap-2">
+                        {DEPARTMENT_CONFIG.sarees.sizes.filter(isSizeAvailable).map((size) => {
+                          const isSelected = selectedSizes.includes(size);
+                          return (
+                            <button
+                              key={size}
+                              onClick={() => onToggleSize(size)}
+                              className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                                isSelected
+                                  ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                              }`}
+                            >
+                              {size}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
-            <div className="grid grid-cols-3 gap-2">
-              {ALL_SIZES.map((size) => {
-                const isSelected = selectedSizes.includes(size);
-                return (
-                  <button
-                    key={size}
-                    onClick={() => onToggleSize(size)}
-                    className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                        : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          )}
 
           {/* Price Range */}
           <div>
@@ -144,21 +261,21 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                 Price Range
               </label>
               <span className="text-xs font-bold text-stone-900 font-mono">
-                ${priceRange[0]} – ${priceRange[1]}
+                {formatPrice(priceRange[0])} – {formatPrice(priceRange[1])}
               </span>
             </div>
             <input
               type="range"
               min={0}
               max={maxPossiblePrice}
-              step={5}
+              step={100}
               value={priceRange[1]}
               onChange={(e) => onPriceChange([priceRange[0], Number(e.target.value)])}
               className="w-full accent-amber-600 cursor-pointer"
             />
             <div className="flex justify-between text-[11px] text-stone-400 mt-1 font-mono">
-              <span>$0</span>
-              <span>Max ${maxPossiblePrice}</span>
+              <span>{formatPrice(0)}</span>
+              <span>Max {formatPrice(maxPossiblePrice)}</span>
             </div>
           </div>
 
@@ -167,7 +284,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             <label className="flex items-center justify-between cursor-pointer p-3 bg-stone-50 rounded-xl border border-stone-200 hover:bg-stone-100/70 transition-colors">
               <div>
                 <span className="block text-xs font-bold text-stone-900">
-                  In-Stock at Centre Only
+                  In-Stock at Boutique Only
                 </span>
                 <span className="block text-[11px] text-stone-500 mt-0.5">
                   Hide pieces temporarily out of stock

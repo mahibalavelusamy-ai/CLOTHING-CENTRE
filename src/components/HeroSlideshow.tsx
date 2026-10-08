@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, Sparkles } from 'lucide-react';
 import { Department } from '../types';
 
 interface HeroSlideshowProps {
@@ -14,39 +14,44 @@ interface Slide {
   buttonText: string;
   department: Department;
   category: string;
-  imageUrl: string;
+  imageUrl?: string;
+  gradientClass: string;
+  accentBorder: string;
 }
 
 const SLIDES: Slide[] = [
   {
     id: 'slide-1',
-    eyebrow: 'AUTUMN / WINTER EDIT',
-    headline: 'Curated Elegance & Modern Silhouettes.',
-    subtext: 'Discover breathable combed cottons, breezy tiered linens, and effortless everyday essentials.',
-    buttonText: "Explore Women's Apparel",
-    department: 'women',
-    category: 'All',
-    imageUrl: 'https://picsum.photos/seed/luxury-hero-editorial-1/1600/900',
+    eyebrow: 'ROYAL HERITAGE WEAVES',
+    headline: 'Handloom Kanchipuram & Pure Silk Sarees.',
+    subtext: 'Exquisite zari borders, soft mulberry silks, and breathable everyday cotton drapes for timeless celebrations.',
+    buttonText: 'Explore Sarees',
+    department: 'sarees',
+    category: 'Silk Sarees',
+    gradientClass: 'from-[#421016] via-[#240b0e] to-stone-950',
+    accentBorder: 'border-rose-500/30 text-rose-300 bg-rose-950/60',
   },
   {
     id: 'slide-2',
-    eyebrow: "TIMELESS MEN'S TAILORING",
-    headline: 'Crisp Oxford Weaves & Stretch Chinos.',
-    subtext: 'Structured button-downs and smart flat-front trousers designed for boardroom to weekend comfort.',
-    buttonText: "Shop Men's Essentials",
-    department: 'men',
-    category: 'Shirts',
-    imageUrl: 'https://picsum.photos/seed/luxury-hero-editorial-2/1600/900',
+    eyebrow: 'CONTEMPORARY ETHNIC ATTIRE',
+    headline: 'Flowing Anarkalis & Hand-Embroidered Sets.',
+    subtext: 'Flattering silhouettes crafted in pure slub cotton, muslin, and georgette with coordinated palazzos and dupattas.',
+    buttonText: 'Shop Kurtis & Chudidars',
+    department: 'kurtis',
+    category: 'Kurtis',
+    gradientClass: 'from-[#0d3829] via-[#092219] to-stone-950',
+    accentBorder: 'border-emerald-500/30 text-emerald-300 bg-emerald-950/60',
   },
   {
     id: 'slide-3',
-    eyebrow: 'FESTIVE & TRADITIONAL BESPOKE',
-    headline: 'Handloom Kurtas & Heritage Ensembles.',
-    subtext: 'Authentic artisan block prints, pure slub cotton sets, and rich palettes crafted for celebrations.',
-    buttonText: 'Discover Ethnic Sets',
-    department: 'ethnic',
-    category: 'Kurtas & Sets',
-    imageUrl: 'https://picsum.photos/seed/luxury-hero-editorial-3/1600/900',
+    eyebrow: 'DELIGHTFUL FESTIVE KIDSWEAR',
+    headline: 'Traditional Pattu Pavadais & Kurta Sets.',
+    subtext: 'Gentle on sensitive skin, crafted for vibrant celebrations with handcrafted ethnic charm and all-day comfort.',
+    buttonText: 'Discover Kidswear',
+    department: 'kids',
+    category: 'Girls Ethnic Wear',
+    gradientClass: 'from-[#1b2a47] via-[#10192e] to-stone-950',
+    accentBorder: 'border-amber-500/30 text-amber-300 bg-amber-950/60',
   },
 ];
 
@@ -58,7 +63,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
     if (isPaused) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
-    }, 5500);
+    }, 6000);
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -70,8 +75,8 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background imagery with luxury gradient overlays */}
-      <div className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[380px] sm:min-h-[460px] w-full overflow-hidden">
+      {/* Background imagery or luxury gradient tinted containers with text only */}
+      <div className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[360px] sm:min-h-[440px] w-full overflow-hidden">
         {SLIDES.map((s, idx) => (
           <div
             key={s.id}
@@ -79,23 +84,34 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
               idx === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
             }`}
           >
-            <img
-              src={s.imageUrl}
-              alt={s.headline}
-              className="w-full h-full object-cover object-center filter brightness-65 transition-transform duration-1000 ease-out"
-              loading="lazy"
-            />
-            {/* Dual gradient scrim for pristine contrast */}
-            <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-stone-950/40 to-transparent" />
+            {s.imageUrl ? (
+              <>
+                <img
+                  src={s.imageUrl}
+                  alt={s.headline}
+                  className="w-full h-full object-cover object-center filter brightness-65 transition-transform duration-1000 ease-out"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-stone-950/40 to-transparent" />
+              </>
+            ) : (
+              /* Rich gradient tinted background with subtle ambient motif glow */
+              <div className={`w-full h-full bg-gradient-to-br ${s.gradientClass} relative overflow-hidden flex items-center`}>
+                <div className="absolute -right-16 -top-16 w-96 h-96 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
+                <div className="absolute right-1/4 -bottom-20 w-80 h-80 rounded-full bg-amber-400/5 blur-2xl pointer-events-none" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
+              </div>
+            )}
           </div>
         ))}
 
         {/* Content Overlay */}
         <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 sm:p-12 lg:p-16 max-w-3xl">
           <div className="space-y-3 sm:space-y-4">
-            <span className="inline-block text-[10px] sm:text-xs uppercase tracking-widest font-semibold text-amber-300 bg-amber-950/60 border border-amber-500/30 px-3 py-1 rounded-full">
-              {slide.eyebrow}
+            <span className={`inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-widest font-semibold px-3 py-1 rounded-full border backdrop-blur-xs ${slide.accentBorder}`}>
+              <Sparkles className="w-3 h-3 shrink-0" />
+              <span>{slide.eyebrow}</span>
             </span>
 
             <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-stone-50 leading-[1.1]">

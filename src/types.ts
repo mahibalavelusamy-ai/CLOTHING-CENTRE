@@ -1,6 +1,22 @@
-export type Department = 'all' | 'women' | 'men' | 'kids' | 'ethnic';
+export type Department = 'all' | 'sarees' | 'kurtis' | 'kids';
 
-export type Size = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL';
+export type Size = 
+  | 'Free Size' 
+  | 'S' 
+  | 'M' 
+  | 'L' 
+  | 'XL' 
+  | 'XXL' 
+  | '3XL' 
+  | '1-2Y' 
+  | '2-3Y' 
+  | '3-4Y' 
+  | '4-5Y' 
+  | '5-6Y' 
+  | '6-7Y' 
+  | '7-8Y' 
+  | '8-9Y' 
+  | '9-10Y';
 
 export interface ColorOption {
   name: string;
@@ -30,8 +46,10 @@ export interface ClothingItem {
   description: string;
   fabric: string;
   careGuide: string;
-  fitType: 'Slim Fit' | 'Regular Fit' | 'Relaxed Fit' | 'Oversized Fit' | 'Tailored';
-  tags: ('New Arrival' | 'Bestseller' | 'Festive Special' | 'Organic' | 'Sale')[];
+  fitType?: 'Straight Cut' | 'A-Line' | 'Anarkali Flare' | 'Regular Fit' | 'Relaxed Fit';
+  occasion?: 'Daily Wear' | 'Festive' | 'Wedding' | 'Party' | 'Office';
+  blouseIncluded?: boolean;
+  tags: ('New Arrival' | 'Bestseller' | 'Festive Special' | 'Handloom' | 'Sale')[];
   inStockTotal: number;
   barcode: string;
 }

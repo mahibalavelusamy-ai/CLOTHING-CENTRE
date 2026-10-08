@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, Heart, ShoppingBag, Trash2 } from 'lucide-react';
 import { ClothingItem, Size } from '../types';
+import { formatPrice } from '../lib/format';
 
 interface WishlistDrawerProps {
   isOpen: boolean;
@@ -85,14 +86,20 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
                         onQuickView(item);
                         onClose();
                       }}
-                      className="w-18 h-22 rounded-lg overflow-hidden bg-stone-100 shrink-0 border border-stone-200 cursor-pointer"
+                      className="w-18 h-22 rounded-lg overflow-hidden bg-[#f6f3ed] shrink-0 border border-stone-200 cursor-pointer flex items-center justify-center p-1 text-center"
                     >
-                      <img
-                        src={item.images[0]}
-                        alt={item.name}
-                        className="w-full h-full object-cover"
-                        referrerPolicy="no-referrer"
-                      />
+                      {item.images && item.images[0] ? (
+                        <img
+                          src={item.images[0]}
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <span className="text-[10px] font-serif-display font-bold text-stone-800 leading-tight line-clamp-3">
+                          {item.name}
+                        </span>
+                      )}
                     </div>
 
                     <div className="flex-1 flex flex-col justify-between">
@@ -118,8 +125,8 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
                         <p className="text-[11px] text-stone-500 font-mono mt-0.5">
                           {item.category} • SKU: {item.sku}
                         </p>
-                        <p className="text-xs font-bold text-stone-900 mt-1">
-                          ${item.price.toFixed(2)}
+                        <p className="text-xs font-bold text-stone-900 mt-1 font-mono">
+                          {formatPrice(item.price)}
                         </p>
                       </div>
 

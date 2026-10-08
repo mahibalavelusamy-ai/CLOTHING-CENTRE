@@ -8,7 +8,7 @@
         "id": { "type": "string", "description": "Unique identifier for garment" },
         "sku": { "type": "string", "description": "Stock Keeping Unit code" },
         "name": { "type": "string", "description": "Garment title and style name" },
-        "department": { "type": "string", "description": "Garment department (women, men, kids, ethnic)" },
+        "department": { "type": "string", "description": "Garment department (sarees, kurtis, kids)" },
         "category": { "type": "string", "description": "Apparel category" },
         "price": { "type": "number", "description": "Current selling price" },
         "originalPrice": { "type": "number", "description": "Original retail price before markdown" },

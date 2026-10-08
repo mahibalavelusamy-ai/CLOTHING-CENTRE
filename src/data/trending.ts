@@ -1,14 +1,14 @@
 /**
- * Placeholder trending search queries.
+ * Placeholder trending search queries for the Indian Boutique.
  * To be replaced later by real search and order analytics.
  */
 export const TRENDING_SEARCHES: string[] = [
-  'Cotton Crewneck Tee',
-  'Linen Sundress',
-  'Oxford Button-Down',
-  'Stretch Chino Pants',
-  'Handloom Kurta Sets',
-  'Kids Denim Dungarees',
-  'Mandarin Collar Sets',
-  'Casual Polo Shirts',
+  'Silk sarees',
+  'Cotton kurtis',
+  'Anarkali suits',
+  'Party wear sarees',
+  'Kids lehenga',
+  'Palazzo sets',
+  'Chudidar sets',
+  'Handloom sarees',
 ];

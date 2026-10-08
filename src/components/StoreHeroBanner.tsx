@@ -1,6 +1,7 @@
 import React from 'react';
-import { Sparkles, Scissors, Clock, ShieldCheck, MapPin, ChevronRight } from 'lucide-react';
+import { Sparkles, Scissors, ChevronRight } from 'lucide-react';
 import { Department } from '../types';
+import { STORE_CENTRE_INFO } from '../data/clothingData';
 
 interface StoreHeroBannerProps {
   onSelectDepartment: (dept: Department) => void;
@@ -22,78 +23,47 @@ export const StoreHeroBanner: React.FC<StoreHeroBannerProps> = ({
         <div className="max-w-2xl text-center lg:text-left">
           <div className="inline-flex items-center gap-2 bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-semibold px-3 py-1 rounded-full mb-4">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Autumn & Festive Collection Now Racked</span>
+            <span>Festive & Wedding Collection Now Available</span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif-display font-bold text-white tracking-tight leading-tight">
-            Crafted Elegance for Every Occasion.
+            Crafted Elegance for Every Celebration.
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-stone-300 leading-relaxed max-w-xl">
-            Welcome to the Clothing Centre emporium. Discover bespoke silks, tailored linens, breathable supima cottons, and kids festive wear. Enjoy complimentary fitting room trial suites and master tailor alterations on every purchase.
+            Welcome to {STORE_CENTRE_INFO.name}. Discover pure Kanchipuram and Banarasi sarees, graceful flowing kurtis and chudidar sets, and vibrant festive kidswear. Enjoy complimentary saree fall pico and custom alterations.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-3">
             <button
-              onClick={() => onSelectDepartment('ethnic')}
+              onClick={() => onSelectDepartment('sarees')}
               className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer shadow-sm flex items-center gap-1.5"
             >
-              <span>Festive & Traditional</span>
+              <span>Explore Sarees</span>
               <ChevronRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={() => onSelectDepartment('women')}
+              onClick={() => onSelectDepartment('kurtis')}
               className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-semibold text-xs sm:text-sm rounded-xl border border-stone-700 transition-colors cursor-pointer"
             >
-              Women's Apparel
+              Kurtis & Sets
             </button>
 
             <button
-              onClick={() => onSelectDepartment('men')}
+              onClick={() => onSelectDepartment('kids')}
               className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-semibold text-xs sm:text-sm rounded-xl border border-stone-700 transition-colors cursor-pointer"
             >
-              Men's Tailoring
+              Kidswear
             </button>
 
             <button
               onClick={onOpenSizeGuide}
-              className="px-4 py-2.5 bg-transparent hover:bg-stone-800/80 text-amber-300 font-semibold text-xs sm:text-sm rounded-xl border border-amber-500/40 transition-colors cursor-pointer"
+              className="px-4 py-2.5 bg-stone-800/80 hover:bg-stone-700 text-stone-300 font-medium text-xs sm:text-sm rounded-xl border border-stone-700 transition-colors cursor-pointer flex items-center gap-1.5"
             >
-              Sizing Calculator
+              <Scissors className="w-3.5 h-3.5 text-amber-400" />
+              <span>Fitting Guide</span>
             </button>
-          </div>
-        </div>
-
-        {/* Right Centre Services Highlight Card */}
-        <div className="w-full lg:w-80 bg-stone-800/80 backdrop-blur-md rounded-xl p-5 border border-stone-700 text-xs space-y-3.5 shadow-md">
-          <div className="flex items-center gap-2 pb-2 border-b border-stone-700 text-amber-300 font-bold uppercase tracking-wider text-[11px]">
-            <MapPin className="w-3.5 h-3.5" />
-            <span>Clothing Centre Highlights</span>
-          </div>
-
-          <div className="flex items-start gap-2.5 text-stone-300">
-            <Scissors className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-white block font-semibold">Master Tailor On-Site</strong>
-              <span className="text-stone-400 text-[11px]">Free cuff, hem, and waist alterations on all purchases.</span>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2.5 text-stone-300">
-            <Clock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-white block font-semibold">2-Hour Express Click & Collect</strong>
-              <span className="text-stone-400 text-[11px]">Order online and pick up at the Regent Blvd counter today.</span>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2.5 text-stone-300">
-            <ShieldCheck className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <div>
-              <strong className="text-white block font-semibold">Quality & Fit Guarantee</strong>
-              <span className="text-stone-400 text-[11px]">30-day hassle-free exchange & in-person trial rooms.</span>
-            </div>
           </div>
         </div>
 

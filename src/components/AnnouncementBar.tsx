@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Truck, RotateCcw, Scissors } from 'lucide-react';
+import { formatPrice, FREE_DELIVERY_THRESHOLD } from '../lib/format';
 
 const MESSAGES = [
   {
     icon: Truck,
-    text: 'Complimentary Delivery On Orders Above $50',
+    text: `Complimentary Delivery On Orders Above ${formatPrice(FREE_DELIVERY_THRESHOLD)}`,
   },
   {
     icon: RotateCcw,
-    text: '7-Day Easy Returns & Exchanges Guaranteed',
+    text: 'Easy 7-Day Returns & Size Exchange Available',
   },
   {
     icon: Scissors,
-    text: 'In-Store Trial Suites & Custom Alterations',
+    text: 'Complimentary Saree Fall, Pico & Custom Alterations',
   },
 ];
 

@@ -17,6 +17,8 @@ import { StoreManagerModal } from './components/StoreManagerModal';
 import { OrdersReceiptModal } from './components/OrdersReceiptModal';
 import { WishlistDrawer } from './components/WishlistDrawer';
 import { INITIAL_CLOTHING_ITEMS, STORE_CENTRE_INFO } from './data/clothingData';
+import { DEPARTMENTS, DEPARTMENT_CONFIG, ALL_CATEGORIES } from './data/catalogConfig';
+import { formatPrice } from './lib/format';
 import { 
   ClothingItem, 
   CartItem, 
@@ -58,7 +60,7 @@ export default function App() {
   // Inventory state with LocalStorage persistence
   const [inventory, setInventory] = useState<ClothingItem[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_inventory');
+      const saved = localStorage.getItem('clothing_centre_inventory-v2');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
@@ -69,7 +71,7 @@ export default function App() {
   // Cart State
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_cart');
+      const saved = localStorage.getItem('clothing_centre_cart-v2');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
@@ -80,7 +82,7 @@ export default function App() {
   // Wishlist State
   const [wishlist, setWishlist] = useState<ClothingItem[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_wishlist');
+      const saved = localStorage.getItem('clothing_centre_wishlist-v2');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
@@ -91,7 +93,7 @@ export default function App() {
   // Orders State
   const [orders, setOrders] = useState<CustomerOrder[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_orders');
+      const saved = localStorage.getItem('clothing_centre_orders-v2');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
@@ -106,7 +108,7 @@ export default function App() {
     department: 'all',
     category: 'All',
     sizes: [],
-    priceRange: [0, 250],
+    priceRange: [0, 25000],
     searchQuery: '',
     sortBy: 'featured',
     inStockOnly: false
@@ -188,19 +190,19 @@ export default function App() {
 
   // Local fallback cache sync
   useEffect(() => {
-    localStorage.setItem('clothing_centre_inventory', JSON.stringify(inventory));
+    localStorage.setItem('clothing_centre_inventory-v2', JSON.stringify(inventory));
   }, [inventory]);
 
   useEffect(() => {
-    localStorage.setItem('clothing_centre_cart', JSON.stringify(cart));
+    localStorage.setItem('clothing_centre_cart-v2', JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    localStorage.setItem('clothing_centre_wishlist', JSON.stringify(wishlist));
+    localStorage.setItem('clothing_centre_wishlist-v2', JSON.stringify(wishlist));
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('clothing_centre_orders', JSON.stringify(orders));
+    localStorage.setItem('clothing_centre_orders-v2', JSON.stringify(orders));
   }, [orders]);
 
   // Derived calculations
@@ -209,11 +211,16 @@ export default function App() {
   const lowStockCount = useMemo(() => inventory.filter(i => i.inStockTotal <= 10).length, [inventory]);
 
   const maxPriceInCatalog = useMemo(() => {
-    return Math.max(...inventory.map(i => i.price), 250);
+    return Math.max(...inventory.map(i => i.price), 15000);
   }, [inventory]);
 
   const uniqueCategories = useMemo(() => {
     const set = new Set<string>();
+    if (filters.department === 'all') {
+      ALL_CATEGORIES.forEach(c => set.add(c));
+    } else {
+      DEPARTMENT_CONFIG[filters.department]?.categories.forEach(c => set.add(c));
+    }
     inventory.forEach(i => {
       if (filters.department === 'all' || i.department === filters.department) {
         set.add(i.category);
@@ -238,10 +245,9 @@ export default function App() {
   const departmentCounts = useMemo(() => {
     const counts: Record<Department, number> = {
       all: inventory.length,
-      women: 0,
-      men: 0,
+      sarees: 0,
+      kurtis: 0,
       kids: 0,
-      ethnic: 0,
     };
     inventory.forEach(i => {
       if (counts[i.department] !== undefined) {
@@ -250,6 +256,36 @@ export default function App() {
     });
     return counts;
   }, [inventory]);
+
+  const allCategoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    inventory.forEach(i => {
+      counts[i.category] = (counts[i.category] || 0) + 1;
+    });
+    return counts;
+  }, [inventory]);
+
+  const availableSizesInCatalog = useMemo(() => {
+    const sizes = new Set<Size>();
+    const relevantItems = filters.department === 'all'
+      ? inventory
+      : inventory.filter(i => i.department === filters.department);
+    relevantItems.forEach(item => {
+      item.sizes.forEach(s => {
+        if (s.stock > 0) {
+          sizes.add(s.size);
+        }
+      });
+    });
+    return Array.from(sizes);
+  }, [inventory, filters.department]);
+
+  const visibleFeaturedDepartments = useMemo(() => {
+    return DEPARTMENTS.filter(dept => {
+      if (dept.id === 'all') return inventory.length > 0;
+      return (departmentCounts[dept.id] ?? 0) > 0;
+    });
+  }, [departmentCounts, inventory.length]);
 
   // Filter & Sort Logic
   const filteredProducts = useMemo(() => {
@@ -331,6 +367,11 @@ export default function App() {
 
   const railCategories = useMemo(() => {
     const set = new Set<string>();
+    if (filters.department === 'all') {
+      ALL_CATEGORIES.forEach(c => set.add(c));
+    } else {
+      DEPARTMENT_CONFIG[filters.department]?.categories.forEach(c => set.add(c));
+    }
     inventory.forEach((i) => {
       if (filters.department === 'all' || i.department === filters.department) {
         set.add(i.category);
@@ -617,6 +658,8 @@ export default function App() {
         currentDepartment={filters.department}
         currentCategory={filters.category}
         onSelect={handleCategoryBarSelect}
+        departmentCounts={departmentCounts}
+        categoryCounts={allCategoryCounts}
       />
 
       {/* Main Content Area */}
@@ -624,90 +667,126 @@ export default function App() {
         
         {isHomeView ? (
           /* ==================== HOME PAGE LAYOUT ==================== */
-          <div>
-            {/* 1. Hero Slideshow (3 slides, full width, auto-advance, dots, pause on hover) */}
-            <HeroSlideshow onSelectCategory={handleSelectCategory} />
+          inventory.length === 0 ? (
+            /* Friendly empty catalogue state when zero products in catalogue */
+            <div className="space-y-12">
+              <HeroSlideshow onSelectCategory={handleSelectCategory} />
+              
+              <div className="bg-white rounded-3xl border border-stone-200/80 p-8 sm:p-14 text-center shadow-xs max-w-2xl mx-auto my-8">
+                <div className="w-16 h-16 rounded-2xl bg-amber-100/80 border border-amber-200/80 text-amber-900 flex items-center justify-center mx-auto mb-5 shadow-2xs">
+                  <Sparkles className="w-8 h-8 text-amber-800" />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-amber-900 bg-amber-50 border border-amber-200/60 px-3.5 py-1 rounded-full inline-block mb-3">
+                  Boutique Collection
+                </span>
+                <h2 className="font-serif-display text-2xl sm:text-4xl font-bold text-stone-900 mb-3">
+                  New collection arriving soon
+                </h2>
+                <p className="text-sm sm:text-base text-stone-600 max-w-md mx-auto mb-6 leading-relaxed">
+                  Our master weavers and artisans are tailoring handcrafted pure silk sarees, celebratory kurtis & chudidars, and festive kidswear for our upcoming season.
+                </p>
+                <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200/80 text-xs text-stone-600 max-w-lg mx-auto mb-6 space-y-1 text-left sm:text-center">
+                  <p className="font-semibold text-stone-800">Visit our boutique showroom & trial suites:</p>
+                  <p>{STORE_CENTRE_INFO.address}</p>
+                  <p className="font-mono text-stone-500">{STORE_CENTRE_INFO.hours}</p>
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={() => setIsStoreManagerOpen(true)}
+                    className="px-6 py-3 bg-stone-900 hover:bg-amber-600 text-white rounded-full text-xs font-bold transition-all shadow-md uppercase tracking-wider cursor-pointer"
+                  >
+                    Open Store Manager
+                  </button>
+                </div>
+              </div>
 
-            {/* 2. Shop by Category Grid (rounded-square tiles, 4 cols mobile, 8 cols desktop) */}
-            <CategoryTileGrid onSelectCategory={handleSelectCategory} />
+              <BrandStoryBlock />
+            </div>
+          ) : (
+            <div>
+              {/* 1. Hero Slideshow (3 slides, full width, auto-advance, dots, pause on hover) */}
+              <HeroSlideshow onSelectCategory={handleSelectCategory} />
 
-            {/* 3. Top Selling Strip ("Top selling this week" using Bestsellers) */}
-            <TopSellingStrip
-              items={inventory}
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-              onQuickView={(i) => setQuickViewItem(i)}
-              onAddToCart={(i, size, colorIdx) => handleAddToCart(i, size, colorIdx, 1)}
-              onOpenSizeGuide={() => setIsSizeGuideOpen(true)}
-            />
+              {/* 2. Shop by Category Grid (rounded-square tiles, hides categories with 0 products) */}
+              <CategoryTileGrid 
+                onSelectCategory={handleSelectCategory}
+                categoryCounts={allCategoryCounts}
+              />
 
-            {/* 4. "Featured" Section with Tabs (All / Women / Men / Kids / Ethnic) */}
-            <section className="mb-14">
-              <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-6">
-                <div>
-                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
-                    Hand-Selected Racks
-                  </span>
-                  <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
-                    Featured Collection
-                  </h2>
+              {/* 3. Top Selling Strip ("Top selling this week" using Bestsellers) */}
+              <TopSellingStrip
+                items={inventory}
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+                onQuickView={(i) => setQuickViewItem(i)}
+                onAddToCart={(i, size, colorIdx) => handleAddToCart(i, size, colorIdx, 1)}
+                onOpenSizeGuide={() => setIsSizeGuideOpen(true)}
+              />
+
+              {/* 4. "Featured" Section with Tabs */}
+              <section className="mb-14">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-6">
+                  <div>
+                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
+                      Hand-Selected Racks
+                    </span>
+                    <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
+                      Featured Collection
+                    </h2>
+                  </div>
+
+                  {/* Filter & Sort Button on Home Page */}
+                  <button
+                    onClick={() => setIsFilterDrawerOpen(true)}
+                    className="px-4 py-2 bg-stone-900 hover:bg-amber-600 text-white rounded-full text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-sm uppercase tracking-wider"
+                  >
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    <span>Filter & Sort {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
+                  </button>
                 </div>
 
-                {/* Filter & Sort Button on Home Page */}
-                <button
-                  onClick={() => setIsFilterDrawerOpen(true)}
-                  className="px-4 py-2 bg-stone-900 hover:bg-amber-600 text-white rounded-full text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-sm uppercase tracking-wider"
-                >
-                  <SlidersHorizontal className="w-3.5 h-3.5" />
-                  <span>Filter & Sort {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
-                </button>
-              </div>
+                {/* Department Tabs: Hide departments with zero products */}
+                {visibleFeaturedDepartments.length > 0 && (
+                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-2">
+                    {visibleFeaturedDepartments.map((tab) => {
+                      const isActive = featuredTab === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setFeaturedTab(tab.id as Department)}
+                          className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all cursor-pointer ${
+                            isActive
+                              ? 'bg-stone-900 text-white shadow-xs font-bold'
+                              : 'bg-stone-100 hover:bg-stone-200/80 text-stone-700 border border-stone-200/60'
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
 
-              {/* Department Tabs */}
-              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-2">
-                {[
-                  { id: 'all', label: 'All Collections' },
-                  { id: 'women', label: 'Women' },
-                  { id: 'men', label: 'Men' },
-                  { id: 'kids', label: 'Kids' },
-                  { id: 'ethnic', label: 'Ethnic & Festive' },
-                ].map((tab) => {
-                  const isActive = featuredTab === tab.id;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setFeaturedTab(tab.id as Department)}
-                      className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all cursor-pointer ${
-                        isActive
-                          ? 'bg-stone-900 text-white shadow-xs font-bold'
-                          : 'bg-stone-100 hover:bg-stone-200/80 text-stone-700 border border-stone-200/60'
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  );
-                })}
-              </div>
+                {/* Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                  {featuredProducts.slice(0, 8).map((item) => (
+                    <ProductCard
+                      key={`featured-${item.id}`}
+                      item={item}
+                      isWishlisted={wishlist.some((w) => w.id === item.id)}
+                      onToggleWishlist={handleToggleWishlist}
+                      onQuickView={(i) => setQuickViewItem(i)}
+                      onAddToCart={(i, size, colorIdx) => handleAddToCart(i, size, colorIdx, 1)}
+                      onOpenSizeGuide={() => setIsSizeGuideOpen(true)}
+                    />
+                  ))}
+                </div>
+              </section>
 
-              {/* Product Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                {featuredProducts.slice(0, 8).map((item) => (
-                  <ProductCard
-                    key={`featured-${item.id}`}
-                    item={item}
-                    isWishlisted={wishlist.some((w) => w.id === item.id)}
-                    onToggleWishlist={handleToggleWishlist}
-                    onQuickView={(i) => setQuickViewItem(i)}
-                    onAddToCart={(i, size, colorIdx) => handleAddToCart(i, size, colorIdx, 1)}
-                    onOpenSizeGuide={() => setIsSizeGuideOpen(true)}
-                  />
-                ))}
-              </div>
-            </section>
-
-            {/* 5. Short 3-Column Brand Story Block */}
-            <BrandStoryBlock />
-          </div>
+              {/* 5. Short 3-Column Brand Story Block */}
+              <BrandStoryBlock />
+            </div>
+          )
         ) : (
           /* ==================== CATEGORY / SEARCH VIEW (TWO-PANE) ==================== */
           <div className="mb-14">
@@ -723,7 +802,7 @@ export default function App() {
                     Storefront
                   </button>
                   <span>/</span>
-                  <span className="capitalize">{filters.department === 'all' ? 'All Collections' : filters.department}</span>
+                  <span className="capitalize">{filters.department === 'all' ? 'All Collections' : (DEPARTMENT_CONFIG[filters.department]?.label || filters.department)}</span>
                   {filters.category !== 'All' && (
                     <>
                       <span>/</span>
@@ -737,8 +816,8 @@ export default function App() {
                     {filters.category !== 'All'
                       ? filters.category
                       : filters.department === 'all'
-                      ? 'All Racked Collections'
-                      : `${filters.department.charAt(0).toUpperCase() + filters.department.slice(1)}'s Department`}
+                      ? 'All Boutique Collections'
+                      : DEPARTMENT_CONFIG[filters.department]?.label || filters.department}
                   </h1>
                   <span className="text-xs bg-stone-200 text-stone-700 font-semibold px-2.5 py-0.5 rounded-full">
                     {filteredProducts.length} pieces
@@ -820,10 +899,10 @@ export default function App() {
                       <Search className="w-6 h-6" />
                     </div>
                     <h3 className="font-serif-display text-xl font-bold text-stone-900 mb-2">
-                      No Matching Garments Found
+                      No Matching Boutique Pieces Found
                     </h3>
                     <p className="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mb-4 leading-relaxed">
-                      We couldn't find any clothing items matching your current filters. Try relaxing criteria or clearing the search.
+                      We couldn't find any sarees, kurtis, or kidswear matching your current filters. Try relaxing criteria or clearing the search.
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3">
                       <button
@@ -876,7 +955,7 @@ export default function App() {
               </div>
               <div>
                 <h4 className="font-bold text-white text-sm">Complimentary Delivery</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">Free standard shipping on orders over $50. Plus 2-hour Centre click & collect.</p>
+                <p className="text-stone-400 text-[11px] mt-0.5">Free standard shipping on orders over ₹1,999. Plus 2-hour boutique click & collect.</p>
               </div>
             </div>
 
@@ -886,7 +965,7 @@ export default function App() {
               </div>
               <div>
                 <h4 className="font-bold text-white text-sm">7-Day Easy Returns</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">30-day exchange window with hassle-free size swaps and instant store credit.</p>
+                <p className="text-stone-400 text-[11px] mt-0.5">Hassle-free size swaps, boutique exchange, and instant store credit.</p>
               </div>
             </div>
 
@@ -895,8 +974,8 @@ export default function App() {
                 <Scissors className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm">On-Site Tailoring</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">Trial rooms with master alteration tailor on floor for waist, hem, and sleeve fittings.</p>
+                <h4 className="font-bold text-white text-sm">Boutique Tailoring</h4>
+                <p className="text-stone-400 text-[11px] mt-0.5">Complimentary saree fall & pico, kurti side slits, and trial alterations on site.</p>
               </div>
             </div>
 
@@ -905,8 +984,8 @@ export default function App() {
                 <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm">Certified Natural Fabrics</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">100% natural Mulberry silk, Supima cotton, cashmere, and handloom cottons.</p>
+                <h4 className="font-bold text-white text-sm">Certified Silks & Handlooms</h4>
+                <p className="text-stone-400 text-[11px] mt-0.5">Pure Kanchipuram silk, Banarasi brocades, and genuine artisan handlooms.</p>
               </div>
             </div>
           </div>
@@ -939,6 +1018,8 @@ export default function App() {
       <FilterDrawer
         isOpen={isFilterDrawerOpen}
         onClose={() => setIsFilterDrawerOpen(false)}
+        currentDepartment={filters.department}
+        availableSizes={availableSizesInCatalog}
         selectedSizes={filters.sizes}
         onToggleSize={(size) => {
           setFilters(f => ({

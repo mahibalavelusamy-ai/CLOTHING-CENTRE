@@ -47,11 +47,11 @@ export const TopSellingStrip: React.FC<TopSellingStripProps> = ({
     <section className="mb-14">
       <div className="flex items-end justify-between mb-6">
         <div>
-          <div className="flex items-center gap-1.5 text-amber-800 text-[10px] sm:text-xs font-bold uppercase tracking-widest">
+          <div className="flex items-center gap-1.5 text-[#FF3DA5] text-[10px] sm:text-xs font-bold uppercase tracking-widest">
             <TrendingUp className="w-3.5 h-3.5" />
             <span>Weekly Highlights</span>
           </div>
-          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
+          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#F5F5F5] mt-0.5">
             Top Selling This Week
           </h2>
         </div>
@@ -60,14 +60,14 @@ export const TopSellingStrip: React.FC<TopSellingStripProps> = ({
         <div className="hidden sm:flex items-center gap-2">
           <button
             onClick={() => scroll('left')}
-            className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-stone-400 text-stone-700 flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
+            className="w-9 h-9 rounded-full bg-[#111111] border border-[#2A2A2A] hover:border-[#FF3DA5] text-[#A3A3A3] hover:text-[#FF3DA5] flex items-center justify-center transition-colors cursor-pointer shadow-md"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-stone-400 text-stone-700 flex items-center justify-center transition-colors cursor-pointer shadow-2xs"
+            className="w-9 h-9 rounded-full bg-[#111111] border border-[#2A2A2A] hover:border-[#FF3DA5] text-[#A3A3A3] hover:text-[#FF3DA5] flex items-center justify-center transition-colors cursor-pointer shadow-md"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-4 h-4" />

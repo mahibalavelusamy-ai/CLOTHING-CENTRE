@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { X, Receipt, Search, Printer, Store, CheckCircle, Package } from 'lucide-react';
+import { X, Receipt, Search, Printer, CheckCircle } from 'lucide-react';
 import { CustomerOrder } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
+import { formatPrice } from '../lib/format';
 
 interface OrdersReceiptModalProps {
   isOpen: boolean;
@@ -39,10 +40,10 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
             </div>
             <div>
               <h2 className="text-base font-bold text-stone-900 font-serif-display">
-                Clothing Centre Order Receipts
+                {STORE_CENTRE_INFO.name} Receipts & Slips
               </h2>
               <p className="text-xs text-stone-500">
-                Official store slips for pickup, exchange & alteration warranty
+                Official store slips for collection, exchange & alteration warranty
               </p>
             </div>
           </div>
@@ -63,7 +64,7 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
               <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search Order ID, name, phone..."
+                placeholder="Search Order ID, name, mobile..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-8 pr-3 py-1.5 text-xs bg-stone-50 border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
@@ -73,7 +74,7 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
             <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
               {filteredOrders.length === 0 ? (
                 <div className="text-center py-6 text-stone-400 text-xs">
-                  No receipts found.
+                  No orders or receipts found.
                 </div>
               ) : (
                 filteredOrders.map((order) => {
@@ -90,8 +91,8 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-mono font-bold text-stone-900">#{order.id}</span>
-                        <span className="text-[10px] bg-stone-200 px-1.5 py-0.5 rounded font-semibold text-stone-800">
-                          ${order.totalAmount.toFixed(2)}
+                        <span className="text-[10px] bg-stone-200 px-1.5 py-0.5 rounded font-semibold text-stone-800 font-mono">
+                          {formatPrice(order.totalAmount)}
                         </span>
                       </div>
                       <p className="text-stone-800 font-semibold mt-1">{order.customer.name}</p>
@@ -118,6 +119,7 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                     </h3>
                     <p className="text-[11px] text-stone-500">{STORE_CENTRE_INFO.address}</p>
                     <p className="text-[11px] text-stone-500">Phone: {STORE_CENTRE_INFO.phone}</p>
+                    <p className="text-[11px] text-stone-500">GSTIN: 33AAAAA0000A1Z5</p>
                   </div>
                   <div className="text-right">
                     <span className="bg-stone-900 text-white font-mono font-bold px-2 py-0.5 rounded text-[11px]">
@@ -139,8 +141,25 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                     </div>
                   </div>
                   <span className="text-[11px] text-stone-500">
-                    {selectedOrder.customer.deliveryType === 'store_pickup' ? 'Centre Pickup' : 'Home Delivery'}
+                    {selectedOrder.customer.deliveryType === 'store_pickup' ? 'Boutique Pickup' : 'Home Delivery'}
                   </span>
+                </div>
+
+                {/* Customer Info */}
+                <div className="grid grid-cols-2 gap-3 text-[11px] bg-white p-2.5 rounded-lg border border-stone-200">
+                  <div>
+                    <span className="text-stone-500 block">Customer:</span>
+                    <span className="font-semibold text-stone-900">{selectedOrder.customer.name}</span>
+                    <span className="text-stone-500 block">{selectedOrder.customer.phone}</span>
+                  </div>
+                  <div>
+                    <span className="text-stone-500 block">Fulfilment:</span>
+                    <span className="font-medium text-stone-800">
+                      {selectedOrder.customer.deliveryType === 'store_pickup'
+                        ? `Pickup Slot: ${selectedOrder.customer.pickupSlot || 'Standard'}`
+                        : `Address: ${selectedOrder.customer.shippingAddress || 'Standard'}`}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Items */}
@@ -155,8 +174,8 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                             Size: {i.selectedSize} | Color: {i.selectedColor.name} | Qty: {i.quantity}
                           </p>
                         </div>
-                        <span className="font-bold text-stone-900">
-                          ${(i.item.price * i.quantity).toFixed(2)}
+                        <span className="font-bold text-stone-900 font-mono">
+                          {formatPrice(i.item.price * i.quantity)}
                         </span>
                       </div>
                     ))}
@@ -164,9 +183,29 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                 </div>
 
                 {/* Total */}
-                <div className="border-t border-stone-300 pt-2 flex justify-between font-bold text-sm text-stone-900">
-                  <span>Grand Total (Taxes Incl.):</span>
-                  <span>${selectedOrder.totalAmount.toFixed(2)}</span>
+                <div className="border-t border-stone-300 pt-2 space-y-1 text-right">
+                  <div className="flex justify-between text-stone-600">
+                    <span>Subtotal:</span>
+                    <span className="font-mono">{formatPrice(selectedOrder.subtotal)}</span>
+                  </div>
+                  {selectedOrder.discountApplied > 0 && (
+                    <div className="flex justify-between text-emerald-700">
+                      <span>Discount ({selectedOrder.couponCode}):</span>
+                      <span className="font-mono">-{formatPrice(selectedOrder.discountApplied)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-stone-600">
+                    <span>Delivery Fee:</span>
+                    <span className="font-mono">{selectedOrder.deliveryFee === 0 ? 'FREE' : formatPrice(selectedOrder.deliveryFee)}</span>
+                  </div>
+                  <div className="flex justify-between text-stone-600">
+                    <span>GST (5%):</span>
+                    <span className="font-mono">{formatPrice(selectedOrder.tax)}</span>
+                  </div>
+                  <div className="flex justify-between font-bold text-sm text-stone-900 pt-1 border-t border-stone-200">
+                    <span>Grand Total:</span>
+                    <span className="font-mono">{formatPrice(selectedOrder.totalAmount)}</span>
+                  </div>
                 </div>
 
                 {/* Actions */}

@@ -17,6 +17,7 @@ import {
 import { Department, ClothingItem } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 import { TRENDING_SEARCHES } from '../data/trending';
+import { formatPrice } from '../lib/format';
 
 interface HeaderProps {
   currentDepartment: Department;
@@ -145,7 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="truncate">{STORE_CENTRE_INFO.address}</span>
             </span>
             <span className="hidden lg:inline-flex items-center gap-1 text-emerald-400 whitespace-nowrap">
-              <Sparkles className="w-3 h-3 shrink-0" /> Ready in 2 Hours for Centre Pickup
+              <Sparkles className="w-3 h-3 shrink-0" /> Ready in 2 Hours for Store Pickup
             </span>
           </div>
 
@@ -229,7 +230,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsSearchFocused(false);
                   }
                 }}
-                placeholder="Search collections, fabrics, kurtas, shirts, dresses..."
+                placeholder="Search silk sarees, cotton kurtis, anarkalis, chudidars, kidswear..."
                 className="w-full pl-10 pr-9 py-2.5 bg-stone-800/90 border border-stone-700 hover:border-stone-600 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-full text-xs sm:text-sm text-stone-100 placeholder-stone-400 shadow-inner transition-all outline-none"
               />
               {searchQuery && (
@@ -363,7 +364,7 @@ export const Header: React.FC<HeaderProps> = ({
                 )}
               </div>
               <span className="text-xs font-bold tracking-wide">
-                {cartCount === 0 ? 'Bag' : `$${cartTotal.toFixed(2)}`}
+                {cartCount === 0 ? 'Bag' : formatPrice(cartTotal)}
               </span>
             </button>
           </div>

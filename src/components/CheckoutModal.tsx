@@ -10,11 +10,11 @@ import {
   Banknote, 
   Printer, 
   ShoppingBag,
-  ArrowLeft,
   Scissors
 } from 'lucide-react';
 import { CartItem, CustomerOrder } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
+import { formatPrice, FREE_DELIVERY_THRESHOLD, STANDARD_DELIVERY_FEE } from '../lib/format';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -44,12 +44,15 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [phone, setPhone] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
   const [alterationNote, setAlterationNote] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi' | 'cash_counter'>('cash_counter');
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi' | 'cash_counter'>('upi');
   const [orderComplete, setOrderComplete] = useState<CustomerOrder | null>(null);
 
-  const deliveryFee = deliveryType === 'home_delivery' ? (subtotal >= 100 ? 0 : 6) : 0;
+  const deliveryFee = deliveryType === 'home_delivery' 
+    ? (subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : STANDARD_DELIVERY_FEE) 
+    : 0;
+
   const taxableAmount = Math.max(0, subtotal - discountAmount);
-  const tax = taxableAmount * 0.05; // 5% apparel tax
+  const tax = taxableAmount * 0.05; // 5% GST
   const totalAmount = taxableAmount + deliveryFee + tax;
 
   const handleSubmitOrder = (e: React.FormEvent) => {
@@ -63,7 +66,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       return;
     }
 
-    const orderId = `CC-${Math.floor(100000 + Math.random() * 900000)}`;
+    const orderId = `OB-${Math.floor(100000 + Math.random() * 900000)}`;
     const newOrder: CustomerOrder = {
       id: orderId,
       createdAt: new Date().toISOString(),
@@ -137,7 +140,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   </h3>
                   <p className="text-stone-500 text-[11px]">{STORE_CENTRE_INFO.address}</p>
                   <p className="text-stone-500 text-[11px]">Phone: {STORE_CENTRE_INFO.phone}</p>
-                  <p className="text-stone-500 text-[11px]">GST / Reg ID: CC-REG-98214-B</p>
+                  <p className="text-stone-500 text-[11px]">GSTIN / Tax ID: 33AAAAA0000A1Z5</p>
                 </div>
                 <div className="text-left sm:text-right">
                   <span className="inline-block bg-stone-900 text-white font-mono font-bold px-2 py-0.5 rounded text-[11px]">
@@ -163,19 +166,19 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <h4 className="font-bold text-stone-900 mb-1">Fulfilment Method:</h4>
                   {orderComplete.customer.deliveryType === 'store_pickup' ? (
                     <div className="text-stone-700">
-                      <span className="font-semibold text-amber-800">In-Store Centre Pickup</span>
+                      <span className="font-semibold text-amber-800">Boutique Store Pickup</span>
                       <p className="text-[11px] text-stone-500">Slot: {orderComplete.customer.pickupSlot}</p>
-                      <p className="text-[11px] text-stone-500">Counter: Suite 104 Customer Desk</p>
+                      <p className="text-[11px] text-stone-500">Counter: Main Boutique Reception</p>
                     </div>
                   ) : (
                     <div className="text-stone-700">
-                      <span className="font-semibold text-stone-800">Express Delivery</span>
+                      <span className="font-semibold text-stone-800">Express Doorstep Delivery</span>
                       <p className="text-[11px] text-stone-500">{orderComplete.customer.shippingAddress}</p>
                     </div>
                   )}
                   {orderComplete.customer.notes && (
                     <p className="text-[11px] text-amber-900 mt-1 italic">
-                      Tailoring Note: "{orderComplete.customer.notes}"
+                      Custom Alteration Note: "{orderComplete.customer.notes}"
                     </p>
                   )}
                 </div>
@@ -205,8 +208,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                         <td className="py-2 text-center font-bold">
                           {it.quantity}
                         </td>
-                        <td className="py-2 text-right font-bold">
-                          ${(it.item.price * it.quantity).toFixed(2)}
+                        <td className="py-2 text-right font-bold font-mono">
+                          {formatPrice(it.item.price * it.quantity)}
                         </td>
                       </tr>
                     ))}
@@ -218,25 +221,25 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <div className="border-t border-stone-300 pt-3 space-y-1 text-right">
                 <div className="flex justify-between text-stone-600">
                   <span>Subtotal:</span>
-                  <span>${orderComplete.subtotal.toFixed(2)}</span>
+                  <span className="font-mono">{formatPrice(orderComplete.subtotal)}</span>
                 </div>
                 {orderComplete.discountApplied > 0 && (
                   <div className="flex justify-between text-emerald-700">
                     <span>Discount ({orderComplete.couponCode}):</span>
-                    <span>-${orderComplete.discountApplied.toFixed(2)}</span>
+                    <span className="font-mono">-{formatPrice(orderComplete.discountApplied)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-stone-600">
-                  <span>Centre Pickup / Shipping:</span>
-                  <span>{orderComplete.deliveryFee === 0 ? 'FREE' : `$${orderComplete.deliveryFee.toFixed(2)}`}</span>
+                  <span>Fulfilment ({orderComplete.customer.deliveryType === 'store_pickup' ? 'Boutique Pickup' : 'Delivery'}):</span>
+                  <span className="font-mono">{orderComplete.deliveryFee === 0 ? 'FREE' : formatPrice(orderComplete.deliveryFee)}</span>
                 </div>
                 <div className="flex justify-between text-stone-600">
-                  <span>Apparel State Tax (5%):</span>
-                  <span>${orderComplete.tax.toFixed(2)}</span>
+                  <span>GST (5%):</span>
+                  <span className="font-mono">{formatPrice(orderComplete.tax)}</span>
                 </div>
                 <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t border-stone-300">
                   <span>Total Paid ({orderComplete.paymentMethod.toUpperCase()}):</span>
-                  <span>${orderComplete.totalAmount.toFixed(2)}</span>
+                  <span className="font-mono">{formatPrice(orderComplete.totalAmount)}</span>
                 </div>
               </div>
 
@@ -246,10 +249,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   ||| | | |||| | ||| |||| | | |||
                 </div>
                 <p className="text-[10px] text-stone-400 font-mono mt-1">
-                  BARCODE: {orderComplete.id} • PRESENT AT CLOTHING CENTRE COUNTER
+                  BARCODE: {orderComplete.id} • PRESENT AT BOUTIQUE COUNTER
                 </p>
                 <p className="text-[10px] text-stone-500 mt-2 italic">
-                  Keep this slip for 30-day exchange and complimentary alterations.
+                  Keep this slip for 7-day exchange and complimentary alterations & saree fall pico.
                 </p>
               </div>
             </div>
@@ -261,14 +264,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 className="w-full sm:w-auto px-5 py-2.5 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer transition-colors"
               >
                 <Printer className="w-4 h-4" />
-                <span>Print Tax Invoice / Receipt</span>
+                <span>Print Tax Invoice / Slip</span>
               </button>
               <button
                 id="finish-order-btn"
                 onClick={onClose}
                 className="w-full sm:w-auto px-6 py-2.5 bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-colors"
               >
-                <span>Continue Shopping at Centre</span>
+                <span>Continue Browsing Boutique</span>
               </button>
             </div>
           </div>
@@ -282,10 +285,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-stone-900 font-serif-display">
-                    Clothing Centre Checkout
+                    {STORE_CENTRE_INFO.name} Checkout
                   </h2>
                   <p className="text-xs text-stone-500">
-                    Fast In-Store Pickup or Express Home Delivery
+                    Boutique Store Collection or Doorstep Delivery
                   </p>
                 </div>
               </div>
@@ -318,11 +321,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <Store className={`w-5 h-5 shrink-0 ${deliveryType === 'store_pickup' ? 'text-amber-800' : 'text-stone-400'}`} />
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-stone-900">Centre Store Pickup</span>
+                      <span className="text-xs font-bold text-stone-900">Boutique Store Pickup</span>
                       <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.2 rounded">FREE</span>
                     </div>
                     <p className="text-[11px] text-stone-500 mt-0.5">
-                      Ready in 2 hours at Regent Blvd Emporium. Try it on immediately!
+                      Ready in 2 hours at our {STORE_CENTRE_INFO.address.split(',')[1]?.trim() || 'T. Nagar'} Boutique. Try it on immediately!
                     </p>
                   </div>
                 </button>
@@ -340,13 +343,13 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <Truck className={`w-5 h-5 shrink-0 ${deliveryType === 'home_delivery' ? 'text-amber-800' : 'text-stone-400'}`} />
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-stone-900">Express Delivery</span>
+                      <span className="text-xs font-bold text-stone-900">Doorstep Delivery</span>
                       <span className="text-[10px] text-stone-500 font-medium">
-                        {subtotal >= 100 ? 'FREE' : '$6.00'}
+                        {subtotal >= FREE_DELIVERY_THRESHOLD ? 'FREE' : formatPrice(STANDARD_DELIVERY_FEE)}
                       </span>
                     </div>
                     <p className="text-[11px] text-stone-500 mt-0.5">
-                      Direct to doorstep in protective eco-friendly garment packaging.
+                      Complimentary on orders above {formatPrice(FREE_DELIVERY_THRESHOLD)}. Packed in secure protective drape packaging.
                     </p>
                   </div>
                 </button>
@@ -365,8 +368,8 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   >
                     <option value="Today (2:00 PM – 4:00 PM)">Today (2:00 PM – 4:00 PM)</option>
                     <option value="Today (4:00 PM – 7:00 PM)">Today (4:00 PM – 7:00 PM)</option>
-                    <option value="Today (7:00 PM – 9:00 PM)">Today (7:00 PM – 9:00 PM)</option>
-                    <option value="Tomorrow (10:00 AM – 1:00 PM)">Tomorrow (10:00 AM – 1:00 PM)</option>
+                    <option value="Today (7:00 PM – 8:30 PM)">Today (7:00 PM – 8:30 PM)</option>
+                    <option value="Tomorrow (10:30 AM – 1:30 PM)">Tomorrow (10:30 AM – 1:30 PM)</option>
                     <option value="Tomorrow (2:00 PM – 6:00 PM)">Tomorrow (2:00 PM – 6:00 PM)</option>
                   </select>
                 </div>
@@ -384,29 +387,29 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <input
                     type="text"
                     required
-                    placeholder="e.g. Clara Harrington"
+                    placeholder="e.g. Ananya Sundaram"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-stone-700 mb-1">Phone Number (for pickup SMS) *</label>
+                  <label className="block text-[11px] font-medium text-stone-700 mb-1">Mobile Number (for Order & Pickup SMS) *</label>
                   <input
                     type="tel"
                     required
-                    placeholder="e.g. +1 (555) 345-6789"
+                    placeholder="e.g. +91 98765 43210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
                   />
                 </div>
                 <div className="sm:col-span-2">
-                  <label className="block text-[11px] font-medium text-stone-700 mb-1">Email (for Digital Tax Invoice) *</label>
+                  <label className="block text-[11px] font-medium text-stone-700 mb-1">Email (for Digital Invoice) *</label>
                   <input
                     type="email"
                     required
-                    placeholder="e.g. clara@example.com"
+                    placeholder="e.g. ananya@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
@@ -419,7 +422,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <textarea
                       required
                       rows={2}
-                      placeholder="Street address, apartment, postal code..."
+                      placeholder="Flat/House No., Building, Street, Landmark, City & PIN code..."
                       value={shippingAddress}
                       onChange={(e) => setShippingAddress(e.target.value)}
                       className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
@@ -432,11 +435,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <div className="mt-3">
                 <label className="flex items-center gap-1.5 text-[11px] font-semibold text-stone-800 mb-1">
                   <Scissors className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Complimentary Alteration / Trial Request (Optional):</span>
+                  <span>Complimentary Saree Fall, Pico or Alteration Note (Optional):</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Shorten trouser hem by 1 inch, reserve trial suite upon arrival"
+                  placeholder="e.g. Attach saree fall & pico, or tailor kurti side slits"
                   value={alterationNote}
                   onChange={(e) => setAlterationNote(e.target.value)}
                   className="w-full px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
@@ -452,18 +455,18 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                 <button
                   type="button"
-                  id="pay-cash-counter-btn"
-                  onClick={() => setPaymentMethod('cash_counter')}
+                  id="pay-upi-btn"
+                  onClick={() => setPaymentMethod('upi')}
                   className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between ${
-                    paymentMethod === 'cash_counter'
+                    paymentMethod === 'upi'
                       ? 'border-stone-900 bg-stone-900 text-white shadow-xs'
                       : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <Banknote className="w-5 h-5 mb-2 text-amber-400" />
+                  <QrCode className="w-5 h-5 mb-2 text-amber-400" />
                   <div>
-                    <span className="text-xs font-bold block">Pay at Store Counter</span>
-                    <span className="text-[10px] opacity-80">Cash, Card or UPI in person</span>
+                    <span className="text-xs font-bold block">Instant UPI / QR</span>
+                    <span className="text-[10px] opacity-80">GPay, PhonePe, Paytm</span>
                   </div>
                 </button>
 
@@ -480,24 +483,24 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <CreditCard className="w-5 h-5 mb-2 text-amber-400" />
                   <div>
                     <span className="text-xs font-bold block">Credit / Debit Card</span>
-                    <span className="text-[10px] opacity-80">Secure Visa, MC, Amex</span>
+                    <span className="text-[10px] opacity-80">Visa, Mastercard, RuPay</span>
                   </div>
                 </button>
 
                 <button
                   type="button"
-                  id="pay-upi-btn"
-                  onClick={() => setPaymentMethod('upi')}
+                  id="pay-cash-counter-btn"
+                  onClick={() => setPaymentMethod('cash_counter')}
                   className={`p-3 rounded-xl border text-left cursor-pointer transition-all flex flex-col justify-between ${
-                    paymentMethod === 'upi'
+                    paymentMethod === 'cash_counter'
                       ? 'border-stone-900 bg-stone-900 text-white shadow-xs'
                       : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
                   }`}
                 >
-                  <QrCode className="w-5 h-5 mb-2 text-amber-400" />
+                  <Banknote className="w-5 h-5 mb-2 text-amber-400" />
                   <div>
-                    <span className="text-xs font-bold block">Instant QR / UPI</span>
-                    <span className="text-[10px] opacity-80">GPay, PhonePe, Paytm</span>
+                    <span className="text-xs font-bold block">Pay at Boutique</span>
+                    <span className="text-[10px] opacity-80">Cash or UPI upon pickup</span>
                   </div>
                 </button>
               </div>
@@ -507,25 +510,25 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             <div className="bg-stone-50 rounded-xl p-4 border border-stone-200 mb-6 space-y-1.5 text-xs">
               <div className="flex justify-between text-stone-600">
                 <span>Items Subtotal ({cartItems.reduce((acc, i) => acc + i.quantity, 0)} garments):</span>
-                <span className="font-semibold text-stone-900">${subtotal.toFixed(2)}</span>
+                <span className="font-semibold text-stone-900 font-mono">{formatPrice(subtotal)}</span>
               </div>
               {discountAmount > 0 && (
                 <div className="flex justify-between text-emerald-700">
                   <span>Savings ({appliedCoupon}):</span>
-                  <span>-${discountAmount.toFixed(2)}</span>
+                  <span className="font-mono">-{formatPrice(discountAmount)}</span>
                 </div>
               )}
               <div className="flex justify-between text-stone-600">
-                <span>Fulfilment ({deliveryType === 'store_pickup' ? 'Centre Pickup' : 'Express Delivery'}):</span>
-                <span>{deliveryFee === 0 ? 'FREE' : `$${deliveryFee.toFixed(2)}`}</span>
+                <span>Fulfilment ({deliveryType === 'store_pickup' ? 'Boutique Pickup' : 'Express Delivery'}):</span>
+                <span className="font-mono">{deliveryFee === 0 ? 'FREE' : formatPrice(deliveryFee)}</span>
               </div>
               <div className="flex justify-between text-stone-600">
-                <span>State Apparel Tax (5%):</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>GST (5%):</span>
+                <span className="font-mono">{formatPrice(tax)}</span>
               </div>
               <div className="flex justify-between text-base font-bold text-stone-900 pt-2 border-t border-stone-300">
                 <span>Total Amount:</span>
-                <span>${totalAmount.toFixed(2)}</span>
+                <span className="font-mono">{formatPrice(totalAmount)}</span>
               </div>
             </div>
 
@@ -543,7 +546,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 type="submit"
                 className="flex-1 py-3 px-6 bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold text-sm rounded-xl transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2"
               >
-                <span>Confirm & Place Order (${totalAmount.toFixed(2)})</span>
+                <span>Confirm & Place Order ({formatPrice(totalAmount)})</span>
               </button>
             </div>
           </form>

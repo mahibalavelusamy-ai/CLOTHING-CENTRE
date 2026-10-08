@@ -4,14 +4,12 @@ import {
   ShoppingBag, 
   Heart, 
   Ruler, 
-  ShieldCheck, 
-  Truck, 
-  RotateCcw, 
   Star,
   Sparkles,
   Check
 } from 'lucide-react';
 import { ClothingItem, Size } from '../types';
+import { formatPrice } from '../lib/format';
 
 interface ProductQuickViewModalProps {
   item: ClothingItem | null;
@@ -34,14 +32,17 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
 }) => {
   if (!isOpen || !item) return null;
 
+  const isFreeSize = item.sizes.length === 1 && item.sizes[0].size === 'Free Size';
+
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [selectedColorIdx, setSelectedColorIdx] = useState(0);
   const [selectedSize, setSelectedSize] = useState<Size>(() => {
+    if (isFreeSize) return 'Free Size';
     const available = item.sizes.find(s => s.stock > 0);
     return available ? available.size : item.sizes[0].size;
   });
   const [quantity, setQuantity] = useState(1);
-  const [fittingRoomReserved, setFittingRoomReserved] = useState(false);
+  const [fittingReserved, setFittingReserved] = useState(false);
 
   const selectedSizeInfo = item.sizes.find(s => s.size === selectedSize);
   const availableStock = selectedSizeInfo?.stock ?? 0;
@@ -53,9 +54,9 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
   };
 
   const handleReserveTrial = () => {
-    setFittingRoomReserved(true);
+    setFittingReserved(true);
     setTimeout(() => {
-      setFittingRoomReserved(false);
+      setFittingReserved(false);
     }, 4000);
   };
 
@@ -76,13 +77,28 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
 
         {/* Media / Gallery Column */}
         <div className="md:w-1/2 p-6 bg-stone-50 flex flex-col items-center justify-between border-b md:border-b-0 md:border-r border-stone-200">
-          <div className="w-full aspect-[4/5] rounded-xl overflow-hidden bg-stone-200 relative shadow-inner">
-            <img
-              src={item.images[activeImageIdx] || item.images[0]}
-              alt={item.name}
-              className="w-full h-full object-cover object-center"
-              referrerPolicy="no-referrer"
-            />
+          <div className="w-full aspect-[4/5] rounded-xl overflow-hidden bg-stone-100 relative shadow-inner">
+            {item.images && item.images.length > 0 && item.images[activeImageIdx] ? (
+              <img
+                src={item.images[activeImageIdx]}
+                alt={item.name}
+                className="w-full h-full object-cover object-center"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <div className="w-full h-full bg-[#f6f3ed] flex flex-col items-center justify-center p-8 text-center select-none">
+                <div className="w-14 h-14 rounded-full bg-amber-100/80 border border-amber-200/80 text-amber-900 flex items-center justify-center mb-3.5 shadow-2xs">
+                  <Sparkles className="w-6 h-6 text-amber-800" />
+                </div>
+                <span className="font-serif-display text-lg font-bold text-stone-900 max-w-xs leading-snug">
+                  {item.name}
+                </span>
+                <span className="text-[11px] uppercase font-bold tracking-widest text-amber-900/80 mt-2 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/60">
+                  {item.category}
+                </span>
+                <span className="text-xs text-stone-400 mt-2">Crafted for Our Boutique</span>
+              </div>
+            )}
             {item.discountPercent && (
               <span className="absolute top-3 left-3 bg-rose-600 text-white text-xs font-bold px-2.5 py-1 rounded shadow-sm">
                 Save {item.discountPercent}%
@@ -141,18 +157,35 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
               {item.name}
             </h2>
 
+            {/* Occasion & Blouse Piece Chips */}
+            {(item.occasion || item.blouseIncluded) && (
+              <div className="flex items-center flex-wrap gap-2 mt-2">
+                {item.occasion && (
+                  <span className="text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-0.5 rounded-full">
+                    {item.occasion}
+                  </span>
+                )}
+                {item.blouseIncluded && (
+                  <span className="text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" />
+                    Blouse piece included
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Pricing */}
             <div className="flex items-baseline gap-3 mt-3">
-              <span className="text-2xl font-bold text-stone-900">
-                ${item.price.toFixed(2)}
+              <span className="text-2xl font-bold text-stone-900 font-mono">
+                {formatPrice(item.price)}
               </span>
               {item.originalPrice && (
-                <span className="text-sm text-stone-400 line-through">
-                  ${item.originalPrice.toFixed(2)}
+                <span className="text-sm text-stone-400 line-through font-mono">
+                  {formatPrice(item.originalPrice)}
                 </span>
               )}
               <span className="text-xs text-emerald-700 font-medium bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                In-Stock at Centre
+                In-Stock at Boutique
               </span>
             </div>
 
@@ -161,16 +194,18 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
               {item.description}
             </p>
 
-            {/* Fabric & Fit badges */}
+            {/* Fabric & Fit badges (Silhouette hidden when fitType is missing) */}
             <div className="bg-stone-50 rounded-xl p-3 mt-4 border border-stone-200/80 text-xs space-y-1.5">
               <div className="flex">
                 <span className="text-stone-500 w-24 shrink-0 font-medium">Fabric:</span>
                 <span className="text-stone-800 font-medium">{item.fabric}</span>
               </div>
-              <div className="flex">
-                <span className="text-stone-500 w-24 shrink-0 font-medium">Silhouette:</span>
-                <span className="text-stone-800 font-medium">{item.fitType}</span>
-              </div>
+              {item.fitType && (
+                <div className="flex">
+                  <span className="text-stone-500 w-24 shrink-0 font-medium">Silhouette:</span>
+                  <span className="text-stone-800 font-medium">{item.fitType}</span>
+                </div>
+              )}
               <div className="flex">
                 <span className="text-stone-500 w-24 shrink-0 font-medium">Care Guide:</span>
                 <span className="text-stone-700">{item.careGuide}</span>
@@ -178,43 +213,45 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
             </div>
 
             {/* Color Selection */}
-            <div className="mt-5">
-              <div className="flex items-center justify-between text-xs font-semibold text-stone-800 mb-2">
-                <span>Garment Color:</span>
-                <span className="text-amber-900 font-medium">
-                  {item.colors[selectedColorIdx]?.name}
-                </span>
+            {item.colors.length > 0 && (
+              <div className="mt-5">
+                <div className="flex items-center justify-between text-xs font-semibold text-stone-800 mb-2">
+                  <span>Garment Color:</span>
+                  <span className="text-amber-900 font-medium">
+                    {item.colors[selectedColorIdx]?.name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {item.colors.map((color, idx) => (
+                    <button
+                      key={color.name}
+                      onClick={() => setSelectedColorIdx(idx)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs cursor-pointer transition-all ${
+                        selectedColorIdx === idx
+                          ? 'border-stone-900 bg-stone-900 text-white shadow-xs'
+                          : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
+                      }`}
+                    >
+                      <span
+                        className="w-3 h-3 rounded-full border border-stone-300 shrink-0"
+                        style={{ backgroundColor: color.hex }}
+                      />
+                      <span>{color.name}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                {item.colors.map((color, idx) => (
-                  <button
-                    key={color.name}
-                    onClick={() => setSelectedColorIdx(idx)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs cursor-pointer transition-all ${
-                      selectedColorIdx === idx
-                        ? 'border-stone-900 bg-stone-900 text-white shadow-xs'
-                        : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
-                    }`}
-                  >
-                    <span
-                      className="w-3 h-3 rounded-full border border-stone-300 shrink-0"
-                      style={{ backgroundColor: color.hex }}
-                    />
-                    <span>{color.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
+            )}
 
             {/* Size Selection & Guide Trigger */}
             <div className="mt-5">
               <div className="flex items-center justify-between text-xs font-semibold text-stone-800 mb-2">
                 <div className="flex items-center gap-2">
-                  <span>Choose Size:</span>
+                  <span>Size:</span>
                   <span className="text-stone-500 font-normal">
                     {availableStock > 0 ? (
                       availableStock <= 4 ? (
-                        <span className="text-rose-600 font-medium">Only {availableStock} left at Centre</span>
+                        <span className="text-rose-600 font-medium">Only {availableStock} left at Boutique</span>
                       ) : (
                         <span className="text-emerald-700 font-medium">{availableStock} available</span>
                       )
@@ -229,136 +266,115 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
                   className="text-amber-800 hover:text-amber-900 font-semibold flex items-center gap-1 hover:underline cursor-pointer"
                 >
                   <Ruler className="w-3.5 h-3.5" />
-                  <span>Size & Fit Guide</span>
+                  <span>Size & Fitting Guide</span>
                 </button>
               </div>
 
-              <div className="grid grid-cols-6 gap-2">
-                {item.sizes.map((s) => {
-                  const isSelected = selectedSize === s.size;
-                  const hasStock = s.stock > 0;
-                  return (
-                    <button
-                      key={s.size}
-                      disabled={!hasStock}
-                      onClick={() => {
-                        setSelectedSize(s.size);
-                        setQuantity(1);
-                      }}
-                      className={`py-2 text-xs font-bold rounded-lg border transition-all cursor-pointer flex flex-col items-center ${
-                        !hasStock
-                          ? 'border-stone-200 bg-stone-100 text-stone-300 cursor-not-allowed line-through'
-                          : isSelected
-                          ? 'bg-stone-900 text-white border-stone-900 ring-2 ring-stone-900/20'
-                          : 'border-stone-200 bg-white text-stone-800 hover:border-stone-400'
-                      }`}
-                    >
-                      <span>{s.size}</span>
-                      <span className="text-[9px] font-normal opacity-80">
-                        {hasStock ? `${s.stock} left` : '0'}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Quantity Selector */}
-            <div className="mt-5 flex items-center gap-4">
-              <span className="text-xs font-semibold text-stone-800">Quantity:</span>
-              <div className="flex items-center border border-stone-300 rounded-lg overflow-hidden bg-white">
-                <button
-                  disabled={quantity <= 1}
-                  onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                  className="px-3 py-1.5 text-stone-600 hover:bg-stone-100 disabled:opacity-40 cursor-pointer font-bold"
-                >
-                  -
-                </button>
-                <span className="px-4 py-1.5 text-xs font-bold text-stone-900 min-w-[36px] text-center">
-                  {quantity}
-                </span>
-                <button
-                  disabled={quantity >= availableStock}
-                  onClick={() => setQuantity(q => Math.min(availableStock, q + 1))}
-                  className="px-3 py-1.5 text-stone-600 hover:bg-stone-100 disabled:opacity-40 cursor-pointer font-bold"
-                >
-                  +
-                </button>
-              </div>
+              {isFreeSize ? (
+                <div className="p-3 bg-stone-50 border border-stone-200 rounded-xl flex items-center justify-between">
+                  <span className="text-xs font-bold text-stone-900">Free Size (Standard Draped Cut)</span>
+                  <span className="text-xs text-emerald-700 font-semibold">{availableStock} in stock</span>
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {item.sizes.map((s) => {
+                    const isSelected = selectedSize === s.size;
+                    const hasStock = s.stock > 0;
+                    return (
+                      <button
+                        key={s.size}
+                        disabled={!hasStock}
+                        onClick={() => {
+                          setSelectedSize(s.size);
+                          setQuantity(1);
+                        }}
+                        className={`min-w-[48px] py-2 px-3 text-xs font-bold rounded-lg border transition-all cursor-pointer flex flex-col items-center ${
+                          !hasStock
+                            ? 'border-stone-200 bg-stone-100 text-stone-300 cursor-not-allowed line-through'
+                            : isSelected
+                            ? 'bg-stone-900 text-white border-stone-900 ring-2 ring-stone-900/20'
+                            : 'border-stone-200 bg-white text-stone-800 hover:border-stone-400'
+                        }`}
+                      >
+                        <span>{s.size}</span>
+                        <span className="text-[9px] font-normal opacity-80">
+                          {hasStock ? `${s.stock} left` : '0'}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
           {/* Action Row */}
-          <div className="mt-6 pt-5 border-t border-stone-200 space-y-3">
+          <div className="mt-6 pt-4 border-t border-stone-200 space-y-3">
             <div className="flex items-center gap-3">
-              {/* Add to Bag */}
+              <div className="flex items-center border border-stone-300 rounded-lg">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-3 py-2 text-stone-600 hover:bg-stone-100 rounded-l-lg cursor-pointer"
+                >
+                  -
+                </button>
+                <span className="px-3 py-2 text-xs font-bold font-mono">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(Math.min(availableStock, quantity + 1))}
+                  disabled={quantity >= availableStock}
+                  className="px-3 py-2 text-stone-600 hover:bg-stone-100 rounded-r-lg cursor-pointer disabled:opacity-40"
+                >
+                  +
+                </button>
+              </div>
+
               <button
-                id="modal-add-to-bag-btn"
+                id="quick-view-add-to-cart-btn"
                 disabled={isOutOfStock}
                 onClick={handleAddToCart}
-                className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm ${
+                className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm uppercase tracking-wider ${
                   isOutOfStock
                     ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
                     : 'bg-stone-900 hover:bg-amber-600 text-white'
                 }`}
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>{isOutOfStock ? 'Sold Out in this Size' : `Add ${quantity} to Shopping Bag`}</span>
+                <span>
+                  {isOutOfStock
+                    ? 'Out of Stock'
+                    : isFreeSize
+                    ? `Add to Bag • ${formatPrice(item.price * quantity)}`
+                    : `Add (${selectedSize}) to Bag • ${formatPrice(item.price * quantity)}`}
+                </span>
               </button>
 
-              {/* Wishlist toggle */}
               <button
-                id="modal-wishlist-toggle-btn"
                 onClick={() => onToggleWishlist(item)}
                 className={`p-3 rounded-xl border transition-colors cursor-pointer ${
                   isWishlisted
-                    ? 'bg-rose-50 border-rose-200 text-rose-600'
-                    : 'bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100'
+                    ? 'bg-rose-50 border-rose-300 text-rose-600'
+                    : 'border-stone-300 text-stone-700 hover:bg-stone-50'
                 }`}
                 title="Save to Wishlist"
               >
-                <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-rose-600' : ''}`} />
+                <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-600' : ''}`} />
               </button>
             </div>
 
-            {/* Reserve for In-Store Fitting Room */}
+            {/* Trial Suite button */}
             <button
-              id="reserve-fitting-room-btn"
               onClick={handleReserveTrial}
-              className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 transition-all cursor-pointer ${
-                fittingRoomReserved
-                  ? 'bg-emerald-600 border-emerald-600 text-white'
-                  : 'bg-amber-50 border-amber-300 text-amber-900 hover:bg-amber-100'
-              }`}
+              className="w-full py-2 px-3 rounded-lg border border-stone-300 hover:bg-stone-50 text-stone-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
             >
-              {fittingRoomReserved ? (
+              {fittingReserved ? (
                 <>
-                  <Check className="w-4 h-4 text-white" />
-                  <span>Reserved at Trial Suite #3! Show your name at front desk.</span>
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-emerald-700">Trial Suite Room Reserved for Today!</span>
                 </>
               ) : (
-                <>
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Reserve Size {selectedSize} for Fitting Room Trial at Centre</span>
-                </>
+                <span>Reserve in Boutique Fitting Suite for Trial</span>
               )}
             </button>
-
-            {/* Centre Guarantee Perks */}
-            <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] text-stone-500 text-center">
-              <div className="flex flex-col items-center gap-1">
-                <Truck className="w-3.5 h-3.5 text-amber-600" />
-                <span>2-Hour Centre Pickup</span>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
-                <span>Free In-Store Alteration</span>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <RotateCcw className="w-3.5 h-3.5 text-amber-600" />
-                <span>30-Day Centre Exchange</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
