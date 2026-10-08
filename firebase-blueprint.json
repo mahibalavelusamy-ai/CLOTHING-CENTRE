@@ -1,0 +1,62 @@
+{
+  "entities": {
+    "clothingItem": {
+      "title": "ClothingItem",
+      "description": "A garment item available in the Clothing Centre catalogue and inventory",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for garment" },
+        "sku": { "type": "string", "description": "Stock Keeping Unit code" },
+        "name": { "type": "string", "description": "Garment title and style name" },
+        "department": { "type": "string", "description": "Garment department (women, men, kids, ethnic)" },
+        "category": { "type": "string", "description": "Apparel category" },
+        "price": { "type": "number", "description": "Current selling price" },
+        "originalPrice": { "type": "number", "description": "Original retail price before markdown" },
+        "discountPercent": { "type": "number", "description": "Discount percentage if on promotion" },
+        "rating": { "type": "number", "description": "Average customer review score" },
+        "reviewCount": { "type": "number", "description": "Count of customer reviews" },
+        "colors": { "type": "array", "description": "Color options with hex and names" },
+        "sizes": { "type": "array", "description": "Available sizes with stock quantities" },
+        "images": { "type": "array", "description": "Image gallery URLs" },
+        "description": { "type": "string", "description": "Garment description and styling notes" },
+        "fabric": { "type": "string", "description": "Fabric and material composition" },
+        "careGuide": { "type": "string", "description": "Care and wash instructions" },
+        "fitType": { "type": "string", "description": "Silhouette and fit cut" },
+        "tags": { "type": "array", "description": "Garment promotional or category tags" },
+        "inStockTotal": { "type": "number", "description": "Total available units across all sizes" },
+        "barcode": { "type": "string", "description": "EAN/UPC barcode number" }
+      },
+      "required": ["id", "sku", "name", "department", "category", "price", "fabric", "sizes", "inStockTotal"]
+    },
+    "order": {
+      "title": "CustomerOrder",
+      "description": "An order placed for in-store pickup or home delivery at the Clothing Centre",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Order reference code" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of order creation" },
+        "items": { "type": "array", "description": "Itemized list of garments ordered" },
+        "subtotal": { "type": "number", "description": "Items subtotal before discounts and taxes" },
+        "discountApplied": { "type": "number", "description": "Total promotional discount applied" },
+        "couponCode": { "type": "string", "description": "Applied discount code" },
+        "deliveryFee": { "type": "number", "description": "Pickup or delivery fee" },
+        "tax": { "type": "number", "description": "Apparel sales tax" },
+        "totalAmount": { "type": "number", "description": "Final paid amount" },
+        "customer": { "type": "object", "description": "Customer contact and delivery info" },
+        "paymentMethod": { "type": "string", "description": "Payment channel used" },
+        "status": { "type": "string", "description": "Fulfilment state: Confirmed, Ready for Pickup, Dispatched, Completed" }
+      },
+      "required": ["id", "createdAt", "items", "subtotal", "totalAmount", "customer", "paymentMethod", "status"]
+    }
+  },
+  "firestore": {
+    "/clothing_items/{itemId}": {
+      "schema": "clothingItem",
+      "description": "Public catalog and real-time inventory of garments in the Clothing Centre"
+    },
+    "/orders/{orderId}": {
+      "schema": "order",
+      "description": "Customer orders for store collection or delivery"
+    }
+  }
+}

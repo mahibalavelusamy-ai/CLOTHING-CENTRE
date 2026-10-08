@@ -1,0 +1,6 @@
+{
+  "name": "Clothing Centre",
+  "description": "Apparel catalog, size guides, shopping bag, and stock inventory management for a retail clothing centre.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

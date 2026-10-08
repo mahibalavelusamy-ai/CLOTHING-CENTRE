@@ -1,0 +1,73 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Health / Connection Test
+    match /test/{testId} {
+      allow read: if true;
+    }
+
+    // Clothing Items Collection
+    match /clothing_items/{itemId} {
+      // Anyone can browse the garment catalogue (get single item or list collection)
+      allow get: if isValidId(itemId);
+      allow list: if true;
+
+      // Create new garments with schema validation
+      allow create: if isValidId(itemId) &&
+        incoming().name is string && incoming().name.size() <= 200 &&
+        incoming().price is number && incoming().price >= 0 &&
+        incoming().department is string &&
+        incoming().category is string &&
+        incoming().inStockTotal is number && incoming().inStockTotal >= 0;
+
+      // Update garment stock, prices, and details
+      allow update: if isValidId(itemId) &&
+        incoming().name is string && incoming().name.size() <= 200 &&
+        incoming().price is number && incoming().price >= 0 &&
+        incoming().inStockTotal is number && incoming().inStockTotal >= 0;
+
+      // Delete garment
+      allow delete: if isValidId(itemId);
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      // Read order receipts (get single order or list order receipts)
+      allow get: if isValidId(orderId);
+      allow list: if true;
+
+      // Place customer orders
+      allow create: if isValidId(orderId) &&
+        incoming().totalAmount is number && incoming().totalAmount >= 0 &&
+        incoming().customer is map &&
+        incoming().status in ['Confirmed', 'Ready for Pickup', 'Dispatched', 'Completed'];
+
+      // Update order status at store counter
+      allow update: if isValidId(orderId) &&
+        incoming().status in ['Confirmed', 'Ready for Pickup', 'Dispatched', 'Completed'];
+
+      // Delete order
+      allow delete: if isValidId(orderId);
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
