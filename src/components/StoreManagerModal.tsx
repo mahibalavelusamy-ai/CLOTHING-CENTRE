@@ -12,7 +12,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { ClothingItem, CustomerOrder, Department, Size } from '../types';
-import { DEPARTMENT_CONFIG, FIT_TYPES, OCCASIONS } from '../data/catalogConfig';
+import { DEPARTMENT_CONFIG, DEPARTMENTS, FIT_TYPES, OCCASIONS } from '../data/catalogConfig';
 import { formatPrice } from '../lib/format';
 
 interface StoreManagerModalProps {
@@ -36,8 +36,6 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
   onAddNewItem,
   onUpdateOrderStatus
 }) => {
-  if (!isOpen) return null;
-
   const [activeTab, setActiveTab] = useState<'inventory' | 'orders' | 'add_item'>('inventory');
   const [searchTerm, setSearchTerm] = useState('');
   const [stockEditState, setStockEditState] = useState<Record<string, number>>({});
@@ -45,7 +43,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
 
   // New Item Form State
   const [newName, setNewName] = useState('');
-  const [newDepartment, setNewDepartment] = useState<'sarees' | 'kurtis' | 'kids'>('sarees');
+  const [newDepartment, setNewDepartment] = useState<Exclude<Department, 'all'>>('sarees');
   const [newCategory, setNewCategory] = useState(DEPARTMENT_CONFIG.sarees.categories[0]);
   const [newPrice, setNewPrice] = useState('');
   const [newOriginalPrice, setNewOriginalPrice] = useState('');
@@ -67,15 +65,14 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
     setNewCategory(defaultCat);
 
     const initialStocks: Record<string, number> = {};
-    if (newDepartment === 'sarees') {
+    if (DEPARTMENT_CONFIG[newDepartment].sizes.length === 1 && DEPARTMENT_CONFIG[newDepartment].sizes[0] === 'Free Size') {
       initialStocks['Free Size'] = 10;
-      setNewBlouseIncluded(true);
     } else {
       DEPARTMENT_CONFIG[newDepartment].sizes.forEach(s => {
         initialStocks[s] = 6;
       });
-      setNewBlouseIncluded(false);
     }
+    setNewBlouseIncluded(newDepartment === 'sarees');
     setItemStocks(initialStocks);
   }, [newDepartment]);
 
@@ -123,8 +120,8 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
     const totalUnits = sizesList.reduce((acc, s) => acc + s.stock, 0);
 
     const newItem: ClothingItem = {
-      id: `ob-${Date.now().toString().slice(-4)}`,
-      sku: `OB-${newDepartment.toUpperCase().slice(0, 3)}-${Math.floor(100 + Math.random() * 900)}`,
+      id: `yb-${Date.now().toString().slice(-4)}`,
+      sku: `YB-${newDepartment.toUpperCase().slice(0, 3)}-${Math.floor(100 + Math.random() * 900)}`,
       name: newName,
       department: newDepartment,
       category: newCategory,
@@ -138,9 +135,9 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
       ],
       sizes: sizesList,
       images: newImageUrl.trim() ? [newImageUrl.trim()] : [],
-      description: newDescription || 'Artisan handcrafted collection piece from Our Boutique.',
+      description: newDescription || 'Available at Yaazh Boutique.',
       fabric: newFabric,
-      careGuide: newDepartment === 'sarees' ? 'Dry clean only to maintain gold zari & silk luster.' : 'Gentle cold wash, shade dry.',
+      careGuide: newDepartment === 'sarees' ? 'Dry clean only to maintain fabric & silk luster.' : 'Gentle cold wash, shade dry.',
       fitType: newDepartment === 'sarees' ? undefined : newFitType,
       occasion: newOccasion,
       blouseIncluded: newDepartment === 'sarees' ? newBlouseIncluded : undefined,
@@ -150,7 +147,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
     };
 
     onAddNewItem(newItem);
-    alert('New Garment published to Boutique inventory!');
+    alert('New Garment published to Yaazh Boutique inventory!');
     setActiveTab('inventory');
     // reset form
     setNewName('');
@@ -159,6 +156,8 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
     setNewFabric('');
     setNewDescription('');
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/75 backdrop-blur-xs animate-in fade-in duration-200">
@@ -174,7 +173,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
             </div>
             <div>
               <h2 className="text-lg font-bold font-serif-display text-white">
-                Boutique Staff & Inventory Portal
+                Yaazh Boutique Staff & Inventory Portal
               </h2>
               <p className="text-xs text-stone-400">
                 Manage stock, update prices, view orders, and add new arrivals
@@ -408,7 +407,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
                         </div>
                         {order.customer.notes && (
                           <p className="text-[10px] text-amber-800 italic">
-                            Alteration note: "{order.customer.notes}"
+                            Order note: "{order.customer.notes}"
                           </p>
                         )}
                       </div>
@@ -447,7 +446,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
           {activeTab === 'add_item' && (
             <form onSubmit={handleAddNewGarmentSubmit} className="max-w-2xl mx-auto space-y-4">
               <div className="p-4 bg-amber-50/70 border border-amber-200 rounded-xl text-xs text-amber-900">
-                <strong>New Boutique Garment Entry:</strong> Choosing a department configures allowed categories, sizes, and styling options.
+                <strong>New Yaazh Boutique Garment Entry:</strong> Choosing a department configures allowed categories, sizes, and styling options.
               </div>
 
               <div>
@@ -455,7 +454,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Pure Kanchipuram Brocade Silk Saree with Zari Pallu"
+                  placeholder="e.g. Tussar Handloom Saree with Contrast Zari Pallu"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
@@ -468,12 +467,12 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
                   <label className="block text-xs font-bold text-stone-800 mb-1">Department *</label>
                   <select
                     value={newDepartment}
-                    onChange={(e) => setNewDepartment(e.target.value as 'sarees' | 'kurtis' | 'kids')}
+                    onChange={(e) => setNewDepartment(e.target.value as Exclude<Department, 'all'>)}
                     className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
                   >
-                    <option value="sarees">Sarees</option>
-                    <option value="kurtis">Kurtis & Chudidars</option>
-                    <option value="kids">Kidswear</option>
+                    {DEPARTMENTS.filter(d => d.id !== 'all').map(d => (
+                      <option key={d.id} value={d.id}>{d.label}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -581,9 +580,11 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
               {/* Sizes and Stock Inputs: Driven by department */}
               <div>
                 <label className="block text-xs font-bold text-stone-800 mb-1.5">
-                  {newDepartment === 'sarees' ? 'Stock Quantity (Free Size)' : 'Size Stock Allocation'}
+                  {DEPARTMENT_CONFIG[newDepartment].sizes.length === 1 && DEPARTMENT_CONFIG[newDepartment].sizes[0] === 'Free Size'
+                    ? 'Stock Quantity (Free Size)'
+                    : 'Size Stock Allocation'}
                 </label>
-                {newDepartment === 'sarees' ? (
+                {DEPARTMENT_CONFIG[newDepartment].sizes.length === 1 && DEPARTMENT_CONFIG[newDepartment].sizes[0] === 'Free Size' ? (
                   <div className="flex items-center gap-2 bg-stone-50 p-2.5 rounded-lg border border-stone-200 max-w-xs">
                     <span className="text-xs font-semibold text-stone-700">Free Size Stock:</span>
                     <input
@@ -671,7 +672,7 @@ export const StoreManagerModal: React.FC<StoreManagerModalProps> = ({
                   type="submit"
                   className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
                 >
-                  Publish Garment to Boutique Inventory
+                  Publish Garment to Yaazh Boutique Inventory
                 </button>
               </div>
             </form>

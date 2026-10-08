@@ -114,145 +114,95 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             </select>
           </div>
 
-          {/* Sizes: Hide for Sarees, filter by department, group for all */}
-          {currentDepartment !== 'sarees' && (
-            <div>
-              <div className="flex items-center justify-between mb-2.5">
-                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
-                  Available Sizes
-                </label>
-                {selectedSizes.length > 0 && (
-                  <span className="text-[11px] text-stone-500 font-medium">
-                    {selectedSizes.length} selected
-                  </span>
-                )}
-              </div>
-
-              {currentDepartment === 'kurtis' && (
-                <div className="grid grid-cols-3 gap-2">
-                  {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).map((size) => {
-                    const isSelected = selectedSizes.includes(size);
-                    return (
-                      <button
-                        key={size}
-                        onClick={() => onToggleSize(size)}
-                        className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                            : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    );
-                  })}
+          {/* Sizes Section: Driven by selected department */}
+          {(() => {
+            if (currentDepartment !== 'all') {
+              const deptSizes = DEPARTMENT_CONFIG[currentDepartment]?.sizes.filter(isSizeAvailable) || [];
+              if (deptSizes.length === 0) return null;
+              return (
+                <div>
+                  <div className="flex items-center justify-between mb-2.5">
+                    <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                      Available Sizes
+                    </label>
+                    {selectedSizes.length > 0 && (
+                      <span className="text-[11px] text-stone-500 font-medium">
+                        {selectedSizes.length} selected
+                      </span>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    {deptSizes.map((size) => {
+                      const isSelected = selectedSizes.includes(size);
+                      return (
+                        <button
+                          key={size}
+                          onClick={() => onToggleSize(size)}
+                          className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                              : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                          }`}
+                        >
+                          {size}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              )}
+              );
+            }
 
-              {currentDepartment === 'kids' && (
-                <div className="grid grid-cols-3 gap-2">
-                  {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).map((size) => {
-                    const isSelected = selectedSizes.includes(size);
-                    return (
-                      <button
-                        key={size}
-                        onClick={() => onToggleSize(size)}
-                        className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                          isSelected
-                            ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                            : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    );
-                  })}
+            // currentDepartment === 'all'
+            const hasAnySizes = (availableSizes?.length ?? 0) > 0;
+            if (!hasAnySizes) return null;
+
+            return (
+              <div>
+                <div className="flex items-center justify-between mb-2.5">
+                  <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                    Available Sizes
+                  </label>
+                  {selectedSizes.length > 0 && (
+                    <span className="text-[11px] text-stone-500 font-medium">
+                      {selectedSizes.length} selected
+                    </span>
+                  )}
                 </div>
-              )}
-
-              {currentDepartment === 'all' && (
                 <div className="space-y-4">
-                  {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).length > 0 && (
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
-                        Kurtis & Chudidars
-                      </span>
-                      <div className="grid grid-cols-3 gap-2">
-                        {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).map((size) => {
-                          const isSelected = selectedSizes.includes(size);
-                          return (
-                            <button
-                              key={size}
-                              onClick={() => onToggleSize(size)}
-                              className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                                isSelected
-                                  ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                              }`}
-                            >
-                              {size}
-                            </button>
-                          );
-                        })}
+                  {Object.entries(DEPARTMENT_CONFIG).map(([deptKey, deptMeta]) => {
+                    const deptSizes = deptMeta.sizes.filter(isSizeAvailable);
+                    if (deptSizes.length === 0) return null;
+                    return (
+                      <div key={deptKey}>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
+                          {deptMeta.label}
+                        </span>
+                        <div className="grid grid-cols-3 gap-2">
+                          {deptSizes.map((size) => {
+                            const isSelected = selectedSizes.includes(size);
+                            return (
+                              <button
+                                key={`${deptKey}-${size}`}
+                                onClick={() => onToggleSize(size)}
+                                className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                                    : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                                }`}
+                              >
+                                {size}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  )}
-
-                  {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).length > 0 && (
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
-                        Kidswear (Age Sizes)
-                      </span>
-                      <div className="grid grid-cols-3 gap-2">
-                        {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).map((size) => {
-                          const isSelected = selectedSizes.includes(size);
-                          return (
-                            <button
-                              key={size}
-                              onClick={() => onToggleSize(size)}
-                              className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                                isSelected
-                                  ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                              }`}
-                            >
-                              {size}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
-
-                  {DEPARTMENT_CONFIG.sarees.sizes.filter(isSizeAvailable).length > 0 && (
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1.5">
-                        Sarees
-                      </span>
-                      <div className="grid grid-cols-2 gap-2">
-                        {DEPARTMENT_CONFIG.sarees.sizes.filter(isSizeAvailable).map((size) => {
-                          const isSelected = selectedSizes.includes(size);
-                          return (
-                            <button
-                              key={size}
-                              onClick={() => onToggleSize(size)}
-                              className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
-                                isSelected
-                                  ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                                  : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                              }`}
-                            >
-                              {size}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                    );
+                  })}
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            );
+          })()}
 
           {/* Price Range */}
           <div>

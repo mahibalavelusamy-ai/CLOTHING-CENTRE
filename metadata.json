@@ -1,6 +1,6 @@
 {
-  "name": "Clothing Centre",
-  "description": "Indian boutique specialising in Sarees, Kurtis & Chudidars, and Kidswear with custom blouse finishing and express delivery.",
+  "name": "Yaazh Boutique",
+  "description": "Yaazh Boutique, Oddanchatram — Elegance · Tradition · Style. Sarees, blouses, co-ords, lounge wear, salwar materials and decor.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

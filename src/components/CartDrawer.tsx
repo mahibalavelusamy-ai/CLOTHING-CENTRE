@@ -36,10 +36,10 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveCoupon,
   onProceedToCheckout
 }) => {
-  if (!isOpen) return null;
-
   const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState<string | null>(null);
+
+  if (!isOpen) return null;
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + item.item.price * item.quantity,
@@ -156,7 +156,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   Your boutique shopping bag is empty
                 </h3>
                 <p className="text-xs text-stone-500 max-w-xs mb-4">
-                  Browse our Sarees, Kurtis & Chudidars, and Kidswear collections to add items.
+                  Browse our Sarees, Blouses & Crop Tops, Co-ords, and Lounge Wear collections to add items.
                 </p>
                 <button
                   onClick={onClose}
@@ -248,44 +248,46 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           {/* Footer & Checkout Area */}
           {cartItems.length > 0 && (
             <div className="p-5 border-t border-stone-200 bg-stone-50 space-y-3">
-              {/* Coupon input */}
-              <div>
-                {appliedCoupon ? (
-                  <div className="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs">
-                    <div>
-                      <span className="font-bold text-amber-900">{appliedCoupon}</span>
-                      <span className="text-[10px] text-amber-700 ml-1">
-                        ({couponData?.percent}% Off Applied)
-                      </span>
+              {/* Coupon input (hidden if no coupons exist) */}
+              {Object.keys(COUPONS).length > 0 && (
+                <div>
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-lg p-2 text-xs">
+                      <div>
+                        <span className="font-bold text-amber-900">{appliedCoupon}</span>
+                        <span className="text-[10px] text-amber-700 ml-1">
+                          ({couponData?.percent}% Off Applied)
+                        </span>
+                      </div>
+                      <button
+                        onClick={onRemoveCoupon}
+                        className="text-stone-400 hover:text-stone-600 text-xs font-bold p-1 cursor-pointer"
+                      >
+                        Remove
+                      </button>
                     </div>
-                    <button
-                      onClick={onRemoveCoupon}
-                      className="text-stone-400 hover:text-stone-600 text-xs font-bold p-1 cursor-pointer"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleApplyCoupon} className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Coupon (e.g. CENTRE15, FESTIVE25)"
-                      value={couponInput}
-                      onChange={(e) => setCouponInput(e.target.value)}
-                      className="flex-1 px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg uppercase placeholder:normal-case focus:outline-none focus:border-amber-600"
-                    />
-                    <button
-                      type="submit"
-                      className="px-3 py-1.5 bg-stone-800 text-white rounded-lg text-xs font-semibold hover:bg-stone-700 cursor-pointer transition-colors"
-                    >
-                      Apply
-                    </button>
-                  </form>
-                )}
-                {couponError && (
-                  <p className="text-[11px] text-rose-600 mt-1 font-medium">{couponError}</p>
-                )}
-              </div>
+                  ) : (
+                    <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Coupon code"
+                        value={couponInput}
+                        onChange={(e) => setCouponInput(e.target.value)}
+                        className="flex-1 px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg uppercase placeholder:normal-case focus:outline-none focus:border-amber-600"
+                      />
+                      <button
+                        type="submit"
+                        className="px-3 py-1.5 bg-stone-800 text-white rounded-lg text-xs font-semibold hover:bg-stone-700 cursor-pointer transition-colors"
+                      >
+                        Apply
+                      </button>
+                    </form>
+                  )}
+                  {couponError && (
+                    <p className="text-[11px] text-rose-600 mt-1 font-medium">{couponError}</p>
+                  )}
+                </div>
+              )}
 
               {/* Subtotal & Discount rows */}
               <div className="space-y-1.5 text-xs text-stone-600">

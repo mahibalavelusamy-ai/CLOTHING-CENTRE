@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Scissors, HeartHandshake } from 'lucide-react';
+import { Sparkles, HeartHandshake, Scissors } from 'lucide-react';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 
 export const BrandStoryBlock: React.FC = () => {
@@ -8,31 +8,31 @@ export const BrandStoryBlock: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
-            {STORE_CENTRE_INFO.name} Heritage
+            About {STORE_CENTRE_INFO.name}
           </span>
           <h2 className="font-serif-display text-2xl sm:text-4xl font-bold text-stone-900 mt-1">
-            Rooted in Tradition, Tailored for Grace.
+            Elegance · Tradition · Style
           </h2>
           <p className="text-xs sm:text-sm text-stone-600 mt-2 leading-relaxed">
-            {STORE_CENTRE_INFO.tagline} — an authentic boutique curating artisan handlooms, vibrant festive silhouettes, and coordinated family ensembles with bespoke in-house tailoring.
+            Located in MR Complex, Kallimandayam, Oddanchatram, {STORE_CENTRE_INFO.name} brings together handpicked ethnic collections, casual essentials, and handcrafted decor.
           </p>
         </div>
 
-        {/* 3-Column Luxury Minimal Layout */}
+        {/* 3-Column Honest Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200/80 shadow-2xs space-y-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-800 flex items-center justify-center">
-              <HeartHandshake className="w-5 h-5" />
+              <Sparkles className="w-5 h-5" />
             </div>
             <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400 block">
-              Pure Silk & Handlooms
+              Curated Collections
             </span>
             <h3 className="font-serif-display text-lg font-bold text-stone-900">
-              Authentic Artisan Weaves
+              Sarees & Ethnic Wear
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
-              Every saree and kurti is handpicked directly from traditional weaving hubs across Kanchipuram, Chanderi, and Jaipur — celebrated for pure natural fibers and heirloom quality.
+              Explore our selection of sarees, blouses, crop tops, co-ord sets, salwar materials, and comfortable lounge wear curated for grace and everyday style.
             </p>
           </div>
 
@@ -41,28 +41,28 @@ export const BrandStoryBlock: React.FC = () => {
               <Scissors className="w-5 h-5" />
             </div>
             <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400 block">
-              In-House Tailoring
+              In-Store Service
             </span>
             <h3 className="font-serif-display text-lg font-bold text-stone-900">
-              Complimentary Saree Fall & Pico
+              Saree Pre-Pleating Service
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
-              Enjoy complete peace of mind with complimentary saree fall stitching, edge pico finishing, and master alteration assistance for chudidars, sleeves, and kidswear.
+              Saree pre-pleating service available in store. Get your sarees pre-pleated and box-folded with precision for effortless, drape-ready wear on your special days.
             </p>
           </div>
 
           <div className="bg-white p-6 sm:p-8 rounded-2xl border border-stone-200/80 shadow-2xs space-y-3">
             <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-800 flex items-center justify-center">
-              <Sparkles className="w-5 h-5" />
+              <HeartHandshake className="w-5 h-5" />
             </div>
             <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400 block">
-              Festive & Family Edits
+              Handcrafted Decor
             </span>
             <h3 className="font-serif-display text-lg font-bold text-stone-900">
-              Celebration-Ready Wardrobes
+              Plate Decor & Crafting
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
-              From temple mornings and festive pujas to weddings and casual daily comfort, explore thoughtfully harmonized palettes for women and kids of all ages.
+              Custom decorated plates and handmade craft items tailored for engagement thamboolam, festive ceremonies, and gift presentations.
             </p>
           </div>
 

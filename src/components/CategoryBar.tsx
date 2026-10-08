@@ -1,6 +1,6 @@
 import React from 'react';
 import { Department } from '../types';
-import { DEPARTMENT_CONFIG } from '../data/catalogConfig';
+import { DEPARTMENTS, DEPARTMENT_CONFIG } from '../data/catalogConfig';
 
 interface CategoryBarItem {
   id: string;
@@ -11,17 +11,20 @@ interface CategoryBarItem {
 
 const BAR_ITEMS: CategoryBarItem[] = [
   { id: 'all', label: 'All Collections', department: 'all', category: 'All' },
-  { id: 'sarees', label: DEPARTMENT_CONFIG.sarees.label, department: 'sarees', category: 'All' },
-  { id: 'kurtis', label: DEPARTMENT_CONFIG.kurtis.label, department: 'kurtis', category: 'All' },
-  { id: 'kids', label: DEPARTMENT_CONFIG.kids.label, department: 'kids', category: 'All' },
-  // Category quick links
-  { id: 'silk-sarees', label: 'Silk Sarees', department: 'sarees', category: 'Silk Sarees' },
-  { id: 'cotton-sarees', label: 'Cotton Sarees', department: 'sarees', category: 'Cotton Sarees' },
-  { id: 'kurtis-cat', label: 'Kurtis', department: 'kurtis', category: 'Kurtis' },
-  { id: 'anarkali', label: 'Anarkali Suits', department: 'kurtis', category: 'Anarkali Suits' },
-  { id: 'chudidar', label: 'Chudidar Sets', department: 'kurtis', category: 'Chudidar Sets' },
-  { id: 'girls-ethnic', label: 'Girls Ethnic', department: 'kids', category: 'Girls Ethnic Wear' },
-  { id: 'boys-kurta', label: 'Boys Kurta Sets', department: 'kids', category: 'Boys Kurta Sets' },
+  ...DEPARTMENTS.filter(d => d.id !== 'all').map(d => ({
+    id: d.id,
+    label: d.label,
+    department: d.id,
+    category: 'All',
+  })),
+  ...Object.entries(DEPARTMENT_CONFIG).flatMap(([dept, meta]) =>
+    meta.categories.map((cat) => ({
+      id: `${dept}-${cat.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+      label: cat,
+      department: dept as Department,
+      category: cat,
+    }))
+  ),
 ];
 
 interface CategoryBarProps {

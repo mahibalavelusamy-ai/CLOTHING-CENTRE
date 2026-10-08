@@ -67,7 +67,7 @@ export const WishlistDrawer: React.FC<WishlistDrawerProps> = ({
                   No garments saved yet
                 </h3>
                 <p className="text-xs text-stone-500 max-w-xs mb-4">
-                  Tap the heart icon on any garment to save styles for your fitting room visit.
+                  Tap the heart icon on any garment to save your favorite styles to your wishlist.
                 </p>
                 <button
                   onClick={onClose}

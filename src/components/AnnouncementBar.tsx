@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Truck, RotateCcw, Scissors } from 'lucide-react';
-import { formatPrice, FREE_DELIVERY_THRESHOLD } from '../lib/format';
+import { Sparkles, Phone, Scissors } from 'lucide-react';
 
 const MESSAGES = [
   {
-    icon: Truck,
-    text: `Complimentary Delivery On Orders Above ${formatPrice(FREE_DELIVERY_THRESHOLD)}`,
+    icon: Sparkles,
+    text: 'Welcome to Yaazh Boutique, Oddanchatram',
   },
   {
-    icon: RotateCcw,
-    text: 'Easy 7-Day Returns & Size Exchange Available',
+    icon: Phone,
+    text: 'Call us: +91 95978 33982',
   },
   {
     icon: Scissors,
-    text: 'Complimentary Saree Fall, Pico & Custom Alterations',
+    text: 'Saree pre-pleating available in store',
   },
 ];
 

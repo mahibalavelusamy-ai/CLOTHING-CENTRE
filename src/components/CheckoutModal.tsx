@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   X, 
@@ -9,12 +9,12 @@ import {
   QrCode, 
   Banknote, 
   Printer, 
-  ShoppingBag,
-  Scissors
+  ShoppingBag
 } from 'lucide-react';
 import { CartItem, CustomerOrder } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
-import { formatPrice, FREE_DELIVERY_THRESHOLD, STANDARD_DELIVERY_FEE } from '../lib/format';
+import { formatPrice, FREE_DELIVERY_THRESHOLD, STANDARD_DELIVERY_FEE, STORE_GSTIN } from '../lib/format';
+import { useAuth } from '../lib/authContext';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -35,17 +35,27 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   appliedCoupon,
   onOrderPlaced
 }) => {
-  if (!isOpen) return null;
-
+  const { user, profile } = useAuth();
   const [deliveryType, setDeliveryType] = useState<'store_pickup' | 'home_delivery'>('store_pickup');
   const [pickupSlot, setPickupSlot] = useState('Today (2:00 PM – 4:00 PM)');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
-  const [alterationNote, setAlterationNote] = useState('');
+  const [orderNote, setOrderNote] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi' | 'cash_counter'>('upi');
   const [orderComplete, setOrderComplete] = useState<CustomerOrder | null>(null);
+
+  useEffect(() => {
+    if (user) {
+      if (profile?.displayName && !name) setName(profile.displayName);
+      if (user.email && !email) setEmail(user.email);
+      if (profile?.phone && !phone) setPhone(profile.phone);
+      if (profile?.address && !shippingAddress) setShippingAddress(profile.address);
+    }
+  }, [user, profile]);
+
+  if (!isOpen) return null;
 
   const deliveryFee = deliveryType === 'home_delivery' 
     ? (subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : STANDARD_DELIVERY_FEE) 
@@ -70,6 +80,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     const newOrder: CustomerOrder = {
       id: orderId,
       createdAt: new Date().toISOString(),
+      customerUid: user?.uid,
       items: [...cartItems],
       subtotal,
       discountApplied: discountAmount,
@@ -84,7 +95,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         deliveryType,
         pickupSlot: deliveryType === 'store_pickup' ? pickupSlot : undefined,
         shippingAddress: deliveryType === 'home_delivery' ? shippingAddress : undefined,
-        notes: alterationNote || undefined
+        notes: orderNote || undefined
       },
       paymentMethod,
       status: deliveryType === 'store_pickup' ? 'Ready for Pickup' : 'Confirmed'
@@ -131,16 +142,28 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </div>
 
             {/* Printable Tax Invoice Container */}
-            <div id="clothing-centre-invoice" className="bg-stone-50 border border-stone-300 rounded-xl p-6 text-stone-800 text-xs font-sans shadow-xs">
+            <div id="yaazh-boutique-invoice" className="bg-stone-50 border border-stone-300 rounded-xl p-6 text-stone-800 text-xs font-sans shadow-xs">
               {/* Receipt Header */}
               <div className="border-b border-stone-300 pb-4 flex flex-col sm:flex-row justify-between gap-3">
-                <div>
-                  <h3 className="font-serif-display text-base font-bold text-stone-900 uppercase">
-                    {STORE_CENTRE_INFO.name}
-                  </h3>
-                  <p className="text-stone-500 text-[11px]">{STORE_CENTRE_INFO.address}</p>
-                  <p className="text-stone-500 text-[11px]">Phone: {STORE_CENTRE_INFO.phone}</p>
-                  <p className="text-stone-500 text-[11px]">GSTIN / Tax ID: 33AAAAA0000A1Z5</p>
+                <div className="flex items-start gap-3">
+                  <img
+                    src="/brand/logo.png"
+                    alt="Yaazh Boutique logo"
+                    onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    className="w-9 h-9 rounded-full object-cover shrink-0"
+                  />
+                  <div>
+                    <h3 className="font-serif-display text-base font-bold text-stone-900 uppercase">
+                      {STORE_CENTRE_INFO.name}
+                    </h3>
+                    <p className="text-stone-500 text-[11px]">{STORE_CENTRE_INFO.address}</p>
+                    <p className="text-stone-500 text-[11px]">
+                      Phone: {STORE_CENTRE_INFO.phone} {STORE_CENTRE_INFO.phone2 ? `• ${STORE_CENTRE_INFO.phone2}` : ''}
+                    </p>
+                    {Boolean(STORE_GSTIN) && (
+                      <p className="text-stone-500 text-[11px]">GSTIN / Tax ID: {STORE_GSTIN}</p>
+                    )}
+                  </div>
                 </div>
                 <div className="text-left sm:text-right">
                   <span className="inline-block bg-stone-900 text-white font-mono font-bold px-2 py-0.5 rounded text-[11px]">
@@ -168,7 +191,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <div className="text-stone-700">
                       <span className="font-semibold text-amber-800">Boutique Store Pickup</span>
                       <p className="text-[11px] text-stone-500">Slot: {orderComplete.customer.pickupSlot}</p>
-                      <p className="text-[11px] text-stone-500">Counter: Main Boutique Reception</p>
+                      <p className="text-[11px] text-stone-500">Location: {STORE_CENTRE_INFO.name}, Oddanchatram</p>
                     </div>
                   ) : (
                     <div className="text-stone-700">
@@ -178,7 +201,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   )}
                   {orderComplete.customer.notes && (
                     <p className="text-[11px] text-amber-900 mt-1 italic">
-                      Custom Alteration Note: "{orderComplete.customer.notes}"
+                      Order Note: "{orderComplete.customer.notes}"
                     </p>
                   )}
                 </div>
@@ -249,10 +272,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   ||| | | |||| | ||| |||| | | |||
                 </div>
                 <p className="text-[10px] text-stone-400 font-mono mt-1">
-                  BARCODE: {orderComplete.id} • PRESENT AT BOUTIQUE COUNTER
+                  BARCODE: {orderComplete.id} • PRESENT AT YAAZH BOUTIQUE
                 </p>
                 <p className="text-[10px] text-stone-500 mt-2 italic">
-                  Keep this slip for 7-day exchange and complimentary alterations & saree fall pico.
+                  Thank you for visiting Yaazh Boutique, Oddanchatram.
                 </p>
               </div>
             </div>
@@ -325,7 +348,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.2 rounded">FREE</span>
                     </div>
                     <p className="text-[11px] text-stone-500 mt-0.5">
-                      Ready in 2 hours at our {STORE_CENTRE_INFO.address.split(',')[1]?.trim() || 'T. Nagar'} Boutique. Try it on immediately!
+                      Collect from Yaazh Boutique, Oddanchatram
                     </p>
                   </div>
                 </button>
@@ -349,7 +372,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       </span>
                     </div>
                     <p className="text-[11px] text-stone-500 mt-0.5">
-                      Complimentary on orders above {formatPrice(FREE_DELIVERY_THRESHOLD)}. Packed in secure protective drape packaging.
+                      Carefully packaged and delivered directly to your doorstep.
                     </p>
                   </div>
                 </button>
@@ -431,17 +454,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 )}
               </div>
 
-              {/* Optional Custom Alterations Note */}
+              {/* Optional Order Note */}
               <div className="mt-3">
                 <label className="flex items-center gap-1.5 text-[11px] font-semibold text-stone-800 mb-1">
-                  <Scissors className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Complimentary Saree Fall, Pico or Alteration Note (Optional):</span>
+                  <span>Order Note / Special Instructions (Optional):</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Attach saree fall & pico, or tailor kurti side slits"
-                  value={alterationNote}
-                  onChange={(e) => setAlterationNote(e.target.value)}
+                  placeholder="e.g. Special instructions or delivery preferences"
+                  value={orderNote}
+                  onChange={(e) => setOrderNote(e.target.value)}
                   className="w-full px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
                 />
               </div>

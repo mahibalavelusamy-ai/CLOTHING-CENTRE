@@ -118,7 +118,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {item.inStockTotal > 0 && item.inStockTotal <= 6 && (
           <div className="absolute bottom-2 left-2 right-2 bg-amber-900/90 text-amber-200 text-[10px] font-medium px-2 py-1 rounded backdrop-blur-xs flex items-center justify-center gap-1">
             <AlertCircle className="w-3 h-3 text-amber-400" />
-            <span>Only {item.inStockTotal} left in stock</span>
+            <span>Only {item.inStockTotal} left</span>
           </div>
         )}
 

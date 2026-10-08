@@ -1,17 +1,30 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  onAuthStateChanged,
+  User 
+} from 'firebase/auth';
 import { 
   getFirestore, 
   collection, 
   doc, 
   setDoc, 
+  getDoc,
   updateDoc, 
+  deleteDoc,
   getDocs, 
+  query,
+  where,
   onSnapshot, 
   getDocFromServer 
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
-import { ClothingItem, CustomerOrder, Size } from '../types';
+import { ClothingItem, CustomerOrder, Size, UserProfile, UserRole } from '../types';
 
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
@@ -19,6 +32,9 @@ const app = initializeApp(firebaseConfig);
 // CRITICAL: The app will break without specifying firestoreDatabaseId
 export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
 export const auth = getAuth(app);
+export const googleAuthProvider = new GoogleAuthProvider();
+
+export const BOOTSTRAPPED_ADMIN_EMAIL = 'mahibalavelusamy@gmail.com';
 
 // Error Handling complying with firebase-skill specifications
 export enum OperationType {
@@ -77,7 +93,6 @@ export async function testFirestoreConnection(): Promise<boolean> {
     if (error instanceof Error && error.message.includes('the client is offline')) {
       console.warn('Firestore client is currently offline.');
     }
-    // We expect doc might not exist, but connection succeeds
     return true;
   }
 }
@@ -127,40 +142,46 @@ export function subscribeToOrders(
   );
 }
 
-// Real-time Database Operations
-export async function seedInitialFirestoreData(
-  defaultItems: ClothingItem[],
-  defaultOrders: CustomerOrder[]
+export function subscribeToCustomerOrders(
+  customerUid: string,
+  onUpdate: (orders: CustomerOrder[]) => void,
+  onError?: (error: unknown) => void
 ) {
-  try {
-    const itemsRef = collection(db, 'clothing_items');
-    const itemsSnapshot = await getDocs(itemsRef);
-    if (itemsSnapshot.empty) {
-      console.log('Seeding initial Clothing Centre items to Firestore...');
-      for (const item of defaultItems) {
-        await setDoc(doc(db, 'clothing_items', item.id), item);
-      }
+  const collectionPath = 'orders';
+  const q = query(collection(db, collectionPath), where('customerUid', '==', customerUid));
+  return onSnapshot(
+    q,
+    (snapshot) => {
+      const orders: CustomerOrder[] = [];
+      snapshot.forEach((d) => {
+        orders.push(d.data() as CustomerOrder);
+      });
+      orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      onUpdate(orders);
+    },
+    (error) => {
+      if (onError) onError(error);
+      handleFirestoreError(error, OperationType.GET, collectionPath);
     }
-
-    const ordersRef = collection(db, 'orders');
-    const ordersSnapshot = await getDocs(ordersRef);
-    if (ordersSnapshot.empty && defaultOrders.length > 0) {
-      console.log('Seeding initial Clothing Centre orders to Firestore...');
-      for (const order of defaultOrders) {
-        await setDoc(doc(db, 'orders', order.id), order);
-      }
-    }
-  } catch (error) {
-    console.error('Error seeding initial Firestore data:', error);
-  }
+  );
 }
 
+// Real-time Database Operations - Garments / Products
 export async function addOrUpdateClothingItemInFirestore(item: ClothingItem) {
   const path = `clothing_items/${item.id}`;
   try {
     await setDoc(doc(db, 'clothing_items', item.id), item);
   } catch (error) {
     handleFirestoreError(error, OperationType.WRITE, path);
+  }
+}
+
+export async function deleteClothingItemInFirestore(itemId: string) {
+  const path = `clothing_items/${itemId}`;
+  try {
+    await deleteDoc(doc(db, 'clothing_items', itemId));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, path);
   }
 }
 
@@ -180,17 +201,27 @@ export async function updateGarmentStockInFirestore(
   }
 }
 
-export async function updateGarmentPriceInFirestore(itemId: string, newPrice: number) {
+export async function updateGarmentPriceInFirestore(
+  itemId: string, 
+  newPrice: number,
+  newOriginalPrice?: number
+) {
   const path = `clothing_items/${itemId}`;
   try {
-    await updateDoc(doc(db, 'clothing_items', itemId), {
-      price: newPrice
-    });
+    const updatePayload: Record<string, any> = { price: newPrice };
+    if (newOriginalPrice !== undefined) {
+      updatePayload.originalPrice = newOriginalPrice;
+      if (newOriginalPrice > newPrice) {
+        updatePayload.discountPercent = Math.round(((newOriginalPrice - newPrice) / newOriginalPrice) * 100);
+      }
+    }
+    await updateDoc(doc(db, 'clothing_items', itemId), updatePayload);
   } catch (error) {
     handleFirestoreError(error, OperationType.UPDATE, path);
   }
 }
 
+// Real-time Database Operations - Orders
 export async function createOrderInFirestore(order: CustomerOrder) {
   const path = `orders/${order.id}`;
   try {
@@ -210,3 +241,68 @@ export async function updateOrderStatusInFirestore(orderId: string, status: Cust
     handleFirestoreError(error, OperationType.UPDATE, path);
   }
 }
+
+export async function deleteOrderInFirestore(orderId: string) {
+  const path = `orders/${orderId}`;
+  try {
+    await deleteDoc(doc(db, 'orders', orderId));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, path);
+  }
+}
+
+// User Profiles & RBAC Operations
+export async function getUserProfileFromFirestore(uid: string): Promise<UserProfile | null> {
+  const path = `users/${uid}`;
+  try {
+    const snapshot = await getDoc(doc(db, 'users', uid));
+    if (snapshot.exists()) {
+      return snapshot.data() as UserProfile;
+    }
+    return null;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.GET, path);
+  }
+}
+
+export async function saveUserProfileToFirestore(profile: UserProfile): Promise<void> {
+  const path = `users/${profile.uid}`;
+  try {
+    await setDoc(doc(db, 'users', profile.uid), profile, { merge: true });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.WRITE, path);
+  }
+}
+
+export async function updateUserRoleInFirestore(targetUid: string, newRole: UserRole): Promise<void> {
+  const path = `users/${targetUid}`;
+  try {
+    await updateDoc(doc(db, 'users', targetUid), { role: newRole });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, path);
+  }
+}
+
+export async function getAllUsersFromFirestore(): Promise<UserProfile[]> {
+  const path = 'users';
+  try {
+    const snapshot = await getDocs(collection(db, path));
+    const users: UserProfile[] = [];
+    snapshot.forEach((d) => {
+      users.push(d.data() as UserProfile);
+    });
+    return users;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+
+// Authentication Service Functions
+export { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  signInWithPopup, 
+  onAuthStateChanged 
+};
+export type { User };

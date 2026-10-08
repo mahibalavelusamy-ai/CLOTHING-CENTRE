@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { X, Receipt, Search, Printer, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Receipt, Search, Printer, CheckCircle, User as UserIcon } from 'lucide-react';
 import { CustomerOrder } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
-import { formatPrice } from '../lib/format';
+import { formatPrice, STORE_GSTIN } from '../lib/format';
+import { useAuth } from '../lib/authContext';
 
 interface OrdersReceiptModalProps {
   isOpen: boolean;
@@ -15,16 +16,36 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
   onClose,
   orders
 }) => {
-  if (!isOpen) return null;
-
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState<CustomerOrder | null>(orders[0] || null);
+  const [filterMode, setFilterMode] = useState<'my_orders' | 'all'>('my_orders');
 
-  const filteredOrders = orders.filter(o => 
+  const myOrders = orders.filter(o => 
+    (user && o.customerUid === user.uid) ||
+    (user?.email && o.customer.email.toLowerCase() === user.email.toLowerCase())
+  );
+
+  const activeSourceOrders = (user && filterMode === 'my_orders' && myOrders.length > 0)
+    ? myOrders
+    : orders;
+
+  const filteredOrders = activeSourceOrders.filter(o => 
     o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     o.customer.phone.includes(searchQuery) ||
     o.customer.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const [selectedOrder, setSelectedOrder] = useState<CustomerOrder | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      if (filteredOrders.length > 0) {
+        setSelectedOrder(filteredOrders[0]);
+      } else {
+        setSelectedOrder(null);
+      }
+    }
+  }, [isOpen, filterMode, searchQuery]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
@@ -43,7 +64,7 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                 {STORE_CENTRE_INFO.name} Receipts & Slips
               </h2>
               <p className="text-xs text-stone-500">
-                Official store slips for collection, exchange & alteration warranty
+                Official store receipts & collection slips
               </p>
             </div>
           </div>
@@ -60,11 +81,38 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
         <div className="p-6 flex-1 flex flex-col md:flex-row gap-6">
           {/* Order List / Finder */}
           <div className="md:w-1/3 border-b md:border-b-0 md:border-r border-stone-200 pr-0 md:pr-4">
+            {user && (
+              <div className="flex rounded-lg bg-stone-100 p-0.5 mb-2.5 text-[11px] font-semibold">
+                <button
+                  type="button"
+                  onClick={() => setFilterMode('my_orders')}
+                  className={`flex-1 py-1 rounded-md transition-all cursor-pointer ${
+                    filterMode === 'my_orders'
+                      ? 'bg-white text-stone-900 shadow-2xs font-bold'
+                      : 'text-stone-500 hover:text-stone-800'
+                  }`}
+                >
+                  My Orders ({myOrders.length})
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFilterMode('all')}
+                  className={`flex-1 py-1 rounded-md transition-all cursor-pointer ${
+                    filterMode === 'all'
+                      ? 'bg-white text-stone-900 shadow-2xs font-bold'
+                      : 'text-stone-500 hover:text-stone-800'
+                  }`}
+                >
+                  Find Order Slip
+                </button>
+              </div>
+            )}
+
             <div className="relative mb-3">
               <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search Order ID, name, mobile..."
+                placeholder={filterMode === 'my_orders' && user ? "Filter my orders..." : "Search Order ID, name, mobile..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-8 pr-3 py-1.5 text-xs bg-stone-50 border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
@@ -113,13 +161,25 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
               <div className="bg-stone-50 border border-stone-300 rounded-xl p-5 text-xs text-stone-800 space-y-4">
                 {/* Top header */}
                 <div className="flex justify-between items-start border-b border-stone-300 pb-3">
-                  <div>
-                    <h3 className="font-serif-display font-bold text-sm text-stone-900 uppercase">
-                      {STORE_CENTRE_INFO.name}
-                    </h3>
-                    <p className="text-[11px] text-stone-500">{STORE_CENTRE_INFO.address}</p>
-                    <p className="text-[11px] text-stone-500">Phone: {STORE_CENTRE_INFO.phone}</p>
-                    <p className="text-[11px] text-stone-500">GSTIN: 33AAAAA0000A1Z5</p>
+                  <div className="flex items-start gap-3">
+                    <img
+                      src="/brand/logo.png"
+                      alt="Yaazh Boutique logo"
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      className="w-9 h-9 rounded-full object-cover shrink-0"
+                    />
+                    <div>
+                      <h3 className="font-serif-display font-bold text-sm text-stone-900 uppercase">
+                        {STORE_CENTRE_INFO.name}
+                      </h3>
+                      <p className="text-[11px] text-stone-500">{STORE_CENTRE_INFO.address}</p>
+                      <p className="text-[11px] text-stone-500">
+                        Phone: {STORE_CENTRE_INFO.phone} {STORE_CENTRE_INFO.phone2 ? `• ${STORE_CENTRE_INFO.phone2}` : ''}
+                      </p>
+                      {Boolean(STORE_GSTIN) && (
+                        <p className="text-[11px] text-stone-500">GSTIN: {STORE_GSTIN}</p>
+                      )}
+                    </div>
                   </div>
                   <div className="text-right">
                     <span className="bg-stone-900 text-white font-mono font-bold px-2 py-0.5 rounded text-[11px]">

@@ -184,153 +184,96 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       )}
 
       {/* Sizes Section: Driven by selected department */}
-      {/* Hide size filter entirely for Sarees */}
-      {currentDepartment !== 'sarees' && (
-        <div className="mb-5">
-          <div className="flex items-center justify-between mb-2.5">
-            <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
-              Available Sizes
-            </label>
-            {selectedSizes.length > 0 && (
-              <span className="text-[11px] text-stone-400">
-                {selectedSizes.length} selected
-              </span>
-            )}
-          </div>
-
-          {currentDepartment === 'kurtis' && (
-            <div className="grid grid-cols-3 gap-1.5">
-              {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).map((size) => {
-                const isSelected = selectedSizes.includes(size);
-                return (
-                  <button
-                    key={size}
-                    id={`filter-size-${size}`}
-                    onClick={() => onToggleSize(size)}
-                    className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                        : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                );
-              })}
+      {(() => {
+        if (currentDepartment !== 'all') {
+          const deptSizes = DEPARTMENT_CONFIG[currentDepartment]?.sizes.filter(isSizeAvailable) || [];
+          if (deptSizes.length === 0) return null;
+          return (
+            <div className="mb-5">
+              <div className="flex items-center justify-between mb-2.5">
+                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                  Available Sizes
+                </label>
+                {selectedSizes.length > 0 && (
+                  <span className="text-[11px] text-stone-400">
+                    {selectedSizes.length} selected
+                  </span>
+                )}
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                {deptSizes.map((size) => {
+                  const isSelected = selectedSizes.includes(size);
+                  return (
+                    <button
+                      key={size}
+                      id={`filter-size-${size}`}
+                      onClick={() => onToggleSize(size)}
+                      className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                          : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-          )}
+          );
+        }
 
-          {currentDepartment === 'kids' && (
-            <div className="grid grid-cols-3 gap-1.5">
-              {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).map((size) => {
-                const isSelected = selectedSizes.includes(size);
-                return (
-                  <button
-                    key={size}
-                    id={`filter-size-${size}`}
-                    onClick={() => onToggleSize(size)}
-                    className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                      isSelected
-                        ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                        : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                );
-              })}
+        // currentDepartment === 'all'
+        const hasAnySizes = (availableSizes?.length ?? 0) > 0;
+        if (!hasAnySizes) return null;
+
+        return (
+          <div className="mb-5">
+            <div className="flex items-center justify-between mb-2.5">
+              <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                Available Sizes
+              </label>
+              {selectedSizes.length > 0 && (
+                <span className="text-[11px] text-stone-400">
+                  {selectedSizes.length} selected
+                </span>
+              )}
             </div>
-          )}
-
-          {currentDepartment === 'all' && (
             <div className="space-y-3">
-              {/* Kurtis sizes */}
-              {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).length > 0 && (
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
-                    Kurtis & Chudidars
-                  </span>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {DEPARTMENT_CONFIG.kurtis.sizes.filter(isSizeAvailable).map((size) => {
-                      const isSelected = selectedSizes.includes(size);
-                      return (
-                        <button
-                          key={size}
-                          id={`filter-size-${size}`}
-                          onClick={() => onToggleSize(size)}
-                          className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                              : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      );
-                    })}
+              {Object.entries(DEPARTMENT_CONFIG).map(([deptKey, deptMeta]) => {
+                const deptSizes = deptMeta.sizes.filter(isSizeAvailable);
+                if (deptSizes.length === 0) return null;
+                return (
+                  <div key={deptKey}>
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
+                      {deptMeta.label}
+                    </span>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      {deptSizes.map((size) => {
+                        const isSelected = selectedSizes.includes(size);
+                        return (
+                          <button
+                            key={`${deptKey}-${size}`}
+                            id={`filter-size-${size}`}
+                            onClick={() => onToggleSize(size)}
+                            className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+                              isSelected
+                                ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                                : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                            }`}
+                          >
+                            {size}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
-
-              {/* Kidswear sizes */}
-              {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).length > 0 && (
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
-                    Kidswear (Ages)
-                  </span>
-                  <div className="grid grid-cols-3 gap-1.5">
-                    {DEPARTMENT_CONFIG.kids.sizes.filter(isSizeAvailable).map((size) => {
-                      const isSelected = selectedSizes.includes(size);
-                      return (
-                        <button
-                          key={size}
-                          id={`filter-size-${size}`}
-                          onClick={() => onToggleSize(size)}
-                          className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                              : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Sarees Free Size */}
-              {DEPARTMENT_CONFIG.sarees.sizes.filter(isSizeAvailable).length > 0 && (
-                <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
-                    Sarees
-                  </span>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {DEPARTMENT_CONFIG.sarees.sizes.filter(isSizeAvailable).map((size) => {
-                      const isSelected = selectedSizes.includes(size);
-                      return (
-                        <button
-                          key={size}
-                          id={`filter-size-${size}`}
-                          onClick={() => onToggleSize(size)}
-                          className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                              : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
-                          }`}
-                        >
-                          {size}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+                );
+              })}
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        );
+      })()}
 
       {/* Price Range */}
       <div className="mb-5">

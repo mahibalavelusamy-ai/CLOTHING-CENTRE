@@ -30,11 +30,12 @@
     },
     "order": {
       "title": "CustomerOrder",
-      "description": "An order placed for in-store pickup or home delivery at the Clothing Centre",
+      "description": "An order placed for in-store pickup or home delivery at Yaazh Boutique",
       "type": "object",
       "properties": {
         "id": { "type": "string", "description": "Order reference code" },
         "createdAt": { "type": "string", "description": "ISO timestamp of order creation" },
+        "customerUid": { "type": "string", "description": "Firebase Auth UID of customer if logged in" },
         "items": { "type": "array", "description": "Itemized list of garments ordered" },
         "subtotal": { "type": "number", "description": "Items subtotal before discounts and taxes" },
         "discountApplied": { "type": "number", "description": "Total promotional discount applied" },
@@ -44,19 +45,38 @@
         "totalAmount": { "type": "number", "description": "Final paid amount" },
         "customer": { "type": "object", "description": "Customer contact and delivery info" },
         "paymentMethod": { "type": "string", "description": "Payment channel used" },
-        "status": { "type": "string", "description": "Fulfilment state: Confirmed, Ready for Pickup, Dispatched, Completed" }
+        "status": { "type": "string", "description": "Fulfilment state: Confirmed, Ready for Pickup, Dispatched, Completed, Cancelled" }
       },
       "required": ["id", "createdAt", "items", "subtotal", "totalAmount", "customer", "paymentMethod", "status"]
+    },
+    "userProfile": {
+      "title": "UserProfile",
+      "description": "Registered user profile with role-based access control details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "Customer or Staff full name" },
+        "role": { "type": "string", "enum": ["customer", "staff", "admin"], "description": "User RBAC role" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of registration" },
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "address": { "type": "string", "description": "Default delivery address" }
+      },
+      "required": ["uid", "email", "role"]
     }
   },
   "firestore": {
     "/clothing_items/{itemId}": {
       "schema": "clothingItem",
-      "description": "Public catalog and real-time inventory of garments in the Clothing Centre"
+      "description": "Public catalog and real-time inventory of garments in Yaazh Boutique"
     },
     "/orders/{orderId}": {
       "schema": "order",
       "description": "Customer orders for store collection or delivery"
+    },
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "User profile with role permission mapping"
     }
   }
 }

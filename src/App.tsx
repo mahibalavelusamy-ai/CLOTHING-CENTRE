@@ -31,7 +31,6 @@ import {
   testFirestoreConnection,
   subscribeToClothingItems,
   subscribeToOrders,
-  seedInitialFirestoreData,
   addOrUpdateClothingItemInFirestore,
   updateGarmentStockInFirestore,
   updateGarmentPriceInFirestore,
@@ -54,24 +53,22 @@ import {
   ArrowRight
 } from 'lucide-react';
 
-const INITIAL_SEED_ORDERS: CustomerOrder[] = [];
-
 export default function App() {
   // Inventory state with LocalStorage persistence
   const [inventory, setInventory] = useState<ClothingItem[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_inventory-v2');
+      const saved = localStorage.getItem('yaazh_boutique_inventory-v3');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
     }
-    return INITIAL_CLOTHING_ITEMS;
+    return [];
   });
 
   // Cart State
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_cart-v2');
+      const saved = localStorage.getItem('yaazh_boutique_cart-v3');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
@@ -82,7 +79,7 @@ export default function App() {
   // Wishlist State
   const [wishlist, setWishlist] = useState<ClothingItem[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_wishlist-v2');
+      const saved = localStorage.getItem('yaazh_boutique_wishlist-v3');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
@@ -93,12 +90,12 @@ export default function App() {
   // Orders State
   const [orders, setOrders] = useState<CustomerOrder[]>(() => {
     try {
-      const saved = localStorage.getItem('clothing_centre_orders-v2');
+      const saved = localStorage.getItem('yaazh_boutique_orders-v3');
       if (saved) return JSON.parse(saved);
     } catch {
       // fallback
     }
-    return INITIAL_SEED_ORDERS;
+    return [];
   });
 
   const [appliedCoupon, setAppliedCoupon] = useState<string | null>(null);
@@ -142,24 +139,21 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
 
-    // 1. Verify Firestore Connection & Seed initial catalog if empty
+    // 1. Verify Firestore Connection
     testFirestoreConnection()
       .then(() => {
         if (!isMounted) return;
         setIsRealtimeConnected(true);
-        return seedInitialFirestoreData(INITIAL_CLOTHING_ITEMS, INITIAL_SEED_ORDERS);
       })
       .catch((err) => {
         console.warn('Initial Firestore connection check notice:', err);
       });
 
-    // 2. Real-time Clothing Items subscription
+    // 2. Real-time Clothing Items subscription (always call setInventory, even when empty)
     const unsubscribeItems = subscribeToClothingItems(
       (realtimeItems) => {
         if (!isMounted) return;
-        if (realtimeItems && realtimeItems.length > 0) {
-          setInventory(realtimeItems);
-        }
+        setInventory(realtimeItems || []);
         setIsRealtimeConnected(true);
       },
       (err) => {
@@ -167,13 +161,11 @@ export default function App() {
       }
     );
 
-    // 3. Real-time Customer Orders subscription
+    // 3. Real-time Customer Orders subscription (always call setOrders, even when empty)
     const unsubscribeOrders = subscribeToOrders(
       (realtimeOrders) => {
         if (!isMounted) return;
-        if (realtimeOrders && realtimeOrders.length > 0) {
-          setOrders(realtimeOrders);
-        }
+        setOrders(realtimeOrders || []);
         setIsRealtimeConnected(true);
       },
       (err) => {
@@ -188,21 +180,21 @@ export default function App() {
     };
   }, []);
 
-  // Local fallback cache sync
+  // Local fallback cache sync (-v3 keys)
   useEffect(() => {
-    localStorage.setItem('clothing_centre_inventory-v2', JSON.stringify(inventory));
+    localStorage.setItem('yaazh_boutique_inventory-v3', JSON.stringify(inventory));
   }, [inventory]);
 
   useEffect(() => {
-    localStorage.setItem('clothing_centre_cart-v2', JSON.stringify(cart));
+    localStorage.setItem('yaazh_boutique_cart-v3', JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    localStorage.setItem('clothing_centre_wishlist-v2', JSON.stringify(wishlist));
+    localStorage.setItem('yaazh_boutique_wishlist-v3', JSON.stringify(wishlist));
   }, [wishlist]);
 
   useEffect(() => {
-    localStorage.setItem('clothing_centre_orders-v2', JSON.stringify(orders));
+    localStorage.setItem('yaazh_boutique_orders-v3', JSON.stringify(orders));
   }, [orders]);
 
   // Derived calculations
@@ -246,8 +238,11 @@ export default function App() {
     const counts: Record<Department, number> = {
       all: inventory.length,
       sarees: 0,
-      kurtis: 0,
-      kids: 0,
+      blouses: 0,
+      coords: 0,
+      salwar: 0,
+      lounge: 0,
+      decor: 0,
     };
     inventory.forEach(i => {
       if (counts[i.department] !== undefined) {
@@ -683,12 +678,20 @@ export default function App() {
                   New collection arriving soon
                 </h2>
                 <p className="text-sm sm:text-base text-stone-600 max-w-md mx-auto mb-6 leading-relaxed">
-                  Our master weavers and artisans are tailoring handcrafted pure silk sarees, celebratory kurtis & chudidars, and festive kidswear for our upcoming season.
+                  Welcome to {STORE_CENTRE_INFO.name}, Oddanchatram. Handcrafted sarees, blouses, co-ords, lounge wear, salwar materials, and decor collections are arriving soon.
                 </p>
                 <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200/80 text-xs text-stone-600 max-w-lg mx-auto mb-6 space-y-1 text-left sm:text-center">
-                  <p className="font-semibold text-stone-800">Visit our boutique showroom & trial suites:</p>
+                  <p className="font-semibold text-stone-800">Visit {STORE_CENTRE_INFO.name}:</p>
                   <p>{STORE_CENTRE_INFO.address}</p>
-                  <p className="font-mono text-stone-500">{STORE_CENTRE_INFO.hours}</p>
+                  <p className="text-stone-700">
+                    Call: <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="text-amber-800 font-medium hover:underline">{STORE_CENTRE_INFO.phone}</a>
+                    {STORE_CENTRE_INFO.phone2 && (
+                      <> · <a href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`} className="text-amber-800 font-medium hover:underline">{STORE_CENTRE_INFO.phone2}</a></>
+                    )}
+                  </p>
+                  {Boolean(STORE_CENTRE_INFO.hours) && (
+                    <p className="font-mono text-stone-500">{STORE_CENTRE_INFO.hours}</p>
+                  )}
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <button
@@ -840,8 +843,8 @@ export default function App() {
                   onClick={() => setIsSizeGuideOpen(true)}
                   className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold rounded-full flex items-center gap-1.5 transition-colors cursor-pointer border border-stone-200"
                 >
-                  <Scissors className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Fitting Guide</span>
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-amber-700" />
+                  <span>Size Guide</span>
                 </button>
               </div>
             </div>
@@ -902,7 +905,7 @@ export default function App() {
                       No Matching Boutique Pieces Found
                     </h3>
                     <p className="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mb-4 leading-relaxed">
-                      We couldn't find any sarees, kurtis, or kidswear matching your current filters. Try relaxing criteria or clearing the search.
+                      We couldn't find any products matching your current filters. Try relaxing criteria or clearing the search.
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3">
                       <button
@@ -943,49 +946,54 @@ export default function App() {
 
       </main>
 
-      {/* Centre Retail Highlights & Luxury Footer with Trust Strip */}
+      {/* Luxury Footer with 3 Factual Blocks */}
       <footer className="mt-16 bg-stone-900 text-stone-300 border-t border-stone-800 text-xs">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
           
-          {/* Trust Strip: Delivery, Returns, Tailoring Support */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pb-10 border-b border-stone-800">
+          {/* 3 Factual Blocks: Visit us, Call us, Order online */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-stone-800">
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                <Truck className="w-4 h-4" />
+                <MapPin className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm">Complimentary Delivery</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">Free standard shipping on orders over ₹1,999. Plus 2-hour boutique click & collect.</p>
+                <h4 className="font-bold text-white text-sm">Visit us</h4>
+                <p className="text-stone-400 text-[11px] mt-0.5">{STORE_CENTRE_INFO.address}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                <RotateCcw className="w-4 h-4" />
+                <Phone className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm">7-Day Easy Returns</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">Hassle-free size swaps, boutique exchange, and instant store credit.</p>
+                <h4 className="font-bold text-white text-sm">Call us</h4>
+                <div className="text-stone-400 text-[11px] mt-0.5 flex flex-col gap-0.5">
+                  <a
+                    href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`}
+                    className="hover:text-amber-400 transition-colors"
+                  >
+                    {STORE_CENTRE_INFO.phone}
+                  </a>
+                  {STORE_CENTRE_INFO.phone2 && (
+                    <a
+                      href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`}
+                      className="hover:text-amber-400 transition-colors"
+                    >
+                      {STORE_CENTRE_INFO.phone2}
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                <Scissors className="w-4 h-4" />
+                <ShoppingBag className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-white text-sm">Boutique Tailoring</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">Complimentary saree fall & pico, kurti side slits, and trial alterations on site.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <div>
-                <h4 className="font-bold text-white text-sm">Certified Silks & Handlooms</h4>
-                <p className="text-stone-400 text-[11px] mt-0.5">Pure Kanchipuram silk, Banarasi brocades, and genuine artisan handlooms.</p>
+                <h4 className="font-bold text-white text-sm">Order online</h4>
+                <p className="text-stone-400 text-[11px] mt-0.5">Store pickup or home delivery</p>
               </div>
             </div>
           </div>
@@ -994,14 +1002,49 @@ export default function App() {
           <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-stone-500 text-[11px]">
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-stone-400">
               <span className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-stone-500 shrink-0" /> {STORE_CENTRE_INFO.address}
+                <MapPin className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                <span>{STORE_CENTRE_INFO.address}</span>
               </span>
               <span className="flex items-center gap-1">
-                <Phone className="w-3.5 h-3.5 text-stone-500 shrink-0" /> {STORE_CENTRE_INFO.phone}
+                <Phone className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="hover:text-amber-300 transition-colors">
+                  {STORE_CENTRE_INFO.phone}
+                </a>
               </span>
-              <span className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-stone-500 shrink-0" /> {STORE_CENTRE_INFO.hours}
-              </span>
+              {STORE_CENTRE_INFO.phone2 && (
+                <span className="flex items-center gap-1">
+                  <Phone className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                  <a href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`} className="hover:text-amber-300 transition-colors">
+                    {STORE_CENTRE_INFO.phone2}
+                  </a>
+                </span>
+              )}
+              {Boolean(STORE_CENTRE_INFO.hours) && (
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                  <span>{STORE_CENTRE_INFO.hours}</span>
+                </span>
+              )}
+              {STORE_CENTRE_INFO.instagram && (
+                <a
+                  href={`https://instagram.com/${STORE_CENTRE_INFO.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-300 transition-colors"
+                >
+                  @{STORE_CENTRE_INFO.instagram}
+                </a>
+              )}
+              {STORE_CENTRE_INFO.facebook && (
+                <a
+                  href={`https://facebook.com/${STORE_CENTRE_INFO.facebook}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-amber-300 transition-colors"
+                >
+                  fb/{STORE_CENTRE_INFO.facebook}
+                </a>
+              )}
             </div>
 
             <div className="flex items-center gap-2">
@@ -1055,7 +1098,7 @@ export default function App() {
         onOpenSizeGuide={() => setIsSizeGuideOpen(true)}
       />
 
-      {/* Sizing & Tailoring Guide Modal */}
+      {/* Sizing Guide Modal */}
       <SizeGuideModal
         isOpen={isSizeGuideOpen}
         onClose={() => setIsSizeGuideOpen(false)}

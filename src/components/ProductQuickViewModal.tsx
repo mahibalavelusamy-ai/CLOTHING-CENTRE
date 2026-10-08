@@ -5,8 +5,7 @@ import {
   Heart, 
   Ruler, 
   Star,
-  Sparkles,
-  Check
+  Sparkles
 } from 'lucide-react';
 import { ClothingItem, Size } from '../types';
 import { formatPrice } from '../lib/format';
@@ -30,20 +29,29 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
   onAddToCart,
   onOpenSizeGuide
 }) => {
+  const [activeImageIdx, setActiveImageIdx] = useState(0);
+  const [selectedColorIdx, setSelectedColorIdx] = useState(0);
+  const [selectedSize, setSelectedSize] = useState<Size>('Free Size');
+  const [quantity, setQuantity] = useState(1);
+
+  React.useEffect(() => {
+    if (item) {
+      const isFreeSize = item.sizes.length === 1 && item.sizes[0].size === 'Free Size';
+      if (isFreeSize) {
+        setSelectedSize('Free Size');
+      } else {
+        const available = item.sizes.find(s => s.stock > 0);
+        setSelectedSize(available ? available.size : item.sizes[0]?.size || 'Free Size');
+      }
+      setActiveImageIdx(0);
+      setSelectedColorIdx(0);
+      setQuantity(1);
+    }
+  }, [item]);
+
   if (!isOpen || !item) return null;
 
   const isFreeSize = item.sizes.length === 1 && item.sizes[0].size === 'Free Size';
-
-  const [activeImageIdx, setActiveImageIdx] = useState(0);
-  const [selectedColorIdx, setSelectedColorIdx] = useState(0);
-  const [selectedSize, setSelectedSize] = useState<Size>(() => {
-    if (isFreeSize) return 'Free Size';
-    const available = item.sizes.find(s => s.stock > 0);
-    return available ? available.size : item.sizes[0].size;
-  });
-  const [quantity, setQuantity] = useState(1);
-  const [fittingReserved, setFittingReserved] = useState(false);
-
   const selectedSizeInfo = item.sizes.find(s => s.size === selectedSize);
   const availableStock = selectedSizeInfo?.stock ?? 0;
   const isOutOfStock = availableStock === 0;
@@ -51,13 +59,6 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
   const handleAddToCart = () => {
     if (isOutOfStock) return;
     onAddToCart(item, selectedSize, selectedColorIdx, quantity);
-  };
-
-  const handleReserveTrial = () => {
-    setFittingReserved(true);
-    setTimeout(() => {
-      setFittingReserved(false);
-    }, 4000);
   };
 
   return (
@@ -96,7 +97,7 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
                 <span className="text-[11px] uppercase font-bold tracking-widest text-amber-900/80 mt-2 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200/60">
                   {item.category}
                 </span>
-                <span className="text-xs text-stone-400 mt-2">Crafted for Our Boutique</span>
+                <span className="text-xs text-stone-400 mt-2">Crafted for Yaazh Boutique</span>
               </div>
             )}
             {item.discountPercent && (
@@ -360,21 +361,6 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
                 <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-600' : ''}`} />
               </button>
             </div>
-
-            {/* Trial Suite button */}
-            <button
-              onClick={handleReserveTrial}
-              className="w-full py-2 px-3 rounded-lg border border-stone-300 hover:bg-stone-50 text-stone-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-            >
-              {fittingReserved ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-emerald-600" />
-                  <span className="text-emerald-700">Trial Suite Room Reserved for Today!</span>
-                </>
-              ) : (
-                <span>Reserve in Boutique Fitting Suite for Trial</span>
-              )}
-            </button>
           </div>
         </div>
       </div>

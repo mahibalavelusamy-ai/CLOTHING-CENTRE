@@ -1,4 +1,4 @@
-export type Department = 'all' | 'sarees' | 'kurtis' | 'kids';
+export type Department = 'all' | 'sarees' | 'blouses' | 'coords' | 'salwar' | 'lounge' | 'decor';
 
 export type Size = 
   | 'Free Size' 
@@ -8,15 +8,14 @@ export type Size =
   | 'XL' 
   | 'XXL' 
   | '3XL' 
-  | '1-2Y' 
-  | '2-3Y' 
-  | '3-4Y' 
-  | '4-5Y' 
-  | '5-6Y' 
-  | '6-7Y' 
-  | '7-8Y' 
-  | '8-9Y' 
-  | '9-10Y';
+  | '32' 
+  | '34' 
+  | '36' 
+  | '38' 
+  | '40' 
+  | '42' 
+  | '44' 
+  | '46';
 
 export interface ColorOption {
   name: string;
@@ -71,9 +70,22 @@ export interface FilterState {
   inStockOnly: boolean;
 }
 
+export type UserRole = 'customer' | 'staff' | 'admin';
+
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: UserRole;
+  createdAt: string;
+  phone?: string;
+  address?: string;
+}
+
 export interface CustomerOrder {
   id: string;
   createdAt: string;
+  customerUid?: string;
   items: CartItem[];
   subtotal: number;
   discountApplied: number;
@@ -91,5 +103,5 @@ export interface CustomerOrder {
     notes?: string;
   };
   paymentMethod: 'card' | 'upi' | 'cash_counter';
-  status: 'Confirmed' | 'Ready for Pickup' | 'Dispatched' | 'Completed';
+  status: 'Confirmed' | 'Ready for Pickup' | 'Dispatched' | 'Completed' | 'Cancelled';
 }

@@ -3,7 +3,6 @@ import {
   ShoppingBag, 
   Heart, 
   Search, 
-  Store, 
   Receipt, 
   Sparkles,
   MapPin,
@@ -12,12 +11,15 @@ import {
   Flame,
   X,
   History,
-  ArrowUpRight
+  ArrowUpRight,
+  Phone,
+  User as UserIcon
 } from 'lucide-react';
 import { Department, ClothingItem } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 import { TRENDING_SEARCHES } from '../data/trending';
 import { formatPrice } from '../lib/format';
+import { useAuth } from '../lib/authContext';
 
 interface HeaderProps {
   currentDepartment: Department;
@@ -29,9 +31,8 @@ interface HeaderProps {
   wishlistCount: number;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
-  onOpenStoreManager: () => void;
   onOpenOrders: () => void;
-  lowStockCount: number;
+  onOpenAuth?: () => void;
   isRealtimeConnected?: boolean;
   inventoryItems?: ClothingItem[];
 }
@@ -46,13 +47,14 @@ export const Header: React.FC<HeaderProps> = ({
   wishlistCount,
   onOpenCart,
   onOpenWishlist,
-  onOpenStoreManager,
   onOpenOrders,
-  lowStockCount,
+  onOpenAuth,
   isRealtimeConnected = true,
   inventoryItems = []
 }) => {
+  const { user, profile } = useAuth();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('clothing_centre_recent_searches');
@@ -132,22 +134,61 @@ export const Header: React.FC<HeaderProps> = ({
   }, [searchQuery, inventoryItems]);
 
   return (
-    <header id="clothing-centre-header" className="sticky top-0 z-40 bg-stone-900 text-stone-100 shadow-md">
+    <header id="yaazh-boutique-header" className="sticky top-0 z-40 bg-stone-900 text-stone-100 shadow-md">
       {/* Top utility ticker banner */}
       <div className="bg-stone-950 border-b border-stone-800 text-xs py-1.5 px-3 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5 text-stone-400">
           <div className="flex items-center gap-3 sm:gap-4 text-[11px] sm:text-xs min-w-0">
-            <span className="flex items-center gap-1.5 text-amber-400 font-medium whitespace-nowrap">
-              <Clock className="w-3.5 h-3.5 shrink-0" />
-              <span>{STORE_CENTRE_INFO.hours.split('|')[0]?.trim()}</span>
-            </span>
+            {Boolean(STORE_CENTRE_INFO.hours) && (
+              <span className="flex items-center gap-1.5 text-amber-400 font-medium whitespace-nowrap">
+                <Clock className="w-3.5 h-3.5 shrink-0" />
+                <span>{STORE_CENTRE_INFO.hours.split('|')[0]?.trim()}</span>
+              </span>
+            )}
             <span className="hidden md:inline-flex items-center gap-1.5 truncate text-stone-400">
               <MapPin className="w-3.5 h-3.5 text-stone-500 shrink-0" />
               <span className="truncate">{STORE_CENTRE_INFO.address}</span>
             </span>
-            <span className="hidden lg:inline-flex items-center gap-1 text-emerald-400 whitespace-nowrap">
-              <Sparkles className="w-3 h-3 shrink-0" /> Ready in 2 Hours for Store Pickup
-            </span>
+            <a
+              href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`}
+              className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 whitespace-nowrap transition-colors"
+              title="Call primary phone"
+            >
+              <Phone className="w-3 h-3 shrink-0" />
+              <span>{STORE_CENTRE_INFO.phone}</span>
+            </a>
+            {STORE_CENTRE_INFO.phone2 && (
+              <a
+                href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`}
+                className="hidden sm:inline-flex items-center gap-1 text-stone-400 hover:text-amber-300 whitespace-nowrap transition-colors"
+                title="Call secondary phone"
+              >
+                <Phone className="w-3 h-3 shrink-0" />
+                <span>{STORE_CENTRE_INFO.phone2}</span>
+              </a>
+            )}
+            {STORE_CENTRE_INFO.instagram && (
+              <a
+                href={`https://instagram.com/${STORE_CENTRE_INFO.instagram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden xl:inline-flex items-center gap-1 text-stone-400 hover:text-amber-300 whitespace-nowrap transition-colors"
+                title="Instagram"
+              >
+                <span>@{STORE_CENTRE_INFO.instagram}</span>
+              </a>
+            )}
+            {STORE_CENTRE_INFO.facebook && (
+              <a
+                href={`https://facebook.com/${STORE_CENTRE_INFO.facebook}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden 2xl:inline-flex items-center gap-1 text-stone-400 hover:text-amber-300 whitespace-nowrap transition-colors"
+                title="Facebook"
+              >
+                <span>fb/{STORE_CENTRE_INFO.facebook}</span>
+              </a>
+            )}
           </div>
 
           <div className="flex items-center gap-2.5 sm:gap-3 text-xs ml-auto shrink-0">
@@ -170,21 +211,20 @@ export const Header: React.FC<HeaderProps> = ({
               <Receipt className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span className="hidden sm:inline">Track Receipts</span>
             </button>
-            <span className="text-stone-700">|</span>
-            <button
-              id="centre-staff-portal-btn"
-              onClick={onOpenStoreManager}
-              className="hover:text-amber-300 transition-colors flex items-center gap-1 text-stone-300 cursor-pointer text-[11px] sm:text-xs"
-              title="Inventory & Store Operations"
-            >
-              <Store className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span>Staff Portal</span>
-              {lowStockCount > 0 && (
-                <span className="bg-rose-700 text-rose-100 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
-                  {lowStockCount}
-                </span>
-              )}
-            </button>
+            {onOpenAuth && (
+              <>
+                <span className="text-stone-700">|</span>
+                <button
+                  id="customer-account-btn"
+                  onClick={onOpenAuth}
+                  className="hover:text-amber-300 transition-colors flex items-center gap-1.5 text-stone-300 cursor-pointer text-[11px] sm:text-xs"
+                  title={user ? 'Customer Account' : 'Sign In / Register'}
+                >
+                  <UserIcon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span className="max-w-[120px] truncate">{user ? (profile?.displayName || 'My Account') : 'Sign In'}</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -199,9 +239,14 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => onSelectDepartment('all')}
             title="Return to Storefront Home"
           >
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-inner shrink-0 group-hover:border-amber-400 transition-colors">
-              <Shirt className="w-5 h-5" />
-            </div>
+            {!logoError && (
+              <img
+                src="/brand/logo.png"
+                alt="Yaazh Boutique logo"
+                onError={() => setLogoError(true)}
+                className="w-10 h-10 rounded-full object-cover shrink-0"
+              />
+            )}
             <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <span className="font-serif-display text-lg sm:text-2xl font-bold tracking-tight text-amber-50 uppercase truncate">
@@ -230,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsSearchFocused(false);
                   }
                 }}
-                placeholder="Search silk sarees, cotton kurtis, anarkalis, chudidars, kidswear..."
+                placeholder="Search sarees, blouses, co-ords, salwar materials, lounge wear..."
                 className="w-full pl-10 pr-9 py-2.5 bg-stone-800/90 border border-stone-700 hover:border-stone-600 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-full text-xs sm:text-sm text-stone-100 placeholder-stone-400 shadow-inner transition-all outline-none"
               />
               {searchQuery && (

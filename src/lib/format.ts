@@ -1,5 +1,6 @@
 export const FREE_DELIVERY_THRESHOLD = 1999;
 export const STANDARD_DELIVERY_FEE = 99;
+export const STORE_GSTIN = '';
 
 /**
  * Formats a numeric price into Indian Rupee format with ₹ and Indian numbering system (en-IN).

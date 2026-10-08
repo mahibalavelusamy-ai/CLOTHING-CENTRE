@@ -16,53 +16,105 @@ service cloud.firestore {
       return resource.data;
     }
 
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Role verification
+    // 1. Bootstrapped admin email check for boutique administrator
+    // 2. Or explicit 'admin' role in /users/{uid} document
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'mahibalavelusamy@gmail.com' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+
+    // Staff verification: admin has all staff privileges, or user has 'staff' role
+    function isStaff() {
+      return isSignedIn() && (
+        isAdmin() ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['staff', 'admin'])
+      );
+    }
+
     // Health / Connection Test
     match /test/{testId} {
       allow read: if true;
     }
 
+    // User Accounts & Roles (RBAC)
+    match /users/{userId} {
+      // User can view their own profile; store staff and admin can view user profiles
+      allow get: if isValidId(userId) && (isSignedIn() && (request.auth.uid == userId || isStaff()));
+      allow list: if isStaff();
+
+      // Sign-up: customers can create their own record with role 'customer'.
+      // Only bootstrapped admin can register with admin/staff role directly.
+      allow create: if isValidId(userId) && isSignedIn() && request.auth.uid == userId &&
+        incoming().uid == request.auth.uid &&
+        incoming().email is string &&
+        (
+          (request.auth.token.email == 'mahibalavelusamy@gmail.com') ||
+          incoming().role == 'customer'
+        );
+
+      // Updates: standard users cannot elevate their own role
+      allow update: if isValidId(userId) && (
+        isAdmin() ||
+        (
+          isSignedIn() && request.auth.uid == userId &&
+          incoming().uid == existing().uid &&
+          incoming().role == existing().role
+        )
+      );
+
+      // Only admin can delete user records
+      allow delete: if isValidId(userId) && isAdmin();
+    }
+
     // Clothing Items Collection
     match /clothing_items/{itemId} {
-      // Anyone can browse the garment catalogue (get single item or list collection)
+      // Anyone (customers, visitors) can browse the garment catalogue
       allow get: if isValidId(itemId);
       allow list: if true;
 
-      // Create new garments with schema validation
-      allow create: if isValidId(itemId) &&
+      // Only authenticated staff/admin can add new items
+      allow create: if isValidId(itemId) && isStaff() &&
         incoming().name is string && incoming().name.size() <= 200 &&
         incoming().price is number && incoming().price >= 0 &&
         incoming().department is string &&
         incoming().category is string &&
         incoming().inStockTotal is number && incoming().inStockTotal >= 0;
 
-      // Update garment stock, prices, and details
-      allow update: if isValidId(itemId) &&
-        incoming().name is string && incoming().name.size() <= 200 &&
-        incoming().price is number && incoming().price >= 0 &&
-        incoming().inStockTotal is number && incoming().inStockTotal >= 0;
+      // Only authenticated staff/admin can update stock, prices, or details
+      allow update: if isValidId(itemId) && isStaff();
 
-      // Delete garment
-      allow delete: if isValidId(itemId);
+      // Only authenticated staff/admin can delete garments
+      allow delete: if isValidId(itemId) && isStaff();
     }
 
     // Orders Collection
     match /orders/{orderId} {
-      // Read order receipts (get single order or list order receipts)
+      // Get single order receipt (by order slip ID or customer lookup)
       allow get: if isValidId(orderId);
-      allow list: if true;
 
-      // Place customer orders
+      // List orders: Staff can list all orders. Authenticated customers can list only their own orders
+      allow list: if isStaff() || (isSignedIn() && resource.data.customerUid == request.auth.uid);
+
+      // Customers can create orders (with or without signing in)
       allow create: if isValidId(orderId) &&
         incoming().totalAmount is number && incoming().totalAmount >= 0 &&
         incoming().customer is map &&
-        incoming().status in ['Confirmed', 'Ready for Pickup', 'Dispatched', 'Completed'];
+        incoming().status in ['Confirmed', 'Ready for Pickup', 'Dispatched', 'Completed', 'Cancelled'];
 
-      // Update order status at store counter
-      allow update: if isValidId(orderId) &&
-        incoming().status in ['Confirmed', 'Ready for Pickup', 'Dispatched', 'Completed'];
+      // Only store staff and admin can update order fulfillment status
+      allow update: if isValidId(orderId) && isStaff();
 
-      // Delete order
-      allow delete: if isValidId(orderId);
+      // Only store staff and admin can delete orders
+      allow delete: if isValidId(orderId) && isStaff();
     }
 
     // Default deny

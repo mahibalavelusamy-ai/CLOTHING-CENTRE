@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, Scissors, ChevronRight } from 'lucide-react';
+import { Sparkles, MapPin, Phone, ChevronRight } from 'lucide-react';
 import { Department } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 
@@ -31,7 +31,7 @@ export const StoreHeroBanner: React.FC<StoreHeroBannerProps> = ({
           </h1>
 
           <p className="mt-3 text-sm sm:text-base text-stone-300 leading-relaxed max-w-xl">
-            Welcome to {STORE_CENTRE_INFO.name}. Discover pure Kanchipuram and Banarasi sarees, graceful flowing kurtis and chudidar sets, and vibrant festive kidswear. Enjoy complimentary saree fall pico and custom alterations.
+            Welcome to Yaazh Boutique, Oddanchatram. Step into a world of elegance, tradition and style, crafted just for you.
           </p>
 
           <div className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-3">
@@ -44,26 +44,51 @@ export const StoreHeroBanner: React.FC<StoreHeroBannerProps> = ({
             </button>
 
             <button
-              onClick={() => onSelectDepartment('kurtis')}
+              onClick={() => onSelectDepartment('blouses')}
               className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-semibold text-xs sm:text-sm rounded-xl border border-stone-700 transition-colors cursor-pointer"
             >
-              Kurtis & Sets
+              Blouses
             </button>
 
             <button
-              onClick={() => onSelectDepartment('kids')}
+              onClick={() => onSelectDepartment('coords')}
               className="px-4 py-2.5 bg-stone-800 hover:bg-stone-700 text-stone-200 font-semibold text-xs sm:text-sm rounded-xl border border-stone-700 transition-colors cursor-pointer"
             >
-              Kidswear
+              Co-ords
             </button>
 
             <button
               onClick={onOpenSizeGuide}
               className="px-4 py-2.5 bg-stone-800/80 hover:bg-stone-700 text-stone-300 font-medium text-xs sm:text-sm rounded-xl border border-stone-700 transition-colors cursor-pointer flex items-center gap-1.5"
             >
-              <Scissors className="w-3.5 h-3.5 text-amber-400" />
-              <span>Fitting Guide</span>
+              <span>Size Guide</span>
             </button>
+          </div>
+        </div>
+
+        {/* Right: Visit Yaazh Boutique box */}
+        <div className="bg-stone-800/90 border border-stone-700/80 rounded-2xl p-5 sm:p-6 text-stone-200 shadow-xl max-w-sm w-full shrink-0">
+          <div className="flex items-center gap-2 text-amber-400 font-bold text-sm mb-3">
+            <MapPin className="w-4 h-4 shrink-0" />
+            <span>Visit Yaazh Boutique</span>
+          </div>
+          <p className="text-xs text-stone-300 leading-relaxed mb-3">
+            {STORE_CENTRE_INFO.address}
+          </p>
+          <div className="space-y-1 text-xs pt-2 border-t border-stone-700 text-stone-400">
+            <div className="flex items-center gap-1.5 text-amber-400">
+              <Phone className="w-3.5 h-3.5 shrink-0" />
+              <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="hover:text-amber-300 transition-colors">
+                {STORE_CENTRE_INFO.phone}
+              </a>
+            </div>
+            {STORE_CENTRE_INFO.phone2 && (
+              <div className="flex items-center gap-1.5 text-stone-300 pl-5">
+                <a href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`} className="hover:text-amber-300 transition-colors">
+                  {STORE_CENTRE_INFO.phone2}
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
