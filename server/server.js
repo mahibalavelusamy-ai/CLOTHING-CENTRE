@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
-import paymentsRouter from './server/payments.js';
+import paymentsRouter from './payments.js';
 
 dotenv.config();
 
@@ -25,11 +25,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/payments', paymentsRouter);
 
 // Serve static assets from the Vite build output
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '..', 'dist')));
 
 // SPA Fallback: All routes return index.html so client-side react-router deep links work
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'dist', 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
