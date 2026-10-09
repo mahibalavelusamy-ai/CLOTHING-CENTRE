@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { AnnouncementBar } from './AnnouncementBar';
 import { Header } from './Header';
 import { CategoryBar } from './CategoryBar';
 import { HeroSlideshow } from './HeroSlideshow';
@@ -536,9 +535,6 @@ export const Storefront: React.FC = () => {
           <span>{toastMessage}</span>
         </div>
       )}
-
-      {/* 1. TOP OF PAGE: Thin Announcement Bar */}
-      <AnnouncementBar />
 
       {/* Email Verification Banner */}
       {user && !user.emailVerified && (

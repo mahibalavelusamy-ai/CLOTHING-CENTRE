@@ -192,17 +192,6 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="flex items-center gap-2.5 sm:gap-3 text-xs ml-auto shrink-0">
-            {isRealtimeConnected ? (
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-[10px] font-medium" title="Connected to Google Cloud Firestore Realtime Database">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-                Firestore Realtime
-              </span>
-            ) : (
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-300 text-[10px] font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
-                Connecting DB...
-              </span>
-            )}
             <button
               id="view-orders-receipt-btn"
               onClick={onOpenOrders}

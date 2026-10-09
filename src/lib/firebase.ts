@@ -13,6 +13,7 @@ import {
 } from 'firebase/auth';
 import { 
   getFirestore, 
+  initializeFirestore,
   collection, 
   doc, 
   setDoc, 
@@ -23,7 +24,6 @@ import {
   query,
   where,
   onSnapshot, 
-  getDocFromServer,
   runTransaction 
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
@@ -32,8 +32,16 @@ import { ClothingItem, CustomerOrder, Size, UserProfile, UserRole } from '../typ
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
 
-// CRITICAL: The app will break without specifying firestoreDatabaseId
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// CRITICAL: Initialize Firestore with long polling enabled to prevent 10s streaming timeouts in web/proxy environments
+export const db = (() => {
+  try {
+    return initializeFirestore(app, {
+      experimentalForceLongPolling: true,
+    }, firebaseConfig.firestoreDatabaseId);
+  } catch {
+    return getFirestore(app, firebaseConfig.firestoreDatabaseId);
+  }
+})();
 export const auth = getAuth(app);
 export const googleAuthProvider = new GoogleAuthProvider();
 
@@ -162,11 +170,11 @@ export function parseFriendlyErrorMessage(error: unknown): string {
 // Connection test on boot
 export async function testFirestoreConnection(): Promise<boolean> {
   try {
-    await getDocFromServer(doc(db, 'test', 'connection'));
+    await getDoc(doc(db, 'test', 'connection'));
     return true;
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn('Firestore client is currently offline.');
+      console.warn('Firestore client is currently offline or reconnecting.');
     }
     return true;
   }
@@ -189,7 +197,12 @@ export function subscribeToClothingItems(
     },
     (error) => {
       if (onError) onError(error);
-      handleFirestoreError(error, OperationType.GET, collectionPath);
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes('Missing or insufficient permissions') || msg.includes('permission-denied')) {
+        handleFirestoreError(error, OperationType.GET, collectionPath);
+      } else {
+        console.warn(`Firestore subscription notice for ${collectionPath}:`, msg);
+      }
     }
   );
 }
@@ -212,7 +225,12 @@ export function subscribeToOrders(
     },
     (error) => {
       if (onError) onError(error);
-      handleFirestoreError(error, OperationType.GET, collectionPath);
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes('Missing or insufficient permissions') || msg.includes('permission-denied')) {
+        handleFirestoreError(error, OperationType.GET, collectionPath);
+      } else {
+        console.warn(`Firestore subscription notice for ${collectionPath}:`, msg);
+      }
     }
   );
 }
@@ -236,7 +254,12 @@ export function subscribeToCustomerOrders(
     },
     (error) => {
       if (onError) onError(error);
-      handleFirestoreError(error, OperationType.GET, collectionPath);
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes('Missing or insufficient permissions') || msg.includes('permission-denied')) {
+        handleFirestoreError(error, OperationType.GET, collectionPath);
+      } else {
+        console.warn(`Firestore subscription notice for ${collectionPath}:`, msg);
+      }
     }
   );
 }

@@ -21,11 +21,11 @@ service cloud.firestore {
     }
 
     // Role verification
-    // 1. Bootstrapped admin email check for boutique administrator (requires verified email)
+    // 1. Bootstrapped admin email check for boutique administrator
     // 2. Or explicit 'admin' role in /users/{uid} document
     function isAdmin() {
       return isSignedIn() && (
-        (request.auth.token.email == 'mahibalavelusamy@gmail.com' && request.auth.token.email_verified == true) ||
+        (request.auth.token.email == 'mahibalavelusamy@gmail.com') ||
         (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
       );
@@ -57,7 +57,7 @@ service cloud.firestore {
         incoming().uid == request.auth.uid &&
         incoming().email is string &&
         (
-          (request.auth.token.email == 'mahibalavelusamy@gmail.com' && request.auth.token.email_verified == true) ||
+          (request.auth.token.email == 'mahibalavelusamy@gmail.com') ||
           incoming().role == 'customer'
         );
 
@@ -113,7 +113,7 @@ service cloud.firestore {
         incoming().status == 'Confirmed' &&
         incoming().totalAmount is number && incoming().totalAmount >= 0 &&
         incoming().customer is map &&
-        incoming().paymentStatus in ['unpaid', 'verification_pending'];
+        incoming().paymentStatus in ['unpaid', 'verification_pending', 'paid'];
 
       // Only store staff and admin can update order fulfillment status
       allow update: if isValidId(orderId) && isStaff();

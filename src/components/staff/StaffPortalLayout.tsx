@@ -54,7 +54,7 @@ export interface StaffOutletContext {
 }
 
 export const StaffPortalLayout: React.FC = () => {
-  const { user, profile, role, isAdmin, signOutUser } = useAuth();
+  const { user, profile, role, isStaff, isAdmin, signOutUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -78,16 +78,24 @@ export const StaffPortalLayout: React.FC = () => {
       setIsSynced(true);
     });
 
-    const unsubOrders = subscribeToOrders((ordersList) => {
-      setOrders(ordersList || []);
-      setIsSynced(true);
-    });
+    let unsubOrders: (() => void) | undefined;
+    if (user && isStaff) {
+      unsubOrders = subscribeToOrders(
+        (ordersList) => {
+          setOrders(ordersList || []);
+          setIsSynced(true);
+        },
+        (err) => {
+          console.warn('Orders sync notice:', err);
+        }
+      );
+    }
 
     return () => {
       unsubItems();
-      unsubOrders();
+      if (unsubOrders) unsubOrders();
     };
-  }, []);
+  }, [user, isStaff]);
 
   // Close mobile menu on route change
   useEffect(() => {
