@@ -62,17 +62,18 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
     if (!availableSizes) return true;
     return availableSizes.includes(s);
   };
+
   return (
-    <aside id="clothing-filter-sidebar" className="bg-white rounded-xl border border-stone-200 p-5 shadow-xs">
+    <aside id="clothing-filter-sidebar" className="bg-surface rounded-xl border border-border p-5 shadow-xs text-text">
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-stone-200 mb-5">
+      <div className="flex items-center justify-between pb-4 border-b border-border mb-5">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-amber-700" />
-          <h2 className="text-sm font-bold text-stone-900 uppercase tracking-wide">
+          <Filter className="w-4 h-4 text-pink" />
+          <h2 className="text-sm font-bold text-text uppercase tracking-wide">
             Filter Boutique
           </h2>
           {activeFilterCount > 0 && (
-            <span className="bg-amber-100 text-amber-900 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+            <span className="bg-pink/15 text-pink border border-pink/30 text-[10px] font-bold px-1.5 py-0.5 rounded-full">
               {activeFilterCount}
             </span>
           )}
@@ -82,7 +83,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           <button
             id="reset-filters-btn"
             onClick={onResetFilters}
-            className="text-xs text-amber-800 hover:text-amber-900 font-medium flex items-center gap-1 cursor-pointer"
+            className="text-xs text-pink hover:text-pink-tint font-medium flex items-center gap-1 cursor-pointer"
           >
             <RotateCcw className="w-3 h-3" />
             <span>Clear</span>
@@ -94,8 +95,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {onSelectDepartment && (
         <div className="mb-5">
           <div className="flex items-center gap-1.5 mb-2.5">
-            <Layers className="w-3.5 h-3.5 text-stone-500" />
-            <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider">
+            <Layers className="w-3.5 h-3.5 text-text-muted" />
+            <label className="block text-xs font-bold text-text uppercase tracking-wider">
               Department
             </label>
           </div>
@@ -110,13 +111,13 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   onClick={() => onSelectDepartment(dept.id)}
                   className={`text-left px-3 py-2 rounded-lg text-xs transition-all cursor-pointer flex items-center justify-between border ${
                     isSelected
-                      ? 'bg-stone-900 text-white border-stone-900 font-bold shadow-xs'
-                      : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400 hover:bg-stone-50'
+                      ? 'bg-pink text-white border-pink font-bold shadow-xs'
+                      : 'bg-surface-2 border-border text-text hover:border-pink/40 hover:bg-surface'
                   }`}
                 >
                   <span className="truncate">{dept.label}</span>
                   {count !== undefined && (
-                    <span className={`text-[10px] ml-1 font-mono ${isSelected ? 'text-amber-300' : 'text-stone-400'}`}>
+                    <span className={`text-[10px] ml-1 font-mono ${isSelected ? 'text-white' : 'text-text-muted'}`}>
                       {count}
                     </span>
                   )}
@@ -129,14 +130,14 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
       {/* Sort By */}
       <div className="mb-5">
-        <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2">
+        <label className="block text-xs font-bold text-text uppercase tracking-wider mb-2">
           Sort By
         </label>
         <select
           id="sort-select"
           value={sortBy}
           onChange={(e) => onSortChange(e.target.value as any)}
-          className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-lg text-stone-800 focus:outline-none focus:border-amber-600 cursor-pointer"
+          className="w-full px-3 py-2 text-xs bg-surface-2 border border-border rounded-lg text-text focus:outline-none focus:border-pink cursor-pointer font-medium"
         >
           <option value="featured">Featured Curations</option>
           <option value="newest">New Arrivals</option>
@@ -149,7 +150,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Categories with Counts */}
       {visibleCategories.length > 0 && (
         <div className="mb-5">
-          <label className="block text-xs font-bold text-stone-800 uppercase tracking-wider mb-2.5">
+          <label className="block text-xs font-bold text-text uppercase tracking-wider mb-2.5">
             Garment Category
           </label>
           <div className="flex flex-col gap-1.5 max-h-52 overflow-y-auto pr-1">
@@ -161,20 +162,20 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   key={cat}
                   id={`cat-filter-${cat.replace(/\s+/g, '-').toLowerCase()}`}
                   onClick={() => onSelectCategory(cat)}
-                  className={`text-left px-3 py-2 rounded-lg text-xs transition-colors cursor-pointer flex items-center justify-between gap-2 ${
+                  className={`text-left px-3 py-2 rounded-lg text-xs transition-colors cursor-pointer flex items-center justify-between gap-2 border ${
                     isSelected
-                      ? 'bg-amber-50 text-amber-900 font-bold border border-amber-300'
-                      : 'text-stone-600 hover:bg-stone-50 hover:text-stone-900'
+                      ? 'bg-pink/15 text-pink font-bold border-pink/30'
+                      : 'border-transparent text-text-muted hover:bg-surface-2 hover:text-text'
                   }`}
                 >
                   <span className="truncate">{cat}</span>
                   <div className="flex items-center gap-1.5 shrink-0">
                     {count !== undefined && (
-                      <span className={`text-[11px] font-mono ${isSelected ? 'text-amber-800 font-bold' : 'text-stone-400'}`}>
+                      <span className={`text-[11px] font-mono ${isSelected ? 'text-pink font-bold' : 'text-text-muted'}`}>
                         {count}
                       </span>
                     )}
-                    {isSelected && <Check className="w-3.5 h-3.5 text-amber-700" />}
+                    {isSelected && <Check className="w-3.5 h-3.5 text-pink" />}
                   </div>
                 </button>
               );
@@ -191,11 +192,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           return (
             <div className="mb-5">
               <div className="flex items-center justify-between mb-2.5">
-                <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+                <label className="text-xs font-bold text-text uppercase tracking-wider">
                   Available Sizes
                 </label>
                 {selectedSizes.length > 0 && (
-                  <span className="text-[11px] text-stone-400">
+                  <span className="text-[11px] text-pink">
                     {selectedSizes.length} selected
                   </span>
                 )}
@@ -210,8 +211,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                       onClick={() => onToggleSize(size)}
                       className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                          : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                          ? 'bg-pink text-white border-pink shadow-xs font-bold'
+                          : 'bg-surface-2 border-border text-text hover:border-pink/40'
                       }`}
                     >
                       {size}
@@ -230,11 +231,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         return (
           <div className="mb-5">
             <div className="flex items-center justify-between mb-2.5">
-              <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+              <label className="text-xs font-bold text-text uppercase tracking-wider">
                 Available Sizes
               </label>
               {selectedSizes.length > 0 && (
-                <span className="text-[11px] text-stone-400">
+                <span className="text-[11px] text-pink">
                   {selectedSizes.length} selected
                 </span>
               )}
@@ -245,7 +246,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                 if (deptSizes.length === 0) return null;
                 return (
                   <div key={deptKey}>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block mb-1">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted block mb-1">
                       {deptMeta.label}
                     </span>
                     <div className="grid grid-cols-3 gap-1.5">
@@ -258,8 +259,8 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
                             onClick={() => onToggleSize(size)}
                             className={`py-1.5 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
                               isSelected
-                                ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
-                                : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
+                                ? 'bg-pink text-white border-pink shadow-xs font-bold'
+                                : 'bg-surface-2 border-border text-text hover:border-pink/40'
                             }`}
                           >
                             {size}
@@ -278,10 +279,10 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Price Range */}
       <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
-          <label className="text-xs font-bold text-stone-800 uppercase tracking-wider">
+          <label className="text-xs font-bold text-text uppercase tracking-wider">
             Price Range
           </label>
-          <span className="text-xs font-bold text-stone-900 font-mono">
+          <span className="text-xs font-bold text-pink font-mono">
             {formatPrice(priceRange[0])} – {formatPrice(priceRange[1])}
           </span>
         </div>
@@ -293,18 +294,18 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
           step={100}
           value={priceRange[1]}
           onChange={(e) => onPriceChange([priceRange[0], Number(e.target.value)])}
-          className="w-full accent-amber-600 cursor-pointer"
+          className="w-full accent-pink cursor-pointer"
         />
-        <div className="flex justify-between text-[10px] text-stone-400 mt-1 font-mono">
+        <div className="flex justify-between text-[10px] text-text-muted mt-1 font-mono">
           <span>{formatPrice(0)}</span>
           <span>Max {formatPrice(maxPossiblePrice)}</span>
         </div>
       </div>
 
       {/* In-Stock Toggle */}
-      <div className="pt-4 border-t border-stone-200">
+      <div className="pt-4 border-t border-border">
         <label className="flex items-center justify-between cursor-pointer">
-          <span className="text-xs font-medium text-stone-800">
+          <span className="text-xs font-medium text-text">
             In-Stock at Boutique Only
           </span>
           <input
@@ -312,7 +313,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
             type="checkbox"
             checked={inStockOnly}
             onChange={onToggleInStock}
-            className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 accent-amber-600 cursor-pointer"
+            className="w-4 h-4 rounded text-pink focus:ring-pink accent-pink cursor-pointer"
           />
         </label>
       </div>

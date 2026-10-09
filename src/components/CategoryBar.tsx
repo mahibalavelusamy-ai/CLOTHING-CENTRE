@@ -59,7 +59,7 @@ export const CategoryBar: React.FC<CategoryBarProps> = ({
   }
 
   return (
-    <div className="sticky top-[108px] sm:top-[112px] z-30 bg-[#fdfbf7]/95 backdrop-blur-md border-b border-stone-200/90 shadow-2xs">
+    <div className="sticky top-[108px] sm:top-[112px] z-30 bg-bg/95 backdrop-blur-md border-b border-border shadow-2xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2">
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory">
           {visibleItems.map((item) => {
@@ -74,8 +74,8 @@ export const CategoryBar: React.FC<CategoryBarProps> = ({
                 onClick={() => onSelect(item.department, item.category)}
                 className={`snap-start whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                   isActive
-                    ? 'bg-stone-900 text-white shadow-xs'
-                    : 'bg-stone-100/80 text-stone-700 hover:bg-stone-200/80 hover:text-stone-900 border border-stone-200/60'
+                    ? 'bg-pink text-white shadow-xs'
+                    : 'bg-surface-2 text-text-muted hover:bg-surface hover:text-text border border-border'
                 }`}
               >
                 {item.label}

@@ -14,7 +14,7 @@ interface Slide {
   buttonText: string;
   department: Department;
   category: string;
-  imageUrl?: string;
+  imageUrl: string;
   gradientClass: string;
   accentBorder: string;
 }
@@ -22,36 +22,39 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 'slide-1',
-    eyebrow: 'SAREE COLLECTION',
-    headline: 'Handloom & Tussar Sarees.',
-    subtext: 'Carefully chosen weaves, elegant drapes, and timeless palettes for festive occasions and celebrations.',
+    eyebrow: 'EXCLUSIVE HANDLOOMS',
+    headline: 'Handwoven Kanjivaram & Tussar Sarees',
+    subtext: 'Timeless drapes, pure zari temple borders, and festive palettes crafted with generational mastery for your most cherished moments.',
     buttonText: 'Explore Sarees',
     department: 'sarees',
     category: 'All',
-    gradientClass: 'from-[#421016] via-[#240b0e] to-stone-950',
-    accentBorder: 'border-rose-500/30 text-rose-300 bg-rose-950/60',
+    imageUrl: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1600&q=85',
+    gradientClass: 'from-[#421016] via-[#240b0e] to-bg',
+    accentBorder: 'border-pink/40 text-pink-tint bg-black/60',
   },
   {
     id: 'slide-2',
-    eyebrow: 'CONTEMPORARY PAIRINGS',
-    headline: 'Block Printed Blouses & Crop Tops.',
-    subtext: 'Artisan block prints, versatile cuts, and ready-to-wear blouses designed to pair effortlessly.',
+    eyebrow: 'ARTISANAL TAILORING',
+    headline: 'Block Printed & Zardozi Designer Blouses',
+    subtext: 'Artisan hand-block Ajrakh prints, intricate zardozi embroidery, and ready-to-wear tailored cuts paired to perfection.',
     buttonText: 'Shop Blouses',
     department: 'blouses',
     category: 'All',
-    gradientClass: 'from-[#0d3829] via-[#092219] to-stone-950',
-    accentBorder: 'border-emerald-500/30 text-emerald-300 bg-emerald-950/60',
+    imageUrl: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1600&q=85',
+    gradientClass: 'from-[#0d3829] via-[#092219] to-bg',
+    accentBorder: 'border-pink/40 text-pink-tint bg-black/60',
   },
   {
     id: 'slide-3',
-    eyebrow: 'EASY EVERYDAY COMFORT',
-    headline: 'Co-ords & Lounge Wear.',
-    subtext: 'Relaxed fits, coordinated sets, and breathable fabrics for relaxed outings and lounging at home.',
+    eyebrow: 'EFFORTLESS MODERN LUXURY',
+    headline: 'Co-ord Sets & Pure Mulmul Lounge Wear',
+    subtext: 'Breezy pure linen coordinates and feather-light mulmul silhouettes crafted for everyday grace, travel, and festive ease.',
     buttonText: 'Discover Co-ords',
     department: 'coords',
     category: 'All',
-    gradientClass: 'from-[#1b2a47] via-[#10192e] to-stone-950',
-    accentBorder: 'border-amber-500/30 text-amber-300 bg-amber-950/60',
+    imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1600&q=85',
+    gradientClass: 'from-[#1b2a47] via-[#10192e] to-bg',
+    accentBorder: 'border-pink/40 text-pink-tint bg-black/60',
   },
 ];
 
@@ -71,16 +74,16 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
 
   return (
     <div 
-      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-950 text-white shadow-xl mb-12"
+      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-bg text-white shadow-2xl mb-12 border border-border"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Background imagery or luxury gradient tinted containers with text only */}
-      <div className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[360px] sm:min-h-[440px] w-full overflow-hidden">
+      {/* Background imagery with luxury gradient overlays */}
+      <div className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[380px] sm:min-h-[460px] w-full overflow-hidden">
         {SLIDES.map((s, idx) => (
           <div
             key={s.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-out ${
+            className={`absolute inset-0 transition-all duration-1000 ease-out ${
               idx === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'
             }`}
           >
@@ -89,43 +92,44 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
                 <img
                   src={s.imageUrl}
                   alt={s.headline}
-                  className="w-full h-full object-cover object-center filter brightness-65 transition-transform duration-1000 ease-out"
-                  loading="lazy"
+                  className="w-full h-full object-cover object-center filter brightness-[0.68] transition-transform duration-1000 ease-out"
+                  loading={idx === 0 ? 'eager' : 'lazy'}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-stone-950/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/50 to-transparent" />
               </>
             ) : (
-              /* Rich gradient tinted background with subtle ambient motif glow */
               <div className={`w-full h-full bg-gradient-to-br ${s.gradientClass} relative overflow-hidden flex items-center`}>
-                <div className="absolute -right-16 -top-16 w-96 h-96 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
-                <div className="absolute right-1/4 -bottom-20 w-80 h-80 rounded-full bg-amber-400/5 blur-2xl pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
+                <div className="absolute -right-16 -top-16 w-96 h-96 rounded-full bg-pink/10 blur-3xl pointer-events-none" />
+                <div className="absolute right-1/4 -bottom-20 w-80 h-80 rounded-full bg-pink/5 blur-2xl pointer-events-none" />
               </div>
             )}
           </div>
         ))}
 
+        {/* Ambient motif overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,61,165,0.12)_0%,transparent_60%)] pointer-events-none" />
+
         {/* Content Overlay */}
         <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 sm:p-12 lg:p-16 max-w-3xl">
           <div className="space-y-3 sm:space-y-4">
-            <span className={`inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-widest font-semibold px-3 py-1 rounded-full border backdrop-blur-xs ${slide.accentBorder}`}>
-              <Sparkles className="w-3 h-3 shrink-0" />
+            <span className={`inline-flex items-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-widest font-bold px-3.5 py-1.5 rounded-full border backdrop-blur-md shadow-sm ${slide.accentBorder}`}>
+              <Sparkles className="w-3.5 h-3.5 text-pink shrink-0" />
               <span>{slide.eyebrow}</span>
             </span>
 
-            <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-stone-50 leading-[1.1]">
+            <h1 className="font-serif-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.12] drop-shadow-md">
               {slide.headline}
             </h1>
 
-            <p className="text-xs sm:text-base text-stone-300 leading-relaxed max-w-xl font-normal">
+            <p className="text-xs sm:text-base text-text-muted leading-relaxed max-w-xl font-normal drop-shadow-sm">
               {slide.subtext}
             </p>
 
-            <div className="pt-2 sm:pt-4">
+            <div className="pt-2 sm:pt-4 flex flex-wrap items-center gap-3">
               <button
                 onClick={() => onSelectCategory(slide.department, slide.category)}
-                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-stone-950 font-bold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg transition-all transform hover:-translate-y-0.5 cursor-pointer uppercase tracking-wider"
+                className="inline-flex items-center gap-2 btn-primary-glossy text-white font-bold text-xs sm:text-sm px-7 py-3.5 rounded-full shadow-xl transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer uppercase tracking-wider"
               >
                 <span>{slide.buttonText}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -137,7 +141,7 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
         {/* Arrow Navigation (Desktop) */}
         <button
           onClick={() => setCurrentSlide((prev) => (prev === 0 ? SLIDES.length - 1 : prev - 1))}
-          className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-stone-900/60 hover:bg-stone-900 text-stone-200 hover:text-white items-center justify-center backdrop-blur-sm border border-stone-700/60 transition-colors cursor-pointer"
+          className="hidden sm:flex absolute left-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-surface/70 hover:bg-surface text-text hover:text-white items-center justify-center backdrop-blur-md border border-border transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-md"
           aria-label="Previous slide"
         >
           <ChevronLeft className="w-5 h-5" />
@@ -145,20 +149,20 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
 
         <button
           onClick={() => setCurrentSlide((prev) => (prev + 1) % SLIDES.length)}
-          className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-stone-900/60 hover:bg-stone-900 text-stone-200 hover:text-white items-center justify-center backdrop-blur-sm border border-stone-700/60 transition-colors cursor-pointer"
+          className="hidden sm:flex absolute right-5 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-surface/70 hover:bg-surface text-text hover:text-white items-center justify-center backdrop-blur-md border border-border transition-all cursor-pointer hover:scale-105 active:scale-95 shadow-md"
           aria-label="Next slide"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
 
         {/* Slide Indicators Dots */}
-        <div className="absolute bottom-5 right-6 sm:right-12 z-20 flex items-center gap-2">
+        <div className="absolute bottom-6 right-6 sm:right-12 z-20 flex items-center gap-2">
           {SLIDES.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
               className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                idx === currentSlide ? 'w-8 bg-amber-400' : 'w-2 bg-stone-500/60 hover:bg-stone-400'
+                idx === currentSlide ? 'w-8 bg-pink shadow-[0_0_8px_#FF3DA5]' : 'w-2 bg-border hover:bg-pink/50'
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />

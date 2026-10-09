@@ -27,20 +27,20 @@ export const AnnouncementBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-stone-950 text-stone-300 border-b border-stone-800 text-[11px] py-2 px-4 select-none">
+    <div className="bg-bg text-text-muted border-b border-border text-[11px] py-2 px-4 select-none">
       <div className="max-w-7xl mx-auto">
         {/* Desktop: display all 3 messages with elegant spacing and subtle dividers */}
-        <div className="hidden md:flex items-center justify-center gap-8 tracking-widest uppercase text-[10px] font-medium text-stone-400">
+        <div className="hidden md:flex items-center justify-center gap-8 tracking-widest uppercase text-[10px] font-medium text-text-muted">
           {MESSAGES.map((item, idx) => {
             const Icon = item.icon;
             return (
               <React.Fragment key={item.text}>
-                <div className="flex items-center gap-2 hover:text-stone-200 transition-colors">
-                  <Icon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <div className="flex items-center gap-2 hover:text-text transition-colors">
+                  <Icon className="w-3.5 h-3.5 text-pink shrink-0" />
                   <span>{item.text}</span>
                 </div>
                 {idx < MESSAGES.length - 1 && (
-                  <span className="text-stone-700" aria-hidden="true">·</span>
+                  <span className="text-border" aria-hidden="true">·</span>
                 )}
               </React.Fragment>
             );
@@ -54,9 +54,9 @@ export const AnnouncementBar: React.FC = () => {
             return (
               <div
                 key={currentIndex}
-                className="flex items-center justify-center gap-2 tracking-widest uppercase text-[10px] font-medium text-stone-300 transition-opacity duration-300"
+                className="flex items-center justify-center gap-2 tracking-widest uppercase text-[10px] font-medium text-text-muted transition-opacity duration-300"
               >
-                <CurrentIcon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <CurrentIcon className="w-3.5 h-3.5 text-pink shrink-0" />
                 <span>{MESSAGES[currentIndex].text}</span>
               </div>
             );

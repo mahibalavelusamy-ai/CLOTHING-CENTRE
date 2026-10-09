@@ -70,9 +70,25 @@ export interface FilterState {
   inStockOnly: boolean;
 }
 
+export type UserRole = 'customer' | 'staff' | 'admin';
+
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: UserRole;
+  createdAt: string;
+  phone?: string;
+  address?: string;
+}
+
+export type PaymentMethod = 'cod' | 'upi' | 'pay_at_store' | 'online';
+export type PaymentStatus = 'unpaid' | 'verification_pending' | 'paid' | 'refunded';
+
 export interface CustomerOrder {
   id: string;
   createdAt: string;
+  customerUid?: string;
   items: CartItem[];
   subtotal: number;
   discountApplied: number;
@@ -89,6 +105,12 @@ export interface CustomerOrder {
     shippingAddress?: string;
     notes?: string;
   };
-  paymentMethod: 'card' | 'upi' | 'cash_counter';
-  status: 'Confirmed' | 'Ready for Pickup' | 'Dispatched' | 'Completed';
+  paymentMethod?: PaymentMethod | 'card' | 'cash_counter' | string;
+  paymentStatus?: PaymentStatus;
+  paymentReference?: string;
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  paidAt?: string;
+  status: 'Confirmed' | 'Ready for Pickup' | 'Dispatched' | 'Completed' | 'Cancelled';
+  stockDeducted?: boolean;
 }
