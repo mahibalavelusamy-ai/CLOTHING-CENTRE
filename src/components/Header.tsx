@@ -3,6 +3,7 @@ import {
   ShoppingBag, 
   Heart, 
   Search, 
+  Store, 
   Receipt, 
   Sparkles,
   MapPin,
@@ -12,14 +13,12 @@ import {
   X,
   History,
   ArrowUpRight,
-  Phone,
-  User as UserIcon
+  Phone
 } from 'lucide-react';
 import { Department, ClothingItem } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 import { TRENDING_SEARCHES } from '../data/trending';
 import { formatPrice } from '../lib/format';
-import { useAuth } from '../lib/authContext';
 
 interface HeaderProps {
   currentDepartment: Department;
@@ -31,8 +30,9 @@ interface HeaderProps {
   wishlistCount: number;
   onOpenCart: () => void;
   onOpenWishlist: () => void;
+  onOpenStoreManager: () => void;
   onOpenOrders: () => void;
-  onOpenAuth?: () => void;
+  lowStockCount: number;
   isRealtimeConnected?: boolean;
   inventoryItems?: ClothingItem[];
 }
@@ -47,12 +47,12 @@ export const Header: React.FC<HeaderProps> = ({
   wishlistCount,
   onOpenCart,
   onOpenWishlist,
+  onOpenStoreManager,
   onOpenOrders,
-  onOpenAuth,
+  lowStockCount,
   isRealtimeConnected = true,
   inventoryItems = []
 }) => {
-  const { user, profile } = useAuth();
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [logoError, setLogoError] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
@@ -211,20 +211,21 @@ export const Header: React.FC<HeaderProps> = ({
               <Receipt className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span className="hidden sm:inline">Track Receipts</span>
             </button>
-            {onOpenAuth && (
-              <>
-                <span className="text-stone-700">|</span>
-                <button
-                  id="customer-account-btn"
-                  onClick={onOpenAuth}
-                  className="hover:text-amber-300 transition-colors flex items-center gap-1.5 text-stone-300 cursor-pointer text-[11px] sm:text-xs"
-                  title={user ? 'Customer Account' : 'Sign In / Register'}
-                >
-                  <UserIcon className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                  <span className="max-w-[120px] truncate">{user ? (profile?.displayName || 'My Account') : 'Sign In'}</span>
-                </button>
-              </>
-            )}
+            <span className="text-stone-700">|</span>
+            <button
+              id="centre-staff-portal-btn"
+              onClick={onOpenStoreManager}
+              className="hover:text-amber-300 transition-colors flex items-center gap-1 text-stone-300 cursor-pointer text-[11px] sm:text-xs"
+              title="Inventory & Store Operations"
+            >
+              <Store className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>Staff Portal</span>
+              {lowStockCount > 0 && (
+                <span className="bg-rose-700 text-rose-100 text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                  {lowStockCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </div>

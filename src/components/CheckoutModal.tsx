@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   X, 
@@ -14,7 +14,6 @@ import {
 import { CartItem, CustomerOrder } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 import { formatPrice, FREE_DELIVERY_THRESHOLD, STANDARD_DELIVERY_FEE, STORE_GSTIN } from '../lib/format';
-import { useAuth } from '../lib/authContext';
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -35,7 +34,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   appliedCoupon,
   onOrderPlaced
 }) => {
-  const { user, profile } = useAuth();
   const [deliveryType, setDeliveryType] = useState<'store_pickup' | 'home_delivery'>('store_pickup');
   const [pickupSlot, setPickupSlot] = useState('Today (2:00 PM – 4:00 PM)');
   const [name, setName] = useState('');
@@ -45,15 +43,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const [orderNote, setOrderNote] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'upi' | 'cash_counter'>('upi');
   const [orderComplete, setOrderComplete] = useState<CustomerOrder | null>(null);
-
-  useEffect(() => {
-    if (user) {
-      if (profile?.displayName && !name) setName(profile.displayName);
-      if (user.email && !email) setEmail(user.email);
-      if (profile?.phone && !phone) setPhone(profile.phone);
-      if (profile?.address && !shippingAddress) setShippingAddress(profile.address);
-    }
-  }, [user, profile]);
 
   if (!isOpen) return null;
 
@@ -80,7 +69,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     const newOrder: CustomerOrder = {
       id: orderId,
       createdAt: new Date().toISOString(),
-      customerUid: user?.uid,
       items: [...cartItems],
       subtotal,
       discountApplied: discountAmount,

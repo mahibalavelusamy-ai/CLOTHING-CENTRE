@@ -70,22 +70,9 @@ export interface FilterState {
   inStockOnly: boolean;
 }
 
-export type UserRole = 'customer' | 'staff' | 'admin';
-
-export interface UserProfile {
-  uid: string;
-  email: string;
-  displayName: string;
-  role: UserRole;
-  createdAt: string;
-  phone?: string;
-  address?: string;
-}
-
 export interface CustomerOrder {
   id: string;
   createdAt: string;
-  customerUid?: string;
   items: CartItem[];
   subtotal: number;
   discountApplied: number;
@@ -103,5 +90,5 @@ export interface CustomerOrder {
     notes?: string;
   };
   paymentMethod: 'card' | 'upi' | 'cash_counter';
-  status: 'Confirmed' | 'Ready for Pickup' | 'Dispatched' | 'Completed' | 'Cancelled';
+  status: 'Confirmed' | 'Ready for Pickup' | 'Dispatched' | 'Completed';
 }

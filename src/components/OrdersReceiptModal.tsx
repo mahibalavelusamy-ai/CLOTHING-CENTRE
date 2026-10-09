@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { X, Receipt, Search, Printer, CheckCircle, User as UserIcon } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Receipt, Search, Printer, CheckCircle } from 'lucide-react';
 import { CustomerOrder } from '../types';
 import { STORE_CENTRE_INFO } from '../data/clothingData';
 import { formatPrice, STORE_GSTIN } from '../lib/format';
-import { useAuth } from '../lib/authContext';
 
 interface OrdersReceiptModalProps {
   isOpen: boolean;
@@ -16,36 +15,16 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
   onClose,
   orders
 }) => {
-  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterMode, setFilterMode] = useState<'my_orders' | 'all'>('my_orders');
+  const [selectedOrder, setSelectedOrder] = useState<CustomerOrder | null>(orders[0] || null);
 
-  const myOrders = orders.filter(o => 
-    (user && o.customerUid === user.uid) ||
-    (user?.email && o.customer.email.toLowerCase() === user.email.toLowerCase())
-  );
+  if (!isOpen) return null;
 
-  const activeSourceOrders = (user && filterMode === 'my_orders' && myOrders.length > 0)
-    ? myOrders
-    : orders;
-
-  const filteredOrders = activeSourceOrders.filter(o => 
+  const filteredOrders = orders.filter(o => 
     o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
     o.customer.phone.includes(searchQuery) ||
     o.customer.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  const [selectedOrder, setSelectedOrder] = useState<CustomerOrder | null>(null);
-
-  useEffect(() => {
-    if (isOpen) {
-      if (filteredOrders.length > 0) {
-        setSelectedOrder(filteredOrders[0]);
-      } else {
-        setSelectedOrder(null);
-      }
-    }
-  }, [isOpen, filterMode, searchQuery]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
@@ -81,38 +60,11 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
         <div className="p-6 flex-1 flex flex-col md:flex-row gap-6">
           {/* Order List / Finder */}
           <div className="md:w-1/3 border-b md:border-b-0 md:border-r border-stone-200 pr-0 md:pr-4">
-            {user && (
-              <div className="flex rounded-lg bg-stone-100 p-0.5 mb-2.5 text-[11px] font-semibold">
-                <button
-                  type="button"
-                  onClick={() => setFilterMode('my_orders')}
-                  className={`flex-1 py-1 rounded-md transition-all cursor-pointer ${
-                    filterMode === 'my_orders'
-                      ? 'bg-white text-stone-900 shadow-2xs font-bold'
-                      : 'text-stone-500 hover:text-stone-800'
-                  }`}
-                >
-                  My Orders ({myOrders.length})
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setFilterMode('all')}
-                  className={`flex-1 py-1 rounded-md transition-all cursor-pointer ${
-                    filterMode === 'all'
-                      ? 'bg-white text-stone-900 shadow-2xs font-bold'
-                      : 'text-stone-500 hover:text-stone-800'
-                  }`}
-                >
-                  Find Order Slip
-                </button>
-              </div>
-            )}
-
             <div className="relative mb-3">
               <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder={filterMode === 'my_orders' && user ? "Filter my orders..." : "Search Order ID, name, mobile..."}
+                placeholder="Search Order ID, name, mobile..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-8 pr-3 py-1.5 text-xs bg-stone-50 border border-stone-300 rounded-lg focus:outline-none focus:border-amber-600"
