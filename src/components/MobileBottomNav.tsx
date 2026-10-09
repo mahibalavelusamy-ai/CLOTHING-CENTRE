@@ -26,13 +26,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   onOpenOrders,
 }) => {
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-md border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.5)] px-2 py-1.5 safe-area-bottom">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-stone-900/95 backdrop-blur-md border-t border-stone-800 shadow-[0_-4px_20px_rgba(0,0,0,0.3)] px-2 py-1.5 safe-area-bottom">
       <div className="grid grid-cols-5 items-center justify-around text-center">
         {/* Home */}
         <button
           onClick={onNavigateHome}
           className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer ${
-            activeTab === 'home' ? 'text-pink font-bold' : 'text-text-muted hover:text-text'
+            activeTab === 'home' ? 'text-amber-400 font-bold' : 'text-stone-400 hover:text-stone-200'
           }`}
         >
           <Home className="w-5 h-5 mb-0.5" />
@@ -43,7 +43,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         <button
           onClick={onOpenCategories}
           className={`flex flex-col items-center justify-center py-1 transition-colors cursor-pointer ${
-            activeTab === 'collections' ? 'text-pink font-bold' : 'text-text-muted hover:text-text'
+            activeTab === 'collections' ? 'text-amber-400 font-bold' : 'text-stone-400 hover:text-stone-200'
           }`}
         >
           <Grid className="w-5 h-5 mb-0.5" />
@@ -53,12 +53,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         {/* Wishlist */}
         <button
           onClick={onOpenWishlist}
-          className="flex flex-col items-center justify-center py-1 text-text-muted hover:text-text relative transition-colors cursor-pointer"
+          className="flex flex-col items-center justify-center py-1 text-stone-400 hover:text-stone-200 relative transition-colors cursor-pointer"
         >
           <div className="relative">
             <Heart className="w-5 h-5 mb-0.5" />
             {wishlistCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 bg-pink text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
+              <span className="absolute -top-1.5 -right-2 bg-rose-600 text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center shadow-xs">
                 {wishlistCount > 9 ? '9+' : wishlistCount}
               </span>
             )}
@@ -69,7 +69,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         {/* Orders / Receipts */}
         <button
           onClick={onOpenOrders}
-          className="flex flex-col items-center justify-center py-1 text-text-muted hover:text-text transition-colors cursor-pointer"
+          className="flex flex-col items-center justify-center py-1 text-stone-400 hover:text-stone-200 transition-colors cursor-pointer"
         >
           <Receipt className="w-5 h-5 mb-0.5" />
           <span className="text-[10px] tracking-tight">Orders</span>
@@ -78,14 +78,14 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
         {/* Cart */}
         <button
           onClick={onOpenCart}
-          className="flex flex-col items-center justify-center py-1 text-pink font-bold relative transition-colors cursor-pointer"
+          className="flex flex-col items-center justify-center py-1 text-amber-400 font-bold relative transition-colors cursor-pointer"
         >
           <div className="relative">
             <div className="w-6 h-6 flex items-center justify-center">
-              <ShoppingBag className="w-5 h-5 text-pink" />
+              <ShoppingBag className="w-5 h-5 text-amber-400" />
             </div>
             {cartCount > 0 && (
-              <span className="absolute -top-1.5 -right-2 bg-pink text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
+              <span className="absolute -top-1.5 -right-2 bg-amber-500 text-stone-950 text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-xs animate-pulse">
                 {cartCount > 9 ? '9+' : cartCount}
               </span>
             )}

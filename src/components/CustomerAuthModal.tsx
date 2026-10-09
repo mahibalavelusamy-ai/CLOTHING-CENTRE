@@ -123,26 +123,26 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-surface rounded-2xl max-w-md w-full shadow-2xl border border-border overflow-hidden relative"
+        className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-stone-200 overflow-hidden relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-5 bg-surface-2 text-text flex items-center justify-between border-b border-border">
+        <div className="p-5 bg-stone-50 text-stone-900 flex items-center justify-between border-b border-stone-200">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-pink/20 border border-pink/30 text-pink flex items-center justify-center shadow-xs">
+            <div className="w-9 h-9 rounded-lg bg-stone-900 text-amber-400 flex items-center justify-center shadow-xs">
               <UserIcon className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold font-serif-display text-text">
+              <h2 className="text-base font-bold font-serif-display text-stone-900">
                 {user 
                   ? 'My Customer Account' 
                   : (mode === 'forgot_password' 
                     ? 'Reset Password' 
                     : (mode === 'login' ? 'Customer Sign In' : 'Create Account'))}
               </h2>
-              <p className="text-[11px] text-text-muted">
+              <p className="text-[11px] text-stone-500">
                 {STORE_CENTRE_INFO.name} · Oddanchatram
               </p>
             </div>
@@ -150,7 +150,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-surface hover:bg-surface-2 border border-border text-text-muted hover:text-text flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-500 hover:text-stone-900 flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -161,27 +161,27 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
           {user ? (
             /* Logged-in profile view */
             <div className="space-y-4">
-              <div className="p-4 bg-surface-2 rounded-xl border border-border flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-full bg-pink text-white font-bold flex items-center justify-center text-lg shadow-2xs">
+              <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-full bg-stone-900 text-amber-400 font-bold flex items-center justify-center text-lg shadow-2xs">
                   {profile?.displayName?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-bold text-text text-sm truncate">
+                  <h3 className="font-bold text-stone-900 text-sm truncate">
                     {profile?.displayName || 'Customer'}
                   </h3>
-                  <p className="text-xs text-text-muted truncate">{user.email}</p>
+                  <p className="text-xs text-stone-500 truncate">{user.email}</p>
                   <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-pink/15 border border-pink/30 text-pink">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 border border-amber-300 text-amber-800">
                       Boutique Customer
                     </span>
                     {user.emailVerified ? (
-                      <span className="text-[10px] font-medium text-emerald-400 flex items-center gap-1">
-                        <CheckCircle className="w-3 h-3 text-emerald-400" />
+                      <span className="text-[10px] font-medium text-emerald-700 flex items-center gap-1">
+                        <CheckCircle className="w-3 h-3 text-emerald-600" />
                         Verified
                       </span>
                     ) : (
-                      <span className="text-[10px] font-medium text-amber-400 flex items-center gap-1">
-                        <AlertCircle className="w-3 h-3 text-amber-400" />
+                      <span className="text-[10px] font-medium text-amber-700 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3 text-amber-600" />
                         Unverified
                       </span>
                     )}
@@ -191,12 +191,12 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
 
               {/* Email Verification Alert for unverified users */}
               {!user.emailVerified && (
-                <div className="p-3.5 bg-amber-950/60 border border-amber-500/40 rounded-xl text-xs text-amber-200 space-y-2">
+                <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-xl text-xs text-amber-900 space-y-2">
                   <div className="flex items-start gap-2">
-                    <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-amber-300">Email Verification Required</p>
-                      <p className="text-[11px] text-amber-200/90 mt-0.5 leading-relaxed">
+                      <p className="font-semibold text-amber-950">Email Verification Required</p>
+                      <p className="text-[11px] text-amber-900/90 mt-0.5 leading-relaxed">
                         Please verify your email address to place orders online. Check your inbox for the link sent upon registration.
                       </p>
                     </div>
@@ -205,7 +205,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                     <button
                       type="button"
                       onClick={handleResendVerification}
-                      className="px-2.5 py-1 btn-primary-glossy text-white rounded-lg text-[11px] font-semibold transition-colors cursor-pointer"
+                      className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-[11px] font-semibold transition-colors cursor-pointer"
                     >
                       Resend Email
                     </button>
@@ -213,7 +213,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                       type="button"
                       onClick={handleRefreshVerification}
                       disabled={checkingVerification}
-                      className="px-2.5 py-1 bg-surface-2 border border-border hover:border-pink/40 text-text rounded-lg text-[11px] font-semibold transition-colors cursor-pointer disabled:opacity-50"
+                      className="px-2.5 py-1 bg-white border border-stone-300 hover:border-amber-600 text-stone-800 rounded-lg text-[11px] font-semibold transition-colors cursor-pointer disabled:opacity-50"
                     >
                       {checkingVerification ? 'Checking...' : 'Check Status'}
                     </button>
@@ -222,15 +222,15 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
               )}
 
               {successNotice && (
-                <div className="p-3 bg-emerald-950/60 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
                   <span>{successNotice}</span>
                 </div>
               )}
 
               {error && (
-                <div className="p-3 bg-rose-950/60 border border-rose-500/40 rounded-xl text-xs text-rose-300 flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
+                <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
                   <span>{error}</span>
                 </div>
               )}
@@ -242,19 +242,19 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                       onClose();
                       onOpenOrders();
                     }}
-                    className="w-full flex items-center justify-between p-3.5 rounded-xl border border-border hover:bg-surface-2 text-text transition-colors text-xs font-semibold cursor-pointer group"
+                    className="w-full flex items-center justify-between p-3.5 rounded-xl border border-stone-200 hover:bg-stone-50 text-stone-800 transition-colors text-xs font-semibold cursor-pointer group"
                   >
                     <div className="flex items-center gap-2.5">
-                      <ShoppingBag className="w-4 h-4 text-pink" />
+                      <ShoppingBag className="w-4 h-4 text-amber-700" />
                       <span>View My Orders & Track Receipts</span>
                     </div>
-                    <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-pink transition-colors" />
+                    <ArrowRight className="w-4 h-4 text-stone-400 group-hover:text-amber-800 transition-colors" />
                   </button>
                 )}
 
                 <button
                   onClick={handleSignOut}
-                  className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-rose-500/40 text-rose-400 hover:bg-rose-950/30 transition-colors text-xs font-semibold cursor-pointer mt-2"
+                  className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-rose-300 text-rose-700 hover:bg-rose-50 transition-colors text-xs font-semibold cursor-pointer mt-2"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
@@ -266,12 +266,12 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
             <div>
               {mode !== 'forgot_password' ? (
                 /* Tab toggle between login & register */
-                <div className="flex rounded-xl bg-surface-2 border border-border p-1 mb-5">
+                <div className="flex rounded-xl bg-stone-100 border border-stone-200 p-1 mb-5">
                   <button
                     type="button"
                     onClick={() => { setMode('login'); setError(null); setSuccessNotice(null); }}
                     className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                      mode === 'login' ? 'bg-pink text-white shadow-2xs' : 'text-text-muted hover:text-text'
+                      mode === 'login' ? 'bg-stone-900 text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     Sign In
@@ -280,7 +280,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                     type="button"
                     onClick={() => { setMode('register'); setError(null); setSuccessNotice(null); }}
                     className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                      mode === 'register' ? 'bg-pink text-white shadow-2xs' : 'text-text-muted hover:text-text'
+                      mode === 'register' ? 'bg-stone-900 text-white shadow-2xs' : 'text-stone-600 hover:text-stone-900'
                     }`}
                   >
                     Register
@@ -289,22 +289,22 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
               ) : (
                 /* Forgot password top note */
                 <div className="mb-4">
-                  <p className="text-xs text-text-muted leading-relaxed">
+                  <p className="text-xs text-stone-600 leading-relaxed">
                     Enter your email address and we'll send you a password reset link.
                   </p>
                 </div>
               )}
 
               {successNotice && (
-                <div className="mb-4 p-3 bg-emerald-950/60 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 shrink-0 mt-0.5 text-emerald-400" />
+                <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-start gap-2">
+                  <CheckCircle className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
                   <span>{successNotice}</span>
                 </div>
               )}
 
               {error && (
-                <div className="mb-4 p-3 bg-rose-950/60 border border-rose-500/40 rounded-xl text-xs text-rose-300 flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
+                <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-800 flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
                   <span>{error}</span>
                 </div>
               )}
@@ -312,29 +312,29 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
               <form onSubmit={handleSubmit} className="space-y-3.5">
                 {mode === 'register' && (
                   <div>
-                    <label className="block text-xs font-semibold text-text-muted mb-1">Full Name</label>
+                    <label className="block text-xs font-semibold text-stone-600 mb-1">Full Name</label>
                     <input
                       type="text"
                       required
                       placeholder="e.g. Priyadarshini"
                       value={displayName}
                       onChange={(e) => setDisplayName(e.target.value)}
-                      className="w-full px-3 py-2 text-xs bg-surface-2 border border-border rounded-xl text-text placeholder:text-text-muted focus:outline-none focus:border-pink transition-colors"
+                      className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-xl text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 transition-colors"
                     />
                   </div>
                 )}
 
                 <div>
-                  <label className="block text-xs font-semibold text-text-muted mb-1">Email Address</label>
+                  <label className="block text-xs font-semibold text-stone-600 mb-1">Email Address</label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       required
                       placeholder="name@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 text-xs bg-surface-2 border border-border rounded-xl text-text placeholder:text-text-muted focus:outline-none focus:border-pink transition-colors"
+                      className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-stone-300 rounded-xl text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 transition-colors"
                     />
                   </div>
                 </div>
@@ -342,7 +342,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                 {mode !== 'forgot_password' && (
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-semibold text-text-muted">Password</label>
+                      <label className="block text-xs font-semibold text-stone-600">Password</label>
                       {mode === 'login' && (
                         <button
                           type="button"
@@ -351,21 +351,21 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                             setError(null);
                             setSuccessNotice(null);
                           }}
-                          className="text-[11px] text-pink hover:text-pink-tint font-semibold cursor-pointer underline"
+                          className="text-[11px] text-amber-800 hover:text-amber-900 font-semibold cursor-pointer underline"
                         >
                           Forgot password?
                         </button>
                       )}
                     </div>
                     <div className="relative">
-                      <Lock className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                      <Lock className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                       <input
                         type="password"
                         required
                         placeholder="At least 6 characters"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2 text-xs bg-surface-2 border border-border rounded-xl text-text placeholder:text-text-muted focus:outline-none focus:border-pink transition-colors"
+                        className="w-full pl-9 pr-3 py-2 text-xs bg-white border border-stone-300 rounded-xl text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 transition-colors"
                       />
                     </div>
                   </div>
@@ -374,7 +374,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 px-4 btn-primary-glossy text-white font-bold rounded-xl text-xs transition-colors shadow-2xs cursor-pointer disabled:opacity-50 mt-2 uppercase tracking-wider"
+                  className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs transition-colors shadow-2xs cursor-pointer disabled:opacity-50 mt-2 uppercase tracking-wider"
                 >
                   {loading 
                     ? 'Processing...' 
@@ -391,7 +391,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                       setError(null);
                       setSuccessNotice(null);
                     }}
-                    className="w-full py-2 text-xs text-text-muted hover:text-text font-semibold transition-colors cursor-pointer text-center"
+                    className="w-full py-2 text-xs text-stone-500 hover:text-stone-900 font-semibold transition-colors cursor-pointer text-center"
                   >
                     Back to Sign In
                   </button>
@@ -402,10 +402,10 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                 <>
                   <div className="relative my-4">
                     <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-border" />
+                      <div className="w-full border-t border-stone-200" />
                     </div>
-                    <div className="relative flex justify-center text-[10px] uppercase tracking-wider text-text-muted">
-                      <span className="bg-surface px-2">or continue with</span>
+                    <div className="relative flex justify-center text-[10px] uppercase tracking-wider text-stone-400">
+                      <span className="bg-white px-2">or continue with</span>
                     </div>
                   </div>
 
@@ -413,7 +413,7 @@ export const CustomerAuthModal: React.FC<CustomerAuthModalProps> = ({
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={loading}
-                    className="w-full py-2 px-3 border border-border hover:bg-surface-2 text-text font-semibold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                    className="w-full py-2 px-3 border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold rounded-xl text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24">
                       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />

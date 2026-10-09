@@ -62,22 +62,22 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-surface rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-border flex flex-col relative text-text"
+        className="bg-white rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 flex flex-col relative text-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-5 bg-surface-2 text-text flex items-center justify-between border-b border-border sticky top-0 z-10">
+        <div className="p-5 bg-stone-50 text-stone-900 flex items-center justify-between border-b border-stone-200 sticky top-0 z-10">
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-mono font-bold text-lg text-white">Order #{order.id}</span>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-pink/15 text-pink border border-pink/30">
+              <span className="font-mono font-bold text-lg text-stone-900">Order #{order.id}</span>
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
                 {order.status}
               </span>
             </div>
-            <p className="text-xs text-text-muted mt-0.5 flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-text-muted" />
+            <p className="text-xs text-stone-500 mt-0.5 flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-stone-400" />
               <span>{new Date(order.createdAt).toLocaleString()}</span>
             </p>
           </div>
@@ -85,14 +85,14 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="p-2 rounded-lg bg-surface hover:bg-surface-2 text-text-muted hover:text-text border border-border transition-colors cursor-pointer"
+              className="p-2 rounded-lg bg-white hover:bg-stone-100 text-stone-500 hover:text-stone-900 border border-stone-200 transition-colors cursor-pointer"
               title="Print Receipt Slip"
             >
               <Printer className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-surface hover:bg-surface-2 text-text-muted hover:text-text border border-border flex items-center justify-center transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-full bg-white hover:bg-stone-100 text-stone-500 hover:text-stone-900 border border-stone-200 flex items-center justify-center transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -102,15 +102,15 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         {/* Content Body */}
         <div className="p-6 space-y-6 text-xs">
           {/* Status Control */}
-          <div className="p-4 bg-surface-2/70 rounded-xl border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <span className="font-bold text-text">Update Fulfillment Status</span>
-              <p className="text-[11px] text-text-muted">Change status as the order progresses</p>
+              <span className="font-bold text-stone-900">Update Fulfillment Status</span>
+              <p className="text-[11px] text-stone-500">Change status as the order progresses</p>
             </div>
             <select
               value={order.status}
               onChange={(e) => onUpdateStatus(order.id, e.target.value as any)}
-              className="bg-surface border border-border rounded-lg px-3 py-1.5 text-xs font-bold text-text focus:outline-none focus:border-pink"
+              className="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-xs font-bold text-stone-800 focus:outline-none focus:border-amber-600"
             >
               <option value="Confirmed">Confirmed</option>
               <option value="Ready for Pickup">Ready for Pickup</option>
@@ -121,17 +121,17 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           </div>
 
           {/* Payment Status & Quick Actions Control */}
-          <div className="p-4 bg-surface-2/70 rounded-xl border border-border space-y-3">
+          <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-3">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
               <div>
-                <span className="font-bold text-text flex items-center gap-1.5">
-                  <DollarSign className="w-4 h-4 text-pink" />
+                <span className="font-bold text-stone-900 flex items-center gap-1.5">
+                  <DollarSign className="w-4 h-4 text-amber-700" />
                   <span>Payment Details</span>
                 </span>
-                <p className="text-[11px] text-text-muted mt-0.5">
-                  Method: <strong className="text-text">{formatPaymentMethod(order.paymentMethod)}</strong>
+                <p className="text-[11px] text-stone-500 mt-0.5">
+                  Method: <strong className="text-stone-800">{formatPaymentMethod(order.paymentMethod)}</strong>
                   {order.paymentReference && (
-                    <> • UTR / Ref: <span className="font-mono font-bold text-pink-tint">{order.paymentReference}</span></>
+                    <> • UTR / Ref: <span className="font-mono font-bold text-stone-800">{order.paymentReference}</span></>
                   )}
                 </p>
               </div>
@@ -141,12 +141,12 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             </div>
 
             {/* Quick action buttons: "Mark paid", "Mark unpaid" and "Mark refunded" */}
-            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-border">
+            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-stone-200">
               <button
                 type="button"
                 onClick={() => onUpdatePaymentStatus(order.id, 'paid')}
                 disabled={currentPaymentStatus === 'paid'}
-                className="px-3 py-1.5 bg-emerald-950/60 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-emerald-300 hover:text-white border border-emerald-800/60 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-emerald-800 hover:text-white border border-emerald-200 rounded-lg text-xs font-bold transition-colors cursor-pointer"
               >
                 Mark paid
               </button>
@@ -154,7 +154,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 type="button"
                 onClick={() => onUpdatePaymentStatus(order.id, 'unpaid')}
                 disabled={currentPaymentStatus === 'unpaid'}
-                className="px-3 py-1.5 bg-surface hover:bg-surface-2 disabled:opacity-40 disabled:cursor-not-allowed text-text-muted hover:text-text border border-border rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-white hover:bg-stone-100 disabled:opacity-40 disabled:cursor-not-allowed text-stone-600 hover:text-stone-900 border border-stone-200 rounded-lg text-xs font-bold transition-colors cursor-pointer"
               >
                 Mark unpaid
               </button>
@@ -162,7 +162,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 type="button"
                 onClick={() => onUpdatePaymentStatus(order.id, 'refunded')}
                 disabled={currentPaymentStatus === 'refunded'}
-                className="px-3 py-1.5 bg-rose-950/60 hover:bg-rose-600 disabled:opacity-40 disabled:cursor-not-allowed text-rose-300 hover:text-white border border-rose-800/60 rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-rose-50 hover:bg-rose-600 disabled:opacity-40 disabled:cursor-not-allowed text-rose-800 hover:text-white border border-rose-200 rounded-lg text-xs font-bold transition-colors cursor-pointer"
               >
                 Mark refunded
               </button>
@@ -171,21 +171,21 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
           {/* Customer & Delivery Details */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="p-4 rounded-xl border border-border bg-surface-2/40 space-y-2">
-              <h4 className="font-bold text-text flex items-center gap-1.5">
+            <div className="p-4 rounded-xl border border-stone-200 bg-white space-y-2">
+              <h4 className="font-bold text-stone-900 flex items-center gap-1.5">
                 <span>Customer Information</span>
               </h4>
-              <p className="font-semibold text-text text-sm">{order.customer.name}</p>
-              <p className="flex items-center gap-2 text-text-muted">
-                <Phone className="w-3.5 h-3.5 text-text-muted" />
-                <a href={`tel:${order.customer.phone}`} className="hover:underline hover:text-pink">{order.customer.phone}</a>
+              <p className="font-semibold text-stone-900 text-sm">{order.customer.name}</p>
+              <p className="flex items-center gap-2 text-stone-600">
+                <Phone className="w-3.5 h-3.5 text-stone-400" />
+                <a href={`tel:${order.customer.phone}`} className="hover:underline hover:text-amber-700">{order.customer.phone}</a>
               </p>
-              <p className="flex items-center gap-2 text-text-muted">
-                <Mail className="w-3.5 h-3.5 text-text-muted" />
-                <a href={`mailto:${order.customer.email}`} className="hover:underline hover:text-pink">{order.customer.email}</a>
+              <p className="flex items-center gap-2 text-stone-600">
+                <Mail className="w-3.5 h-3.5 text-stone-400" />
+                <a href={`mailto:${order.customer.email}`} className="hover:underline hover:text-amber-700">{order.customer.email}</a>
               </p>
               {order.customerUid && (
-                <p className="text-[10px] text-text-muted/70 font-mono">
+                <p className="text-[10px] text-stone-400 font-mono">
                   Registered UID: {order.customerUid.slice(0, 10)}...
                 </p>
               )}
@@ -194,7 +194,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                   href={buildLink(order.customer.phone, buildStatusMessage(order, order.status))}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2.5 w-full py-2 px-3 bg-emerald-950/50 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-800/60 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                  className="mt-2.5 w-full py-2 px-3 bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white border border-emerald-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-xs"
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
                   <span>Message customer</span>
@@ -202,16 +202,16 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               )}
             </div>
 
-            <div className="p-4 rounded-xl border border-border bg-surface-2/40 space-y-2">
-              <h4 className="font-bold text-text flex items-center gap-1.5">
+            <div className="p-4 rounded-xl border border-stone-200 bg-white space-y-2">
+              <h4 className="font-bold text-stone-900 flex items-center gap-1.5">
                 {order.customer.deliveryType === 'store_pickup' ? (
                   <>
-                    <Store className="w-3.5 h-3.5 text-pink" />
+                    <Store className="w-3.5 h-3.5 text-amber-700" />
                     <span>In-Store Collection</span>
                   </>
                 ) : (
                   <>
-                    <Truck className="w-3.5 h-3.5 text-pink" />
+                    <Truck className="w-3.5 h-3.5 text-blue-700" />
                     <span>Home Delivery</span>
                   </>
                 )}
@@ -219,24 +219,24 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
               {order.customer.deliveryType === 'store_pickup' ? (
                 <>
-                  <p className="text-text-muted">
-                    Collection Centre: <strong className="text-text">{STORE_CENTRE_INFO.name}</strong>
+                  <p className="text-stone-600">
+                    Collection Centre: <strong className="text-stone-900">{STORE_CENTRE_INFO.name}</strong>
                   </p>
-                  <p className="flex items-center gap-1.5 text-text-muted">
-                    <Clock className="w-3.5 h-3.5 text-text-muted" />
+                  <p className="flex items-center gap-1.5 text-stone-500">
+                    <Clock className="w-3.5 h-3.5 text-stone-400" />
                     <span>{order.customer.pickupSlot || 'Ready at boutique counter'}</span>
                   </p>
                 </>
               ) : (
-                <p className="text-text-muted leading-relaxed">
-                  <MapPin className="w-3.5 h-3.5 text-text-muted inline mr-1" />
+                <p className="text-stone-600 leading-relaxed">
+                  <MapPin className="w-3.5 h-3.5 text-stone-400 inline mr-1" />
                   {order.customer.shippingAddress || 'No address specified'}
                 </p>
               )}
 
               {order.customer.notes && (
-                <div className="pt-2 border-t border-border text-text-muted text-[11px]">
-                  <strong className="text-text">Notes:</strong> {order.customer.notes}
+                <div className="pt-2 border-t border-stone-200 text-stone-500 text-[11px]">
+                  <strong className="text-stone-800">Notes:</strong> {order.customer.notes}
                 </div>
               )}
             </div>
@@ -244,30 +244,30 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
           {/* Items breakdown */}
           <div>
-            <h4 className="font-bold text-text mb-2">Itemized Garments ({order.items.length})</h4>
-            <div className="border border-border rounded-xl overflow-hidden divide-y divide-border">
+            <h4 className="font-bold text-stone-900 mb-2">Itemized Garments ({order.items.length})</h4>
+            <div className="border border-stone-200 rounded-xl overflow-hidden divide-y divide-stone-100">
               {order.items.map((cartItem, idx) => (
-                <div key={idx} className="p-3 bg-surface flex items-center justify-between gap-3">
+                <div key={idx} className="p-3 bg-white flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-surface-2 border border-border flex-shrink-0 overflow-hidden flex items-center justify-center">
+                    <div className="w-9 h-9 rounded-lg bg-stone-100 border border-stone-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
                       {cartItem.item.images?.[0] ? (
                         <img src={cartItem.item.images[0]} alt={cartItem.item.name} className="w-full h-full object-cover" />
                       ) : (
                         <div
                           className="w-full h-full"
-                          style={{ backgroundColor: cartItem.selectedColor?.hex || '#2A2A2A' }}
+                          style={{ backgroundColor: cartItem.selectedColor?.hex || '#d6d3d1' }}
                         />
                       )}
                     </div>
                     <div>
-                      <p className="font-bold text-text">{cartItem.item.name}</p>
-                      <p className="text-[11px] text-text-muted font-mono">
-                        Size: <strong className="text-pink-tint">{cartItem.selectedSize}</strong> · Color: {cartItem.selectedColor?.name || 'Default'} · Qty: {cartItem.quantity}
+                      <p className="font-bold text-stone-900">{cartItem.item.name}</p>
+                      <p className="text-[11px] text-stone-500 font-mono">
+                        Size: <strong className="text-stone-800">{cartItem.selectedSize}</strong> · Color: {cartItem.selectedColor?.name || 'Default'} · Qty: {cartItem.quantity}
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-right font-mono font-bold text-text">
+                  <div className="text-right font-mono font-bold text-stone-900">
                     {formatPrice(cartItem.item.price * cartItem.quantity)}
                   </div>
                 </div>
@@ -276,49 +276,49 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           </div>
 
           {/* Pricing & totals */}
-          <div className="p-4 bg-surface-2/70 rounded-xl border border-border space-y-1.5 font-mono text-text-muted">
+          <div className="p-4 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5 font-mono text-stone-600">
             <div className="flex justify-between">
               <span>Subtotal:</span>
-              <span className="text-text">{formatPrice(order.subtotal)}</span>
+              <span className="text-stone-900">{formatPrice(order.subtotal)}</span>
             </div>
             {order.discountApplied > 0 && (
-              <div className="flex justify-between text-rose-400">
+              <div className="flex justify-between text-rose-600">
                 <span>Discount ({order.couponCode || 'Promo'}):</span>
                 <span>-{formatPrice(order.discountApplied)}</span>
               </div>
             )}
             <div className="flex justify-between">
               <span>Delivery Fee:</span>
-              <span className="text-text">{order.deliveryFee > 0 ? formatPrice(order.deliveryFee) : 'FREE'}</span>
+              <span className="text-stone-900">{order.deliveryFee > 0 ? formatPrice(order.deliveryFee) : 'FREE'}</span>
             </div>
             <div className="flex justify-between">
               <span>GST (5% Apparel):</span>
-              <span className="text-text">{formatPrice(order.tax)}</span>
+              <span className="text-stone-900">{formatPrice(order.tax)}</span>
             </div>
-            <div className="flex justify-between text-sm font-bold text-text pt-2 border-t border-border">
+            <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t border-stone-200">
               <span>Total Amount:</span>
-              <span className="text-base text-pink">{formatPrice(order.totalAmount)}</span>
+              <span className="text-base text-amber-700">{formatPrice(order.totalAmount)}</span>
             </div>
-            <div className="pt-1 text-[11px] text-text-muted flex justify-between font-sans">
+            <div className="pt-1 text-[11px] text-stone-500 flex justify-between font-sans">
               <span>Payment Details:</span>
-              <span className="font-semibold text-text">
+              <span className="font-semibold text-stone-800">
                 {formatPaymentMethod(order.paymentMethod)} • {currentPaymentStatus.toUpperCase()}
               </span>
             </div>
           </div>
 
           {/* Footer actions */}
-          <div className="flex items-center justify-between pt-2 border-t border-border">
+          <div className="flex items-center justify-between pt-2 border-t border-stone-200">
             <button
               onClick={handleDelete}
-              className="px-3 py-1.5 text-rose-400 hover:bg-rose-950/40 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
+              className="px-3 py-1.5 text-rose-600 hover:bg-rose-50 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
             >
               Delete Order Record
             </button>
 
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-pink hover:bg-pink-strong text-white font-bold rounded-xl text-xs cursor-pointer transition-colors shadow-sm"
+              className="px-4 py-2 bg-stone-900 hover:bg-amber-600 text-white font-bold rounded-xl text-xs cursor-pointer transition-colors shadow-sm"
             >
               Close
             </button>

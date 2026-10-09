@@ -36,12 +36,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div
       id={`product-card-${item.id}`}
-      className="group product-card-glow rounded-xl overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+      className="group bg-white rounded-xl border border-stone-200/80 overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Visual media container */}
-      <div className="relative aspect-[3/4] bg-surface-2 overflow-hidden">
+      <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
         {activeImage ? (
           <img
             src={activeImage}
@@ -51,14 +51,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             referrerPolicy="no-referrer"
           />
         ) : (
-          <div className="w-full h-full bg-surface-2 flex flex-col items-center justify-center p-6 text-center select-none border-b border-border">
-            <div className="w-11 h-11 rounded-full bg-pink/15 border border-pink/30 text-pink flex items-center justify-center mb-3 shadow-2xs">
-              <Sparkles className="w-4 h-4 text-pink" />
+          <div className="w-full h-full bg-[#f6f3ed] flex flex-col items-center justify-center p-6 text-center select-none border-b border-stone-200/50">
+            <div className="w-11 h-11 rounded-full bg-amber-100/80 border border-amber-200/80 text-amber-900 flex items-center justify-center mb-3 shadow-2xs">
+              <Sparkles className="w-4 h-4 text-amber-800" />
             </div>
-            <span className="font-serif-display text-sm sm:text-base font-bold text-text leading-snug line-clamp-3">
+            <span className="font-serif-display text-sm sm:text-base font-bold text-stone-900 leading-snug line-clamp-3">
               {item.name}
             </span>
-            <span className="text-[10px] uppercase font-bold tracking-widest text-pink mt-2 bg-pink/10 px-2 py-0.5 rounded-full border border-pink/20">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-amber-900/80 mt-2 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
               {item.category}
             </span>
           </div>
@@ -68,13 +68,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {(item.tags.length > 0 || item.discountPercent) && (
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none items-start">
             {item.tags.map((tag) => {
-              let badgeStyle = 'bg-surface-2 text-text border-border';
+              let badgeStyle = 'bg-stone-900 text-stone-100 border-stone-800';
               if (tag === 'Bestseller') {
-                badgeStyle = 'bg-pink text-white border-pink font-bold shadow-xs';
+                badgeStyle = 'bg-amber-600 text-white border-amber-500 font-bold shadow-xs';
               } else if (tag === 'Sale') {
                 badgeStyle = 'bg-rose-600 text-white border-rose-500 font-bold';
               } else if (tag === 'New Arrival') {
-                badgeStyle = 'bg-pink/20 text-pink-tint border-pink/40 font-bold';
+                badgeStyle = 'bg-amber-100 text-amber-900 border-amber-300 font-bold';
               } else if (tag === 'Festive Special') {
                 badgeStyle = 'bg-purple-900/80 text-purple-200 border-purple-700 font-bold';
               } else if (tag === 'Handloom') {
@@ -104,12 +104,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             e.stopPropagation();
             onToggleWishlist(item);
           }}
-          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-surface-2/90 hover:bg-surface text-text-muted hover:text-pink border border-border shadow-sm flex items-center justify-center transition-all cursor-pointer z-10"
+          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-stone-400 hover:text-rose-600 border border-stone-200/80 shadow-sm flex items-center justify-center transition-all cursor-pointer z-10"
           title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
         >
           <Heart
             className={`w-4 h-4 transition-colors ${
-              isWishlisted ? 'fill-pink text-pink' : ''
+              isWishlisted ? 'fill-rose-500 text-rose-500' : ''
             }`}
           />
         </button>
@@ -123,8 +123,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         )}
 
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-black/75 backdrop-blur-xs flex items-center justify-center">
-            <span className="bg-surface-2 border border-border text-text-muted text-xs font-bold tracking-wider px-3 py-1.5 rounded uppercase">
+          <div className="absolute inset-0 bg-stone-950/75 backdrop-blur-xs flex items-center justify-center">
+            <span className="bg-stone-900 border border-stone-700 text-stone-300 text-xs font-bold tracking-wider px-3 py-1.5 rounded uppercase">
               Temporarily Sold Out
             </span>
           </div>
@@ -135,7 +135,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <button
             id={`quick-view-btn-${item.id}`}
             onClick={() => onQuickView(item)}
-            className="flex-1 bg-surface/95 hover:bg-pink hover:text-white text-text border border-border text-xs font-semibold py-2 px-3 rounded-lg shadow-md flex items-center justify-center gap-1.5 backdrop-blur-xs transition-all cursor-pointer"
+            className="flex-1 bg-white/95 hover:bg-stone-900 hover:text-white text-stone-800 border border-stone-200 text-xs font-semibold py-2 px-3 rounded-lg shadow-md flex items-center justify-center gap-1.5 backdrop-blur-xs transition-all cursor-pointer"
           >
             <Eye className="w-3.5 h-3.5" />
             <span>Quick View</span>
@@ -147,9 +147,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <div className="p-3.5 flex flex-col justify-between flex-1">
         <div>
           {/* Category Eyebrow & SKU */}
-          <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-text-muted font-semibold mb-1">
+          <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-stone-500 font-semibold mb-1">
             <span className="truncate">{item.category}</span>
-            <span className="font-mono text-[9px] text-pink-tint tracking-normal shrink-0 ml-1">
+            <span className="font-mono text-[9px] text-stone-400 tracking-normal shrink-0 ml-1">
               {item.sku}
             </span>
           </div>
@@ -157,7 +157,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Title */}
           <h3
             onClick={() => onQuickView(item)}
-            className="text-text font-semibold text-sm leading-snug line-clamp-1 hover:text-pink transition-colors cursor-pointer"
+            className="text-stone-900 font-semibold text-sm leading-snug line-clamp-1 hover:text-amber-800 transition-colors cursor-pointer"
             title={item.name}
           >
             {item.name}
@@ -167,13 +167,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {(item.occasion || item.blouseIncluded) && (
             <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
               {item.occasion && (
-                <span className="text-[10px] font-medium bg-surface-2 text-text border border-border px-2 py-0.5 rounded">
+                <span className="text-[10px] font-medium bg-stone-100 text-stone-700 border border-stone-200 px-2 py-0.5 rounded">
                   {item.occasion}
                 </span>
               )}
               {item.blouseIncluded && (
-                <span className="text-[10px] font-medium bg-emerald-950/60 text-emerald-300 border border-emerald-800/80 px-2 py-0.5 rounded flex items-center gap-1">
-                  <Sparkles className="w-2.5 h-2.5" />
+                <span className="text-[10px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded flex items-center gap-1">
+                  <Sparkles className="w-2.5 h-2.5 text-emerald-600" />
                   Blouse piece included
                 </span>
               )}
@@ -182,7 +182,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
           {/* Fabric & Fit badge (Fit hidden when fitType is missing) */}
           {(item.fitType || item.fabric) && (
-            <p className="text-xs text-text-muted mt-1 line-clamp-1">
+            <p className="text-xs text-stone-500 mt-1 line-clamp-1">
               {[item.fitType, item.fabric?.split(',')[0]].filter(Boolean).join(' • ')}
             </p>
           )}
@@ -190,31 +190,31 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Price, Savings & Rating */}
           <div className="flex items-center justify-between gap-2 mt-2.5">
             <div className="flex items-baseline flex-wrap gap-x-2 gap-y-0.5 min-w-0">
-              <span className="text-base font-bold text-text font-mono">
+              <span className="text-base font-bold text-stone-900 font-mono">
                 {formatPrice(item.price)}
               </span>
               {item.originalPrice && (
-                <span className="text-xs text-text-muted/60 line-through font-mono">
+                <span className="text-xs text-stone-400 line-through font-mono">
                   {formatPrice(item.originalPrice)}
                 </span>
               )}
               {item.discountPercent && (
-                <span className="text-[10px] font-bold text-pink bg-pink/15 border border-pink/30 px-1.5 py-0.5 rounded whitespace-nowrap">
+                <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded whitespace-nowrap">
                   Save {item.discountPercent}%
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-1 text-xs text-text-muted shrink-0">
-              <Star className="w-3.5 h-3.5 fill-pink text-pink shrink-0" />
-              <span className="font-semibold text-[11px] text-text">{item.rating}</span>
-              <span className="text-[10px] text-text-muted">({item.reviewCount})</span>
+            <div className="flex items-center gap-1 text-xs text-stone-500 shrink-0">
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
+              <span className="font-semibold text-[11px] text-stone-800">{item.rating}</span>
+              <span className="text-[10px] text-stone-400">({item.reviewCount})</span>
             </div>
           </div>
         </div>
 
         {/* Interactive Controls (Sizes & Colors) */}
-        <div className="mt-3 pt-3 border-t border-border">
+        <div className="mt-3 pt-3 border-t border-stone-100">
           {/* Color swatches */}
           {item.colors.length > 0 && (
             <div className="flex items-center justify-between mb-2">
@@ -226,8 +226,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     onClick={() => setSelectedColorIdx(idx)}
                     className={`w-4 h-4 rounded-full border transition-all cursor-pointer ${
                       selectedColorIdx === idx
-                        ? 'ring-2 ring-pink ring-offset-1 ring-offset-bg scale-110'
-                        : 'border-border hover:scale-105'
+                        ? 'ring-2 ring-amber-600 ring-offset-1 ring-offset-white scale-110'
+                        : 'border-stone-300 hover:scale-105'
                     }`}
                     style={{ backgroundColor: color.hex }}
                     title={color.name}
@@ -235,7 +235,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   />
                 ))}
               </div>
-              <span className="text-[10px] text-text-muted font-medium truncate max-w-[110px]">
+              <span className="text-[10px] text-stone-500 font-medium truncate max-w-[110px]">
                 {item.colors[selectedColorIdx]?.name}
               </span>
             </div>
@@ -244,9 +244,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Size Selector */}
           {isFreeSize ? (
             /* Free Size items: show 'Free Size' as a single label and auto-select */
-            <div className="mb-3 flex items-center justify-between bg-surface-2 border border-border rounded-lg px-2.5 py-1 text-xs">
-              <span className="text-[11px] font-medium text-text-muted uppercase tracking-wider">Size</span>
-              <span className="text-xs font-bold text-text bg-surface px-2 py-0.5 rounded border border-border shadow-2xs">
+            <div className="mb-3 flex items-center justify-between bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1 text-xs">
+              <span className="text-[11px] font-medium text-stone-500 uppercase tracking-wider">Size</span>
+              <span className="text-xs font-bold text-stone-900 bg-white px-2 py-0.5 rounded border border-stone-200 shadow-2xs">
                 Free Size
               </span>
             </div>
@@ -263,10 +263,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     onClick={() => setSelectedSize(s.size)}
                     className={`flex-1 min-w-[28px] py-1 text-[10px] font-semibold rounded border transition-all select-none relative ${
                       !hasStock
-                        ? 'opacity-40 bg-surface-2 border-border text-text-muted/50 cursor-not-allowed line-through'
+                        ? 'opacity-40 bg-stone-100 border-stone-200 text-stone-400 cursor-not-allowed line-through'
                         : isSelected
-                        ? 'bg-pink border-pink text-white shadow-xs cursor-pointer font-bold'
-                        : 'border-border text-text hover:border-pink bg-surface-2 hover:bg-surface cursor-pointer'
+                        ? 'bg-stone-900 border-stone-900 text-white shadow-xs cursor-pointer font-bold'
+                        : 'border-stone-200 text-stone-700 hover:border-amber-600 bg-stone-50 hover:bg-white cursor-pointer'
                     }`}
                     title={hasStock ? `${s.size} (${s.stock} in stock)` : `${s.size} - Out of stock`}
                     aria-label={hasStock ? `Select size ${s.size}` : `Size ${s.size} is out of stock`}
@@ -285,8 +285,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             onClick={() => onAddToCart(item, selectedSize, selectedColorIdx)}
             className={`w-full py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
               isOutOfStock || currentSizeStock === 0
-                ? 'bg-surface-2 border border-border text-text-muted/50 cursor-not-allowed'
-                : 'bg-pink hover:bg-pink-strong text-white shadow-sm'
+                ? 'bg-stone-100 border border-stone-200 text-stone-400 cursor-not-allowed'
+                : 'bg-amber-600 hover:bg-amber-700 text-white shadow-sm'
             }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
@@ -303,5 +303,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
     </div>
+
   );
 };

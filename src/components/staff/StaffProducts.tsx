@@ -85,17 +85,17 @@ export const StaffProducts: React.FC = () => {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold font-serif-display text-text">
+          <h1 className="text-xl sm:text-2xl font-bold font-serif-display text-stone-900">
             Products & Catalogue Management
           </h1>
-          <p className="text-xs text-text-muted mt-0.5">
+          <p className="text-xs text-stone-500 mt-0.5">
             Manage your boutique offerings, edit descriptions, adjust pricing, and add new arrivals
           </p>
         </div>
 
         <button
           onClick={handleOpenAdd}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-pink hover:bg-pink-strong text-white rounded-xl text-xs font-bold shadow-md shadow-pink/20 transition-all cursor-pointer self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-md shadow-amber-900/20 transition-all cursor-pointer self-start sm:self-auto"
         >
           <PlusCircle className="w-4 h-4" />
           <span>Add New Garment</span>
@@ -103,17 +103,17 @@ export const StaffProducts: React.FC = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs space-y-3">
+      <div className="bg-white p-4 rounded-2xl border border-stone-200/90 shadow-2xs space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {/* Search Input */}
           <div className="relative sm:col-span-1">
-            <Search className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by name, SKU, fabric..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink transition-colors"
+              className="w-full pl-9 pr-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 placeholder-stone-400 rounded-xl focus:outline-none focus:border-amber-600 transition-colors"
             />
           </div>
 
@@ -125,7 +125,7 @@ export const StaffProducts: React.FC = () => {
                 setSelectedDept(e.target.value as Department);
                 setSelectedCat('All');
               }}
-              className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink font-medium"
+              className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 rounded-xl focus:outline-none focus:border-amber-600 font-medium"
             >
               <option value="all">All Departments</option>
               {DEPARTMENTS.filter(d => d.id !== 'all').map((d) => (
@@ -142,7 +142,7 @@ export const StaffProducts: React.FC = () => {
               value={selectedCat}
               onChange={(e) => setSelectedCat(e.target.value)}
               disabled={selectedDept === 'all'}
-              className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink font-medium disabled:opacity-50"
+              className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 rounded-xl focus:outline-none focus:border-amber-600 font-medium disabled:opacity-50"
             >
               <option value="All">All Categories</option>
               {selectedDept !== 'all' &&
@@ -155,10 +155,10 @@ export const StaffProducts: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-between text-xs text-text-muted pt-1">
+        <div className="flex items-center justify-between text-xs text-stone-500 pt-1">
           <span>
-            Showing <strong className="text-text">{filteredProducts.length}</strong> of{' '}
-            <strong className="text-text">{inventory.length}</strong> styles
+            Showing <strong className="text-stone-900">{filteredProducts.length}</strong> of{' '}
+            <strong className="text-stone-900">{inventory.length}</strong> styles
           </span>
           {filteredProducts.length !== inventory.length && (
             <button
@@ -167,7 +167,7 @@ export const StaffProducts: React.FC = () => {
                 setSelectedDept('all');
                 setSelectedCat('All');
               }}
-              className="text-pink hover:underline text-[11px] font-medium cursor-pointer"
+              className="text-amber-700 hover:underline text-[11px] font-medium cursor-pointer"
             >
               Clear Filters
             </button>
@@ -176,12 +176,12 @@ export const StaffProducts: React.FC = () => {
       </div>
 
       {/* Products Table */}
-      <div className="bg-surface rounded-2xl border border-border shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200/90 shadow-2xs overflow-hidden">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-16 px-4">
-            <Package className="w-12 h-12 text-text-muted/40 mx-auto mb-3" />
-            <h3 className="text-sm font-bold text-text">No Garments Found</h3>
-            <p className="text-xs text-text-muted max-w-sm mx-auto mt-1 mb-4">
+            <Package className="w-12 h-12 text-stone-300 mx-auto mb-3" />
+            <h3 className="text-sm font-bold text-stone-900">No Garments Found</h3>
+            <p className="text-xs text-stone-500 max-w-sm mx-auto mt-1 mb-4">
               {inventory.length === 0
                 ? 'Your boutique catalogue is currently empty. Click below to add your first piece.'
                 : 'No products match your search or filter criteria.'}
@@ -189,7 +189,7 @@ export const StaffProducts: React.FC = () => {
             {inventory.length === 0 ? (
               <button
                 onClick={handleOpenAdd}
-                className="px-4 py-2 bg-pink hover:bg-pink-strong text-white rounded-xl text-xs font-bold shadow-2xs cursor-pointer"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold shadow-2xs cursor-pointer"
               >
                 Add First Garment
               </button>
@@ -198,7 +198,7 @@ export const StaffProducts: React.FC = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-surface-2 border-b border-border text-text-muted font-semibold uppercase tracking-wider text-[10px]">
+              <thead className="bg-stone-50 border-b border-stone-200 text-stone-500 font-semibold uppercase tracking-wider text-[10px]">
                 <tr>
                   <th className="py-3 px-4">Style & Details</th>
                   <th className="py-3 px-4">Department & Category</th>
@@ -208,18 +208,18 @@ export const StaffProducts: React.FC = () => {
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/60">
+              <tbody className="divide-y divide-stone-100">
                 {filteredProducts.map((item) => {
                   const isLow = item.inStockTotal <= 10;
                   const currentPriceEdit = quickPrice[item.id] !== undefined ? quickPrice[item.id] : item.price;
                   const hasPriceChanged = quickPrice[item.id] !== undefined && quickPrice[item.id] !== item.price;
 
                   return (
-                    <tr key={item.id} className="hover:bg-surface-2/60 transition-colors">
+                    <tr key={item.id} className="hover:bg-stone-50/80 transition-colors">
                       {/* Name & SKU */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-surface-2 border border-border flex-shrink-0 overflow-hidden flex items-center justify-center">
+                          <div className="w-10 h-10 rounded-lg bg-stone-100 border border-stone-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
                             {item.images?.[0] ? (
                               <img
                                 src={item.images[0]}
@@ -228,16 +228,16 @@ export const StaffProducts: React.FC = () => {
                               />
                             ) : (
                               <div
-                                className="w-full h-full flex items-center justify-center font-mono text-[10px] font-bold text-text-muted"
-                                style={{ backgroundColor: item.colors?.[0]?.hex || '#2A2A2A' }}
+                                className="w-full h-full flex items-center justify-center font-mono text-[10px] font-bold text-stone-400"
+                                style={{ backgroundColor: item.colors?.[0]?.hex || '#e7e5e4' }}
                               />
                             )}
                           </div>
                           <div>
-                            <p className="font-bold text-text leading-tight">{item.name}</p>
-                            <p className="text-[10px] font-mono text-text-muted mt-0.5">{item.sku}</p>
+                            <p className="font-bold text-stone-900 leading-tight">{item.name}</p>
+                            <p className="text-[10px] font-mono text-stone-400 mt-0.5">{item.sku}</p>
                             {item.tags?.[0] && (
-                              <span className="inline-block mt-1 text-[9px] font-semibold px-1.5 py-0.2 rounded bg-pink/10 text-pink border border-pink/30">
+                              <span className="inline-block mt-1 text-[9px] font-semibold px-1.5 py-0.2 rounded bg-amber-50 text-amber-800 border border-amber-200">
                                 {item.tags[0]}
                               </span>
                             )}
@@ -247,16 +247,16 @@ export const StaffProducts: React.FC = () => {
 
                       {/* Department & Category */}
                       <td className="py-3.5 px-4">
-                        <p className="font-semibold text-text">
+                        <p className="font-semibold text-stone-800">
                           {DEPARTMENT_CONFIG[item.department as Exclude<Department, 'all'>]?.label || item.department}
                         </p>
-                        <p className="text-[11px] text-text-muted">{item.category}</p>
+                        <p className="text-[11px] text-stone-500">{item.category}</p>
                       </td>
 
                       {/* In-place Price edit */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-text-muted font-mono">₹</span>
+                          <span className="text-stone-400 font-mono">₹</span>
                           <input
                             type="number"
                             min="0"
@@ -268,14 +268,14 @@ export const StaffProducts: React.FC = () => {
                             }}
                             className={`w-20 py-1 px-1.5 font-mono font-bold text-xs border rounded-lg focus:outline-none ${
                               hasPriceChanged
-                                ? 'border-pink bg-pink/15 text-pink'
-                                : 'border-border bg-surface-2 text-text'
+                                ? 'border-amber-600 bg-amber-50/60 text-amber-900'
+                                : 'border-stone-200 bg-stone-50 text-stone-900'
                             }`}
                           />
                           {hasPriceChanged && (
                             <button
                               onClick={() => handleSavePrice(item)}
-                              className="p-1 bg-pink hover:bg-pink-strong text-white rounded-md shadow-2xs transition-colors cursor-pointer"
+                              className="p-1 bg-amber-600 hover:bg-amber-700 text-white rounded-md shadow-2xs transition-colors cursor-pointer"
                               title="Save new price"
                             >
                               <Check className="w-3.5 h-3.5" />
@@ -283,7 +283,7 @@ export const StaffProducts: React.FC = () => {
                           )}
                         </div>
                         {item.originalPrice && (
-                          <span className="text-[10px] text-text-muted line-through font-mono mt-0.5 block">
+                          <span className="text-[10px] text-stone-400 line-through font-mono mt-0.5 block">
                             MRP: {formatPrice(item.originalPrice)}
                           </span>
                         )}
@@ -295,23 +295,23 @@ export const StaffProducts: React.FC = () => {
                           <span
                             className={`font-mono font-bold text-xs px-2 py-0.5 rounded-full ${
                               isLow
-                                ? 'bg-amber-950/50 text-amber-300 border border-amber-800/80'
-                                : 'bg-emerald-950/50 text-emerald-300 border border-emerald-800/80'
+                                ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                                : 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                             }`}
                           >
                             {item.inStockTotal} units
                           </span>
                         </div>
-                        <p className="text-[10px] text-text-muted mt-1">
+                        <p className="text-[10px] text-stone-400 mt-1">
                           Across {item.sizes.length} size{item.sizes.length !== 1 ? 's' : ''}
                         </p>
                       </td>
 
                       {/* Fabric */}
-                      <td className="py-3.5 px-4 text-text-muted">
-                        <span className="font-medium text-text">{item.fabric || '—'}</span>
+                      <td className="py-3.5 px-4 text-stone-600">
+                        <span className="font-medium text-stone-800">{item.fabric || '—'}</span>
                         {item.blouseIncluded && (
-                          <p className="text-[10px] text-pink font-semibold">+ Blouse Piece</p>
+                          <p className="text-[10px] text-amber-700 font-semibold">+ Blouse Piece</p>
                         )}
                       </td>
 
@@ -320,14 +320,14 @@ export const StaffProducts: React.FC = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenEdit(item)}
-                            className="p-1.5 rounded-lg border border-border hover:border-pink hover:bg-pink/10 text-text-muted hover:text-pink transition-colors cursor-pointer bg-surface-2"
+                            className="p-1.5 rounded-lg border border-stone-200 hover:border-amber-500 hover:bg-amber-50 text-stone-600 hover:text-amber-800 transition-colors cursor-pointer bg-white"
                             title="Edit Garment Details"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleDelete(item)}
-                            className="p-1.5 rounded-lg border border-border hover:border-rose-400 hover:bg-rose-950/40 text-text-muted hover:text-rose-400 transition-colors cursor-pointer bg-surface-2"
+                            className="p-1.5 rounded-lg border border-stone-200 hover:border-rose-400 hover:bg-rose-50 text-stone-500 hover:text-rose-700 transition-colors cursor-pointer bg-white"
                             title="Delete Garment"
                           >
                             <Trash2 className="w-3.5 h-3.5" />

@@ -25,10 +25,10 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
     <section className="mb-14">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-pink">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
             Curated Departments
           </span>
-          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-text mt-0.5">
+          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
             Shop by Category
           </h2>
         </div>
@@ -45,10 +45,10 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
               onClick={() => onSelectCategory(tile.department, tile.category)}
               className="group flex flex-col items-center text-center cursor-pointer transition-transform duration-200 hover:-translate-y-1 focus:outline-none"
             >
-              {/* Rounded-square tile with solid or gradient tinted background and text only */}
+              {/* Rounded-square tile with solid or gradient tinted background */}
               <div
-                className="w-full aspect-square rounded-2xl p-3 flex flex-col items-center justify-center overflow-hidden border border-border shadow-2xs group-hover:border-pink/50 group-hover:shadow-[0_0_15px_rgba(255,61,165,0.25)] transition-all relative"
-                style={{ backgroundColor: tile.tint || '#1A1A1A' }}
+                className="w-full aspect-square rounded-2xl p-3 flex flex-col items-center justify-center overflow-hidden border border-stone-200/80 shadow-2xs group-hover:shadow-md transition-all relative"
+                style={{ backgroundColor: tile.tint || '#fafaf9' }}
               >
                 {tile.image ? (
                   <img
@@ -59,11 +59,11 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
                   />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-center p-1.5 select-none">
-                    <span className="font-serif-display text-xs sm:text-sm font-bold text-text leading-tight line-clamp-2 group-hover:text-pink transition-colors">
+                    <span className="font-serif-display text-xs sm:text-sm font-bold text-stone-900 leading-tight line-clamp-2 group-hover:text-amber-800 transition-colors">
                       {tile.label}
                     </span>
                     {count !== undefined && (
-                      <span className="text-[10px] text-text-muted font-mono mt-1">
+                      <span className="text-[10px] text-stone-500 font-mono mt-1">
                         {count} {count === 1 ? 'item' : 'items'}
                       </span>
                     )}
@@ -72,7 +72,7 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
               </div>
               
               {/* Label underneath */}
-              <span className="mt-2 text-[11px] sm:text-xs font-semibold text-text-muted group-hover:text-pink transition-colors line-clamp-1">
+              <span className="mt-2 text-[11px] sm:text-xs font-semibold text-stone-800 group-hover:text-amber-800 transition-colors line-clamp-1">
                 {tile.label}
               </span>
             </button>

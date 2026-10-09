@@ -74,12 +74,12 @@ export const StaffLogin: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-stone-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       {/* Return to storefront link */}
       <div className="absolute top-6 left-6">
         <a
           href="/"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-text-muted hover:text-pink transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-stone-400 hover:text-amber-400 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Storefront</span>
@@ -87,22 +87,22 @@ export const StaffLogin: React.FC = () => {
       </div>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-pink/10 border border-pink/30 text-pink mb-4 shadow-lg shadow-pink/10">
+        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 mb-4 shadow-lg shadow-amber-950/20">
           <Store className="w-7 h-7" />
         </div>
-        <h1 className="text-2xl font-bold font-serif-display text-text tracking-wide">
+        <h1 className="text-2xl font-bold font-serif-display text-white tracking-wide">
           Yaazh Boutique
         </h1>
-        <p className="mt-1 text-xs text-pink font-semibold uppercase tracking-wider">
+        <p className="mt-1 text-xs text-amber-400 font-semibold uppercase tracking-wider">
           Staff & Administration Portal
         </p>
-        <p className="mt-1 text-xs text-text-muted">
+        <p className="mt-1 text-xs text-stone-400">
           Oddanchatram · Inventory, Pricing & Orders Management
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-surface py-8 px-6 sm:px-8 shadow-2xl rounded-2xl border border-border">
+        <div className="bg-stone-900 py-8 px-6 sm:px-8 shadow-2xl rounded-2xl border border-stone-800">
           {successNotice && (
             <div className="mb-5 p-3.5 bg-emerald-950/50 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400 mt-0.5" />
@@ -135,18 +135,18 @@ export const StaffLogin: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-text mb-1.5">
+              <label className="block text-xs font-semibold text-stone-300 mb-1.5">
                 Staff Email
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   placeholder="staff@yaazhboutique.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2.5 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink focus:ring-1 focus:ring-pink transition-colors"
+                  className="w-full pl-9 pr-3 py-2.5 text-xs bg-stone-950/60 border border-stone-800 text-stone-100 placeholder-stone-600 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
                 />
               </div>
             </div>
@@ -154,7 +154,7 @@ export const StaffLogin: React.FC = () => {
             {!isResetMode && (
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <label className="block text-xs font-semibold text-text">
+                  <label className="block text-xs font-semibold text-stone-300">
                     Password
                   </label>
                   <button
@@ -164,20 +164,20 @@ export const StaffLogin: React.FC = () => {
                       setError(null);
                       setSuccessNotice(null);
                     }}
-                    className="text-[11px] text-pink hover:text-pink-tint transition-colors underline cursor-pointer"
+                    className="text-[11px] text-amber-400 hover:text-amber-300 transition-colors underline cursor-pointer"
                   >
                     Forgot password?
                   </button>
                 </div>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-text-muted absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Lock className="w-4 h-4 text-stone-500 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     type="password"
                     required
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink focus:ring-1 focus:ring-pink transition-colors"
+                    className="w-full pl-9 pr-3 py-2.5 text-xs bg-stone-950/60 border border-stone-800 text-stone-100 placeholder-stone-600 rounded-xl focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors"
                   />
                 </div>
               </div>
@@ -186,7 +186,7 @@ export const StaffLogin: React.FC = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-2.5 px-4 bg-pink hover:bg-pink-strong text-white font-bold rounded-xl text-xs transition-colors shadow-lg shadow-pink/30 cursor-pointer disabled:opacity-50 mt-2 flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl text-xs transition-colors shadow-lg shadow-amber-900/30 cursor-pointer disabled:opacity-50 mt-2 flex items-center justify-center gap-2"
             >
               <KeyRound className="w-4 h-4" />
               <span>
@@ -204,7 +204,7 @@ export const StaffLogin: React.FC = () => {
                   setError(null);
                   setSuccessNotice(null);
                 }}
-                className="w-full py-2 text-xs text-text-muted hover:text-text transition-colors cursor-pointer text-center block"
+                className="w-full py-2 text-xs text-stone-400 hover:text-stone-200 transition-colors cursor-pointer text-center block"
               >
                 Back to Staff Sign In
               </button>
@@ -213,10 +213,10 @@ export const StaffLogin: React.FC = () => {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-border" />
+              <div className="w-full border-t border-stone-800" />
             </div>
-            <div className="relative flex justify-center text-[10px] uppercase tracking-wider text-text-muted">
-              <span className="bg-surface px-3">or authenticate via</span>
+            <div className="relative flex justify-center text-[10px] uppercase tracking-wider text-stone-500">
+              <span className="bg-stone-900 px-3">or authenticate via</span>
             </div>
           </div>
 
@@ -224,7 +224,7 @@ export const StaffLogin: React.FC = () => {
             type="button"
             onClick={handleGoogleSignIn}
             disabled={submitting}
-            className="w-full py-2.5 px-4 bg-surface-2 border border-border hover:border-pink/40 text-text font-semibold rounded-xl text-xs flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
+            className="w-full py-2.5 px-4 bg-stone-950 border border-stone-800 hover:border-stone-700 text-stone-300 font-semibold rounded-xl text-xs flex items-center justify-center gap-2.5 transition-colors cursor-pointer"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -236,13 +236,13 @@ export const StaffLogin: React.FC = () => {
           </button>
 
           {/* Boutique info note */}
-          <div className="mt-6 pt-5 border-t border-border text-center">
-            <div className="flex items-center justify-center gap-1.5 text-text-muted text-[11px]">
-              <ShieldCheck className="w-3.5 h-3.5 text-pink" />
+          <div className="mt-6 pt-5 border-t border-stone-800 text-center">
+            <div className="flex items-center justify-center gap-1.5 text-stone-500 text-[11px]">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-500/80" />
               <span>Role-Based Access Control Active</span>
             </div>
-            <p className="text-[10px] text-text-muted mt-1">
-              Store Owner: <span className="text-text font-mono">{BOOTSTRAPPED_ADMIN_EMAIL}</span>
+            <p className="text-[10px] text-stone-500 mt-1">
+              Store Owner: <span className="text-stone-400 font-mono">{BOOTSTRAPPED_ADMIN_EMAIL}</span>
             </p>
           </div>
         </div>

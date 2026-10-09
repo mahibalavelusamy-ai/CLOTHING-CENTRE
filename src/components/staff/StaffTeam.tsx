@@ -132,16 +132,16 @@ export const StaffTeam: React.FC = () => {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-150">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-border">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-stone-200">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-pink uppercase tracking-widest mb-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-amber-700 uppercase tracking-widest mb-1">
             <Shield className="w-4 h-4" />
             <span>Administrator Control Center</span>
           </div>
-          <h1 className="text-2xl font-bold font-serif-display text-text tracking-tight">
+          <h1 className="text-2xl font-bold font-serif-display text-stone-900 tracking-tight">
             Team & User Roles (RBAC)
           </h1>
-          <p className="text-xs text-text-muted mt-1">
+          <p className="text-xs text-stone-500 mt-1">
             Manage permissions, staff authorizations, and customer roles for Yaazh Boutique.
           </p>
         </div>
@@ -149,81 +149,81 @@ export const StaffTeam: React.FC = () => {
         <button
           onClick={fetchUsers}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-3.5 py-2 bg-surface border border-border hover:bg-surface-2 text-text text-xs font-semibold rounded-xl transition-colors cursor-pointer disabled:opacity-50 shadow-2xs self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-3.5 py-2 bg-white border border-stone-200 hover:bg-stone-50 text-stone-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer disabled:opacity-50 shadow-2xs self-start sm:self-auto"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-pink' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-amber-600' : ''}`} />
           <span>Refresh Users</span>
         </button>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-pink/15 border border-pink/30 text-pink flex items-center justify-center shrink-0">
+        <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center shrink-0">
             <ShieldAlert className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs text-text-muted font-medium">Administrators</p>
-            <p className="text-xl font-bold text-text">{adminCount}</p>
+            <p className="text-xs text-stone-500 font-medium">Administrators</p>
+            <p className="text-xl font-bold text-stone-900">{adminCount}</p>
           </div>
         </div>
 
-        <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-800/60 text-emerald-300 flex items-center justify-center shrink-0">
+        <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs text-text-muted font-medium">Staff Members</p>
-            <p className="text-xl font-bold text-text">{staffCount}</p>
+            <p className="text-xs text-stone-500 font-medium">Staff Members</p>
+            <p className="text-xl font-bold text-stone-900">{staffCount}</p>
           </div>
         </div>
 
-        <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-surface-2 border border-border text-text-muted flex items-center justify-center shrink-0">
+        <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 text-stone-600 flex items-center justify-center shrink-0">
             <Users className="w-5 h-5" />
           </div>
           <div>
-            <p className="text-xs text-text-muted font-medium">Registered Customers</p>
-            <p className="text-xl font-bold text-text">{customerCount}</p>
+            <p className="text-xs text-stone-500 font-medium">Registered Customers</p>
+            <p className="text-xl font-bold text-stone-900">{customerCount}</p>
           </div>
         </div>
       </div>
 
       {/* Notifications */}
       {error && (
-        <div className="p-4 bg-rose-950/50 border border-rose-800/80 rounded-2xl text-xs text-rose-300 flex items-start gap-3 animate-in fade-in">
-          <AlertTriangle className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
+        <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-xs text-rose-800 flex items-start gap-3 animate-in fade-in">
+          <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
           <div className="flex-1">
             <span className="font-semibold block">Operation Notice</span>
             <span>{error}</span>
           </div>
-          <button onClick={() => setError(null)} className="text-rose-400 hover:text-rose-200">
+          <button onClick={() => setError(null)} className="text-rose-600 hover:text-rose-900">
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
       {successNotice && (
-        <div className="p-4 bg-emerald-950/50 border border-emerald-800/80 rounded-2xl text-xs text-emerald-300 flex items-center gap-3 animate-in fade-in">
-          <Check className="w-4 h-4 shrink-0 text-emerald-400" />
+        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-800 flex items-center gap-3 animate-in fade-in">
+          <Check className="w-4 h-4 shrink-0 text-emerald-600" />
           <span className="font-medium flex-1">{successNotice}</span>
-          <button onClick={() => setSuccessNotice(null)} className="text-emerald-400 hover:text-emerald-200">
+          <button onClick={() => setSuccessNotice(null)} className="text-emerald-600 hover:text-emerald-900">
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
       {/* Filters & Search Toolbar */}
-      <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
         {/* Search by email or name */}
         <div className="relative flex-1 max-w-md">
-          <Search className="w-4 h-4 text-text-muted absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder="Search users by email or name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink transition-colors"
+            className="w-full pl-9 pr-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 placeholder-stone-400 rounded-xl focus:outline-none focus:border-amber-600 transition-colors"
           />
         </div>
 
@@ -235,8 +235,8 @@ export const StaffTeam: React.FC = () => {
               onClick={() => setRoleFilter(r)}
               className={`px-3 py-1.5 rounded-xl text-xs font-semibold capitalize transition-colors cursor-pointer whitespace-nowrap ${
                 roleFilter === r
-                  ? 'bg-pink text-white shadow-2xs'
-                  : 'bg-surface-2 hover:bg-surface text-text-muted hover:text-text border border-border'
+                  ? 'bg-amber-600 text-white shadow-2xs'
+                  : 'bg-stone-50 hover:bg-stone-100 text-stone-600 hover:text-stone-900 border border-stone-200'
               }`}
             >
               {r === 'all' ? 'All Users' : `${r}s`}
@@ -246,23 +246,23 @@ export const StaffTeam: React.FC = () => {
       </div>
 
       {/* Users Table */}
-      <div className="bg-surface rounded-2xl border border-border shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
         {loading ? (
-          <div className="p-12 text-center text-xs text-text-muted flex flex-col items-center justify-center gap-3">
-            <RefreshCw className="w-6 h-6 animate-spin text-pink" />
+          <div className="p-12 text-center text-xs text-stone-500 flex flex-col items-center justify-center gap-3">
+            <RefreshCw className="w-6 h-6 animate-spin text-amber-600" />
             <span>Loading user accounts and permissions...</span>
           </div>
         ) : filteredUsers.length === 0 ? (
-          <div className="p-12 text-center text-xs text-text-muted">
-            <Users className="w-8 h-8 text-text-muted/40 mx-auto mb-2" />
-            <p className="font-semibold text-text">No users match your criteria.</p>
-            <p className="text-text-muted mt-1">Try adjusting your search query or role filter.</p>
+          <div className="p-12 text-center text-xs text-stone-500">
+            <Users className="w-8 h-8 text-stone-300 mx-auto mb-2" />
+            <p className="font-semibold text-stone-900">No users match your criteria.</p>
+            <p className="text-stone-500 mt-1">Try adjusting your search query or role filter.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-surface-2 border-b border-border text-text-muted font-semibold uppercase tracking-wider text-[10px]">
+                <tr className="bg-stone-50 border-b border-stone-200 text-stone-500 font-semibold uppercase tracking-wider text-[10px]">
                   <th className="py-3.5 px-4">User</th>
                   <th className="py-3.5 px-4">Email</th>
                   <th className="py-3.5 px-4">Current Role</th>
@@ -270,35 +270,35 @@ export const StaffTeam: React.FC = () => {
                   <th className="py-3.5 px-4 text-right">Change Role</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-stone-100">
                 {filteredUsers.map((u) => {
                   const isCurrent = u.uid === currentUser?.uid;
                   const isBootstrapped = u.email.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
 
                   return (
-                    <tr key={u.uid} className="hover:bg-surface-2/60 transition-colors">
+                    <tr key={u.uid} className="hover:bg-stone-50/80 transition-colors">
                       {/* Name / Avatar */}
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
                           <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs uppercase ${
                             u.role === 'admin'
-                              ? 'bg-pink/20 text-pink border border-pink/40'
+                              ? 'bg-amber-100 text-amber-800 border border-amber-200'
                               : u.role === 'staff'
-                              ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60'
-                              : 'bg-surface-2 text-text border border-border'
+                              ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                              : 'bg-stone-100 text-stone-700 border border-stone-200'
                           }`}>
                             {u.displayName?.[0] || u.email[0] || 'U'}
                           </div>
                           <div className="min-w-0">
-                            <div className="font-semibold text-text flex items-center gap-1.5">
+                            <div className="font-semibold text-stone-900 flex items-center gap-1.5">
                               <span>{u.displayName || 'Boutique User'}</span>
                               {isCurrent && (
-                                <span className="text-[10px] bg-pink/15 text-pink border border-pink/30 px-1.5 py-0.2 rounded font-mono">
+                                <span className="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-1.5 py-0.2 rounded font-mono">
                                   You
                                 </span>
                               )}
                             </div>
-                            <span className="text-[10px] text-text-muted font-mono truncate block">
+                            <span className="text-[10px] text-stone-400 font-mono truncate block">
                               UID: {u.uid.slice(0, 10)}...
                             </span>
                           </div>
@@ -306,13 +306,13 @@ export const StaffTeam: React.FC = () => {
                       </td>
 
                       {/* Email */}
-                      <td className="py-3 px-4 font-mono text-text">
+                      <td className="py-3 px-4 font-mono text-stone-800">
                         <div className="flex items-center gap-1.5">
-                          <Mail className="w-3.5 h-3.5 text-text-muted shrink-0" />
+                          <Mail className="w-3.5 h-3.5 text-stone-400 shrink-0" />
                           <span>{u.email}</span>
                         </div>
                         {isBootstrapped && (
-                          <span className="inline-block mt-0.5 text-[9px] text-pink bg-pink/10 border border-pink/30 px-1.5 py-0.2 rounded">
+                          <span className="inline-block mt-0.5 text-[9px] text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded">
                             Bootstrap Admin
                           </span>
                         )}
@@ -322,33 +322,33 @@ export const StaffTeam: React.FC = () => {
                       <td className="py-3 px-4">
                         <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider ${
                           u.role === 'admin'
-                            ? 'bg-pink/15 text-pink border border-pink/30'
+                            ? 'bg-amber-100 text-amber-800 border border-amber-200'
                             : u.role === 'staff'
-                            ? 'bg-emerald-950/60 text-emerald-300 border border-emerald-800/60'
-                            : 'bg-surface-2 text-text-muted border border-border'
+                            ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                            : 'bg-stone-100 text-stone-600 border border-stone-200'
                         }`}>
-                          {u.role === 'admin' && <ShieldAlert className="w-3 h-3 text-pink" />}
-                          {u.role === 'staff' && <ShieldCheck className="w-3 h-3 text-emerald-400" />}
-                          {u.role === 'customer' && <UserIcon className="w-3 h-3 text-text-muted" />}
+                          {u.role === 'admin' && <ShieldAlert className="w-3 h-3 text-amber-600" />}
+                          {u.role === 'staff' && <ShieldCheck className="w-3 h-3 text-emerald-600" />}
+                          {u.role === 'customer' && <UserIcon className="w-3 h-3 text-stone-500" />}
                           <span>{u.role}</span>
                         </span>
                       </td>
 
                       {/* Created date */}
-                      <td className="py-3 px-4 text-text-muted text-[11px]">
+                      <td className="py-3 px-4 text-stone-500 text-[11px]">
                         {u.createdAt ? (
                           <div className="flex items-center gap-1">
-                            <Calendar className="w-3 h-3 text-text-muted" />
+                            <Calendar className="w-3 h-3 text-stone-400" />
                             <span>{new Date(u.createdAt).toLocaleDateString()}</span>
                           </div>
                         ) : (
-                          <span className="text-text-muted/50">—</span>
+                          <span className="text-stone-400">—</span>
                         )}
                       </td>
 
                       {/* Actions: Role selection */}
                       <td className="py-3 px-4 text-right">
-                        <div className="inline-flex items-center gap-1.5 bg-surface-2 border border-border p-1 rounded-xl">
+                        <div className="inline-flex items-center gap-1.5 bg-stone-50 border border-stone-200 p-1 rounded-xl">
                           {(['customer', 'staff', 'admin'] as const).map((targetRole) => {
                             const isSelected = u.role === targetRole;
                             return (
@@ -359,8 +359,8 @@ export const StaffTeam: React.FC = () => {
                                 onClick={() => handleInitiateRoleChange(u, targetRole)}
                                 className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold capitalize transition-all cursor-pointer disabled:cursor-default ${
                                   isSelected
-                                    ? 'bg-pink text-white shadow-2xs font-bold'
-                                    : 'text-text-muted hover:text-text hover:bg-surface'
+                                    ? 'bg-stone-900 text-white shadow-2xs font-bold'
+                                    : 'text-stone-600 hover:text-stone-900 hover:bg-white'
                                 }`}
                               >
                                 {targetRole}
@@ -380,21 +380,21 @@ export const StaffTeam: React.FC = () => {
 
       {/* Role Change Confirmation Modal */}
       {pendingUser && pendingRole && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
           <div 
-            className="bg-surface rounded-2xl max-w-md w-full shadow-2xl border border-border overflow-hidden text-text"
+            className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-stone-200 overflow-hidden text-stone-900"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-5 bg-surface-2 text-text flex items-center justify-between border-b border-border">
+            <div className="p-5 bg-stone-50 text-stone-900 flex items-center justify-between border-b border-stone-200">
               <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-pink/15 border border-pink/30 text-pink flex items-center justify-center">
+                <div className="w-9 h-9 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center">
                   <KeyRound className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold font-serif-display text-white">
+                  <h3 className="text-sm font-bold font-serif-display text-stone-900">
                     Confirm Role Modification
                   </h3>
-                  <p className="text-[11px] text-text-muted">
+                  <p className="text-[11px] text-stone-500">
                     Role-Based Access Control
                   </p>
                 </div>
@@ -402,34 +402,34 @@ export const StaffTeam: React.FC = () => {
 
               <button
                 onClick={() => { setPendingUser(null); setPendingRole(null); }}
-                className="w-8 h-8 rounded-full bg-surface hover:bg-surface-2 text-text-muted hover:text-text border border-border flex items-center justify-center transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-full bg-white hover:bg-stone-100 text-stone-500 hover:text-stone-900 border border-stone-200 flex items-center justify-center transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="p-3.5 bg-surface-2/60 rounded-xl border border-border space-y-1.5">
-                <div className="text-xs text-text-muted">Target User:</div>
-                <div className="font-bold text-text text-sm">{pendingUser.displayName || 'Boutique User'}</div>
-                <div className="text-xs font-mono text-text-muted">{pendingUser.email}</div>
+              <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 space-y-1.5">
+                <div className="text-xs text-stone-500">Target User:</div>
+                <div className="font-bold text-stone-900 text-sm">{pendingUser.displayName || 'Boutique User'}</div>
+                <div className="text-xs font-mono text-stone-500">{pendingUser.email}</div>
               </div>
 
-              <div className="flex items-center justify-between p-3.5 bg-surface-2/80 border border-border rounded-xl text-xs">
+              <div className="flex items-center justify-between p-3.5 bg-stone-50 border border-stone-200 rounded-xl text-xs">
                 <div>
-                  <span className="text-text-muted block text-[10px] uppercase font-bold">Current Role</span>
-                  <span className="font-bold text-text uppercase">{pendingUser.role}</span>
+                  <span className="text-stone-500 block text-[10px] uppercase font-bold">Current Role</span>
+                  <span className="font-bold text-stone-900 uppercase">{pendingUser.role}</span>
                 </div>
-                <div className="text-pink font-bold text-base">➔</div>
+                <div className="text-amber-700 font-bold text-base">➔</div>
                 <div>
-                  <span className="text-pink block text-[10px] uppercase font-bold">New Role</span>
-                  <span className="font-bold text-white uppercase">{pendingRole}</span>
+                  <span className="text-amber-700 block text-[10px] uppercase font-bold">New Role</span>
+                  <span className="font-bold text-stone-900 uppercase">{pendingRole}</span>
                 </div>
               </div>
 
-              <p className="text-xs text-text-muted leading-relaxed">
+              <p className="text-xs text-stone-600 leading-relaxed">
                 Are you sure you want to change this user's role to{' '}
-                <strong className="text-text uppercase">{pendingRole}</strong>? This immediately adjusts their system privileges.
+                <strong className="text-stone-900 uppercase">{pendingRole}</strong>? This immediately adjusts their system privileges.
               </p>
 
               <div className="flex items-center justify-end gap-2.5 pt-2">
@@ -437,7 +437,7 @@ export const StaffTeam: React.FC = () => {
                   type="button"
                   onClick={() => { setPendingUser(null); setPendingRole(null); }}
                   disabled={isUpdating}
-                  className="px-4 py-2 text-xs font-semibold rounded-xl border border-border text-text-muted hover:text-text hover:bg-surface-2 transition-colors cursor-pointer disabled:opacity-50"
+                  className="px-4 py-2 text-xs font-semibold rounded-xl border border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -445,7 +445,7 @@ export const StaffTeam: React.FC = () => {
                   type="button"
                   onClick={handleConfirmRoleChange}
                   disabled={isUpdating}
-                  className="px-4 py-2 text-xs font-bold rounded-xl bg-pink hover:bg-pink-strong text-white transition-colors cursor-pointer disabled:opacity-50 shadow-2xs"
+                  className="px-4 py-2 text-xs font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white transition-colors cursor-pointer disabled:opacity-50 shadow-2xs"
                 >
                   {isUpdating ? 'Updating Role...' : 'Confirm Role Change'}
                 </button>

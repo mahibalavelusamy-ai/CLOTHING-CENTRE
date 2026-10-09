@@ -1,43 +1,43 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #050505;
-  --color-surface: #111111;
-  --color-surface-2: #1A1A1A;
-  --color-border: #2A2A2A;
-  --color-text: #F5F5F5;
-  --color-text-muted: #A3A3A3;
-  --color-pink: #FF3DA5;
-  --color-pink-strong: #D4147D;
-  --color-pink-deep: #9C0F5F;
-  --color-pink-tint: #FFD6EA;
+  --color-bg: #fdfbf7;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f0eb;
+  --color-border: #e7e5e4;
+  --color-text: #1c1917;
+  --color-text-muted: #78716c;
+  --color-pink: #d97706;
+  --color-pink-strong: #b45309;
+  --color-pink-deep: #78350f;
+  --color-pink-tint: #fef3c7;
 }
 
 :root {
-  --color-bg: #050505;
-  --color-surface: #111111;
-  --color-surface-2: #1A1A1A;
-  --color-border: #2A2A2A;
-  --color-text: #F5F5F5;
-  --color-text-muted: #A3A3A3;
-  --color-pink: #FF3DA5;
-  --color-pink-strong: #D4147D;
-  --color-pink-deep: #9C0F5F;
-  --color-pink-tint: #FFD6EA;
+  --color-bg: #fdfbf7;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f0eb;
+  --color-border: #e7e5e4;
+  --color-text: #1c1917;
+  --color-text-muted: #78716c;
+  --color-pink: #d97706;
+  --color-pink-strong: #b45309;
+  --color-pink-deep: #78350f;
+  --color-pink-tint: #fef3c7;
 }
 
 @layer base {
   * {
-    border-color: #2A2A2A;
+    border-color: #e7e5e4;
   }
   body {
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    color: #F5F5F5;
-    background-color: #050505;
+    color: #1c1917;
+    background-color: #fdfbf7;
   }
   ::selection {
-    background-color: #FF3DA5;
-    color: #FFFFFF;
+    background-color: #d97706;
+    color: #ffffff;
   }
 }
 
@@ -51,26 +51,27 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #111111;
+  background: #f5f0eb;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3A3A3A;
+  background: #d4c5b9;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF3DA5;
+  background: #a89f91;
 }
 
-/* Button & Card Glow utilities */
+/* Button & Card utilities (Restored to warm Amber/Gold & Stone Luxury) */
 .btn-primary-glossy {
-  background: linear-gradient(135deg, #FF3DA5 0%, #9C0F5F 100%);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 4px 14px rgba(255, 61, 165, 0.25);
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-primary-glossy:hover {
-  box-shadow: 0 0 20px rgba(255, 61, 165, 0.45);
+  background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+  box-shadow: 0 0 20px rgba(217, 119, 6, 0.45);
   transform: translateY(-1px);
 }
 .btn-primary-glossy:active {
@@ -79,23 +80,22 @@
 
 .btn-secondary-pink {
   background: transparent;
-  border: 1px solid #FF3DA5;
-  color: #FF3DA5;
+  border: 1px solid #d97706;
+  color: #b45309;
   font-weight: 600;
   transition: all 0.2s ease;
 }
 .btn-secondary-pink:hover {
-  background: rgba(255, 61, 165, 0.12);
-  box-shadow: 0 0 12px rgba(255, 61, 165, 0.25);
+  background: rgba(217, 119, 6, 0.08);
+  box-shadow: 0 0 12px rgba(217, 119, 6, 0.2);
 }
 
 .product-card-glow {
-  background-color: #111111;
-  border: 1px solid #2A2A2A;
+  background-color: #ffffff;
+  border: 1px solid #e7e5e4;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .product-card-glow:hover {
-  border-color: rgba(255, 61, 165, 0.6);
-  box-shadow: 0 0 22px rgba(255, 61, 165, 0.25);
+  border-color: rgba(217, 119, 6, 0.5);
+  box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.08), 0 8px 10px -6px rgba(28, 25, 23, 0.04);
 }
-

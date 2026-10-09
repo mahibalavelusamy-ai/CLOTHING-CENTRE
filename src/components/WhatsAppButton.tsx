@@ -13,7 +13,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = () => {
 
   return (
     <div className="fixed bottom-20 md:bottom-6 right-5 z-40 flex items-center gap-2 group">
-      <div className="hidden sm:flex items-center gap-1.5 bg-surface/90 text-text text-[11px] font-semibold py-1.5 px-3 rounded-full border border-border shadow-xl backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+      <div className="hidden sm:flex items-center gap-1.5 bg-stone-900/90 text-stone-100 text-[11px] font-semibold py-1.5 px-3 rounded-full border border-stone-800 shadow-xl backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
         <span>Chat on WhatsApp</span>
       </div>
@@ -27,7 +27,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = () => {
         title="Chat with Yaazh Boutique on WhatsApp"
       >
         <MessageCircle className="w-6 h-6 text-white fill-white/20" />
-        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-pink border-2 border-surface rounded-full" />
+        <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full" />
       </a>
     </div>
   );

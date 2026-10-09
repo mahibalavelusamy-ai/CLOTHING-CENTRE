@@ -332,20 +332,20 @@ export const StaffPortalLayout: React.FC = () => {
       )}
 
       {/* Mobile Top Header */}
-      <div className="lg:hidden bg-bg text-text px-4 py-3 border-b border-border flex items-center justify-between sticky top-0 z-40">
+      <div className="lg:hidden bg-stone-950 text-white px-4 py-3 border-b border-stone-800 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-pink/10 border border-pink/30 text-pink flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center">
             <Store className="w-4 h-4" />
           </div>
           <div>
             <h1 className="text-sm font-bold font-serif-display leading-tight">Yaazh Boutique</h1>
-            <p className="text-[10px] text-pink font-medium">Staff Portal</p>
+            <p className="text-[10px] text-amber-400 font-medium">Staff Portal</p>
           </div>
         </div>
 
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-1.5 rounded-lg bg-surface-2 text-text-muted hover:text-text cursor-pointer"
+          className="p-1.5 rounded-lg bg-stone-900 text-stone-300 hover:text-white cursor-pointer"
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
@@ -355,25 +355,25 @@ export const StaffPortalLayout: React.FC = () => {
       <aside
         className={`${
           mobileMenuOpen ? 'block' : 'hidden'
-        } lg:block w-full lg:w-64 bg-surface text-text-muted flex-shrink-0 lg:min-h-screen border-r border-border flex flex-col justify-between z-30`}
+        } lg:block w-full lg:w-64 bg-stone-950 text-stone-300 flex-shrink-0 lg:min-h-screen border-r border-stone-800 flex flex-col justify-between z-30`}
       >
         <div>
           {/* Brand header */}
-          <div className="p-5 border-b border-border hidden lg:block">
+          <div className="p-5 border-b border-stone-800 hidden lg:block">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-pink/10 border border-pink/30 text-pink flex items-center justify-center shadow-inner">
+              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center shadow-inner">
                 <Store className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-sm font-bold font-serif-display text-text tracking-wide">
+                <h2 className="text-sm font-bold font-serif-display text-white tracking-wide">
                   Yaazh Boutique
                 </h2>
-                <p className="text-[10px] text-pink font-semibold tracking-wider uppercase">
+                <p className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">
                   Staff & Admin Portal
                 </p>
               </div>
             </div>
-            <div className="mt-3 flex items-center justify-between text-[10px] text-text-muted pt-2 border-t border-border">
+            <div className="mt-3 flex items-center justify-between text-[10px] text-stone-400 pt-2 border-t border-stone-800">
               <span className="truncate">{STORE_CENTRE_INFO.address.split(',')[1]?.trim() || 'Oddanchatram'}</span>
               <span className="inline-flex items-center gap-1 text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -393,8 +393,8 @@ export const StaffPortalLayout: React.FC = () => {
                   className={({ isActive }) =>
                     `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                       isActive
-                        ? 'bg-pink text-white shadow-md shadow-pink/30 font-bold'
-                        : 'text-text-muted hover:text-text hover:bg-surface-2'
+                        ? 'bg-amber-600 text-white shadow-md shadow-amber-900/40 font-bold'
+                        : 'text-stone-400 hover:text-white hover:bg-stone-900'
                     }`
                   }
                 >
@@ -409,7 +409,7 @@ export const StaffPortalLayout: React.FC = () => {
                     </span>
                   )}
                   {item.badge !== undefined && item.alert === undefined && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-surface-2 text-text-muted border border-border">
+                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-stone-850 text-stone-300 border border-stone-800">
                       {item.badge}
                     </span>
                   )}
@@ -420,40 +420,40 @@ export const StaffPortalLayout: React.FC = () => {
         </div>
 
         {/* User profile & actions */}
-        <div className="p-3 border-t border-border bg-bg/60 space-y-2">
+        <div className="p-3 border-t border-stone-800 bg-stone-950/60 space-y-2">
           {/* Quick link to Storefront */}
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-text-muted hover:text-pink hover:bg-surface-2 text-xs transition-colors"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-stone-400 hover:text-amber-400 hover:bg-stone-900 text-xs transition-colors"
           >
             <div className="flex items-center gap-2">
               <ExternalLink className="w-3.5 h-3.5" />
               <span>Customer Storefront</span>
             </div>
-            <span className="text-[10px] text-text-muted font-mono">/</span>
+            <span className="text-[10px] text-stone-500 font-mono">/</span>
           </a>
 
           {/* User profile info */}
-          <div className="p-2.5 rounded-xl bg-surface-2 border border-border text-xs">
+          <div className="p-2.5 rounded-xl bg-stone-900 border border-stone-800 text-xs">
             <div className="flex items-center justify-between">
-              <span className="font-semibold text-text truncate max-w-[130px]">
+              <span className="font-semibold text-stone-100 truncate max-w-[130px]">
                 {profile?.displayName || user?.email?.split('@')[0] || 'Staff'}
               </span>
               <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                isAdmin ? 'bg-pink/15 text-pink border border-pink/30' : 'bg-surface text-text-muted border border-border'
+                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-stone-800 text-stone-400 border border-stone-700'
               }`}>
                 {isAdmin ? 'Admin' : 'Staff'}
               </span>
             </div>
-            <p className="text-[10px] text-text-muted truncate mt-0.5">{user?.email}</p>
+            <p className="text-[10px] text-stone-400 truncate mt-0.5">{user?.email}</p>
           </div>
 
           {/* Sign out */}
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-text-muted hover:text-rose-400 hover:bg-rose-950/30 text-xs transition-colors cursor-pointer"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-stone-400 hover:text-rose-400 hover:bg-rose-950/30 text-xs transition-colors cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
             <span>Sign Out</span>
@@ -462,7 +462,7 @@ export const StaffPortalLayout: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto max-h-screen bg-bg">
+      <main className="flex-1 overflow-y-auto max-h-screen bg-stone-100">
         <Outlet
           context={{
             inventory,
@@ -486,12 +486,12 @@ export const StaffPortalLayout: React.FC = () => {
         <div className={`fixed bottom-5 right-5 z-50 text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 border animate-in fade-in slide-from-bottom-2 ${
           noticeType === 'error'
             ? 'bg-rose-950 text-rose-100 border-rose-800'
-            : 'bg-surface text-text border-border'
+            : 'bg-stone-900 text-stone-100 border-stone-700'
         }`}>
           {noticeType === 'error' ? (
             <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
           ) : (
-            <CheckCircle2 className="w-4 h-4 text-pink shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
           )}
           <span>{actionNotice}</span>
         </div>
@@ -499,19 +499,19 @@ export const StaffPortalLayout: React.FC = () => {
 
       {/* Inactivity Warning Modal */}
       {showInactivityWarning && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg/85 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-surface border border-pink/40 rounded-2xl p-6 max-w-sm w-full text-text shadow-2xl text-center space-y-4">
-            <div className="w-12 h-12 rounded-full bg-pink/10 border border-pink/30 text-pink flex items-center justify-center mx-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white border border-stone-200 rounded-2xl p-6 max-w-sm w-full text-stone-900 shadow-2xl text-center space-y-4">
+            <div className="w-12 h-12 rounded-full bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center mx-auto">
               <Clock className="w-6 h-6 animate-pulse" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-text font-serif-display">
+              <h3 className="text-base font-bold text-stone-900 font-serif-display">
                 Session Inactivity Warning
               </h3>
-              <p className="text-xs text-text-muted mt-1.5 leading-relaxed">
+              <p className="text-xs text-stone-500 mt-1.5 leading-relaxed">
                 You have been inactive for 29 minutes. For security, your staff session will automatically sign out in:
               </p>
-              <div className="text-3xl font-mono font-bold text-pink mt-2">
+              <div className="text-3xl font-mono font-bold text-amber-700 mt-2">
                 {countdownSeconds}s
               </div>
             </div>
@@ -519,14 +519,14 @@ export const StaffPortalLayout: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAutoSignOut}
-                className="flex-1 py-2.5 text-xs font-semibold rounded-xl border border-border text-text-muted hover:text-rose-400 hover:border-rose-800 transition-colors cursor-pointer bg-surface-2"
+                className="flex-1 py-2.5 text-xs font-semibold rounded-xl border border-stone-200 text-stone-600 hover:text-rose-600 hover:border-rose-300 transition-colors cursor-pointer bg-stone-50"
               >
                 Sign Out Now
               </button>
               <button
                 type="button"
                 onClick={startInactivityTimers}
-                className="flex-1 py-2.5 text-xs font-bold rounded-xl bg-pink hover:bg-pink-strong text-white transition-colors cursor-pointer shadow-lg shadow-pink/30"
+                className="flex-1 py-2.5 text-xs font-bold rounded-xl bg-amber-600 hover:bg-amber-700 text-white transition-colors cursor-pointer shadow-md"
               >
                 Stay Signed In
               </button>

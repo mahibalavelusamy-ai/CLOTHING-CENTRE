@@ -172,22 +172,22 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-surface rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-border flex flex-col relative text-text"
+        className="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 flex flex-col relative text-stone-900"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="p-5 bg-surface-2 text-text flex items-center justify-between border-b border-border sticky top-0 z-10">
+        <div className="p-5 bg-stone-50 text-stone-900 flex items-center justify-between border-b border-stone-200 sticky top-0 z-10">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-pink/15 text-pink flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-700 flex items-center justify-center">
               <Package className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold font-serif-display text-white">
+              <h2 className="text-base font-bold font-serif-display text-stone-900">
                 {isEditing ? `Edit Garment: ${initialItem?.name}` : 'Add New Boutique Garment'}
               </h2>
-              <p className="text-[11px] text-text-muted">
+              <p className="text-[11px] text-stone-500">
                 Department categorization, pricing, fabric and inventory
               </p>
             </div>
@@ -195,7 +195,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-surface hover:bg-surface-2 text-text-muted hover:text-text border border-border flex items-center justify-center transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-white hover:bg-stone-100 text-stone-500 hover:text-stone-900 border border-stone-200 flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -206,7 +206,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Row 1: Title, SKU, Department */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="sm:col-span-2">
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Garment Title / Style Name *
               </label>
               <input
@@ -215,12 +215,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 placeholder="e.g. Pure Tussar Handloom Saree"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 SKU Code *
               </label>
               <input
@@ -228,7 +228,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 required
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
-                className="w-full px-3 py-2 text-xs font-mono bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs font-mono bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
           </div>
@@ -236,13 +236,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Row 2: Department & Category */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Department *
               </label>
               <select
                 value={department}
                 onChange={(e) => handleDepartmentChange(e.target.value as Exclude<Department, 'all'>)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink font-medium"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white font-medium text-stone-900"
               >
                 {DEPARTMENTS.filter(d => d.id !== 'all').map((d) => (
                   <option key={d.id} value={d.id}>
@@ -253,13 +253,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Category *
               </label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink font-medium"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white font-medium text-stone-900"
               >
                 {DEPARTMENT_CONFIG[department].categories.map((c) => (
                   <option key={c} value={c}>
@@ -273,7 +273,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Row 3: Prices & Tag */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Selling Price (₹) *
               </label>
               <input
@@ -284,12 +284,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 placeholder="e.g. 2450"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                className="w-full px-3 py-2 text-xs font-mono font-bold bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs font-mono font-bold bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Original MRP (₹) (Optional)
               </label>
               <input
@@ -299,18 +299,18 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 placeholder="e.g. 3200"
                 value={originalPrice}
                 onChange={(e) => setOriginalPrice(e.target.value)}
-                className="w-full px-3 py-2 text-xs font-mono bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs font-mono bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Badge / Tag
               </label>
               <select
                 value={tag}
                 onChange={(e) => setTag(e.target.value as any)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               >
                 <option value="New Arrival">New Arrival</option>
                 <option value="Bestseller">Bestseller</option>
@@ -324,7 +324,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Row 4: Fabric & Care Guide */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Fabric & Weave *
               </label>
               <input
@@ -333,19 +333,19 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 placeholder="e.g. Handloom Tussar Silk"
                 value={fabric}
                 onChange={(e) => setFabric(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Care Instructions
               </label>
               <input
                 type="text"
                 value={careGuide}
                 onChange={(e) => setCareGuide(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
           </div>
@@ -353,13 +353,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Row 5: Fit type, Occasion, Blouse */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Occasion
               </label>
               <select
                 value={occasion}
                 onChange={(e) => setOccasion(e.target.value as any)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               >
                 {OCCASIONS.map((o) => (
                   <option key={o} value={o}>{o}</option>
@@ -368,14 +368,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Fit Silhouette
               </label>
               <select
                 value={fitType}
                 onChange={(e) => setFitType(e.target.value as any)}
                 disabled={department === 'sarees'}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink disabled:opacity-50"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white disabled:opacity-50 text-stone-900"
               >
                 {FIT_TYPES.map((f) => (
                   <option key={f} value={f}>{f}</option>
@@ -385,12 +385,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
             {department === 'sarees' && (
               <div className="flex items-center pt-5">
-                <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-text">
+                <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-stone-700">
                   <input
                     type="checkbox"
                     checked={blouseIncluded}
                     onChange={(e) => setBlouseIncluded(e.target.checked)}
-                    className="w-4 h-4 text-pink rounded border-border focus:ring-pink accent-pink"
+                    className="w-4 h-4 text-amber-600 rounded border-stone-300 focus:ring-amber-500 accent-amber-600"
                   />
                   <span>Includes Unstitched Blouse Piece</span>
                 </label>
@@ -401,7 +401,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           {/* Row 6: Color & Image URL */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Color Name
               </label>
               <input
@@ -409,12 +409,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 placeholder="e.g. Royal Maroon"
                 value={colorName}
                 onChange={(e) => setColorName(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Color Swatch
               </label>
               <div className="flex items-center gap-2">
@@ -422,19 +422,19 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   type="color"
                   value={colorHex}
                   onChange={(e) => setColorHex(e.target.value)}
-                  className="w-10 h-8 rounded-lg border border-border cursor-pointer p-0.5 bg-surface-2"
+                  className="w-10 h-8 rounded-lg border border-stone-300 cursor-pointer p-0.5 bg-stone-50"
                 />
                 <input
                   type="text"
                   value={colorHex}
                   onChange={(e) => setColorHex(e.target.value)}
-                  className="w-full px-2.5 py-1.5 text-xs font-mono bg-surface-2 border border-border text-text rounded-lg"
+                  className="w-full px-2.5 py-1.5 text-xs font-mono bg-stone-50 border border-stone-300 rounded-lg text-stone-900"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-text-muted mb-1">
+              <label className="block text-xs font-semibold text-stone-700 mb-1">
                 Photo URL (Optional)
               </label>
               <input
@@ -442,14 +442,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 placeholder="https://..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+                className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
               />
             </div>
           </div>
 
           {/* Row 7: Description */}
           <div>
-            <label className="block text-xs font-semibold text-text-muted mb-1">
+            <label className="block text-xs font-semibold text-stone-700 mb-1">
               Description & Styling Notes
             </label>
             <textarea
@@ -457,19 +457,19 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Provide boutique product details..."
-              className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink"
+              className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:border-amber-600 focus:bg-white text-stone-900"
             />
           </div>
 
           {/* Row 8: Sizes & Stock Allocation */}
-          <div className="p-4 bg-surface-2/60 rounded-xl border border-border">
-            <h4 className="text-xs font-bold text-text mb-2">
+          <div className="p-4 bg-stone-50 rounded-xl border border-stone-200">
+            <h4 className="text-xs font-bold text-stone-900 mb-2">
               Size Stock Allocation ({DEPARTMENT_CONFIG[department].label})
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
               {DEPARTMENT_CONFIG[department].sizes.map((s) => (
-                <div key={s} className="bg-surface p-2.5 rounded-lg border border-border text-center">
-                  <span className="block text-xs font-bold text-text mb-1">{s}</span>
+                <div key={s} className="bg-white p-2.5 rounded-lg border border-stone-200 text-center">
+                  <span className="block text-xs font-bold text-stone-800 mb-1">{s}</span>
                   <input
                     type="number"
                     min="0"
@@ -478,27 +478,27 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                       const val = parseInt(e.target.value) || 0;
                       setSizeStocks((prev) => ({ ...prev, [s]: val }));
                     }}
-                    className="w-full py-1 text-center font-mono font-semibold text-xs border border-border rounded focus:border-pink bg-surface-2 text-text"
+                    className="w-full py-1 text-center font-mono font-semibold text-xs border border-stone-300 rounded focus:border-amber-600 bg-white text-stone-900"
                   />
-                  <span className="text-[10px] text-text-muted mt-0.5 block">units</span>
+                  <span className="text-[10px] text-stone-400 mt-0.5 block">units</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Modal Footer */}
-          <div className="pt-3 border-t border-border flex items-center justify-end gap-3">
+          <div className="pt-3 border-t border-stone-200 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 border border-border text-text-muted hover:text-text hover:bg-surface-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+              className="px-4 py-2 border border-stone-300 text-stone-700 hover:bg-stone-50 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2 bg-pink hover:bg-pink-strong text-white font-bold rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               <span>{saving ? 'Saving...' : (isEditing ? 'Save Changes' : 'Publish Garment')}</span>

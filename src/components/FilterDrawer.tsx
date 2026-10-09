@@ -52,22 +52,22 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
     <div className="fixed inset-0 z-50 flex justify-end">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-xs transition-opacity animate-in fade-in"
+        className="fixed inset-0 bg-stone-950/60 backdrop-blur-xs transition-opacity animate-in fade-in"
         onClick={onClose}
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-md bg-surface border-l border-border h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-300">
+      <div className="relative w-full max-w-md bg-white border-l border-stone-200 h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-300">
         
         {/* Drawer Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200">
           <div className="flex items-center gap-2">
-            <SlidersHorizontal className="w-4 h-4 text-pink" />
-            <h2 className="text-base font-bold text-text uppercase tracking-wide">
+            <SlidersHorizontal className="w-4 h-4 text-amber-800" />
+            <h2 className="text-base font-bold text-stone-900 uppercase tracking-wide">
               Filter & Sort
             </h2>
             {activeFilterCount > 0 && (
-              <span className="bg-pink/20 text-pink border border-pink/30 text-xs font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-amber-100 text-amber-900 text-xs font-bold px-2 py-0.5 rounded-full">
                 {activeFilterCount}
               </span>
             )}
@@ -77,7 +77,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             {activeFilterCount > 0 && (
               <button
                 onClick={onResetFilters}
-                className="text-xs text-pink hover:text-pink-tint font-semibold flex items-center gap-1 cursor-pointer px-2 py-1"
+                className="text-xs text-amber-800 hover:text-amber-900 font-semibold flex items-center gap-1 cursor-pointer px-2 py-1"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -85,7 +85,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             )}
             <button
               onClick={onClose}
-              className="p-1.5 text-text-muted hover:text-text rounded-full hover:bg-surface-2 transition-colors cursor-pointer"
+              className="p-1.5 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-100 transition-colors cursor-pointer"
               aria-label="Close filters"
             >
               <X className="w-5 h-5" />
@@ -98,13 +98,13 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
           
           {/* Sort By */}
           <div>
-            <label className="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">
               Sort By
             </label>
             <select
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value as any)}
-              className="w-full px-3.5 py-2.5 text-xs bg-surface-2 border border-border rounded-xl text-text focus:outline-none focus:border-pink cursor-pointer"
+              className="w-full px-3.5 py-2.5 text-xs bg-stone-50 border border-stone-300 rounded-xl text-stone-800 focus:outline-none focus:border-amber-600 cursor-pointer font-medium"
             >
               <option value="featured">Featured Curations</option>
               <option value="newest">New Arrivals</option>
@@ -122,11 +122,11 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
               return (
                 <div>
                   <div className="flex items-center justify-between mb-2.5">
-                    <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                    <label className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                       Available Sizes
                     </label>
                     {selectedSizes.length > 0 && (
-                      <span className="text-[11px] text-pink font-medium">
+                      <span className="text-[11px] text-amber-800 font-medium">
                         {selectedSizes.length} selected
                       </span>
                     )}
@@ -140,8 +140,8 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                           onClick={() => onToggleSize(size)}
                           className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
                             isSelected
-                              ? 'bg-pink text-white font-bold border-pink shadow-xs'
-                              : 'bg-surface-2 border-border text-text hover:border-pink/50'
+                              ? 'bg-stone-900 text-white font-bold border-stone-900 shadow-xs'
+                              : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
                           }`}
                         >
                           {size}
@@ -160,11 +160,11 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
             return (
               <div>
                 <div className="flex items-center justify-between mb-2.5">
-                  <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
+                  <label className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                     Available Sizes
                   </label>
                   {selectedSizes.length > 0 && (
-                    <span className="text-[11px] text-pink font-medium">
+                    <span className="text-[11px] text-amber-800 font-medium">
                       {selectedSizes.length} selected
                     </span>
                   )}
@@ -175,7 +175,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                     if (deptSizes.length === 0) return null;
                     return (
                       <div key={deptKey}>
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-text-muted block mb-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block mb-1.5">
                           {deptMeta.label}
                         </span>
                         <div className="grid grid-cols-3 gap-2">
@@ -187,8 +187,8 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                                 onClick={() => onToggleSize(size)}
                                 className={`py-2 text-xs font-semibold rounded-xl border transition-all cursor-pointer ${
                                   isSelected
-                                    ? 'bg-pink text-white font-bold border-pink shadow-xs'
-                                    : 'bg-surface-2 border-border text-text hover:border-pink/50'
+                                    ? 'bg-stone-900 text-white font-bold border-stone-900 shadow-xs'
+                                    : 'bg-white border-stone-200 text-stone-700 hover:border-stone-400'
                                 }`}
                               >
                                 {size}
@@ -207,10 +207,10 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
           {/* Price Range */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs font-bold text-text-muted uppercase tracking-wider">
+              <label className="text-xs font-bold text-stone-500 uppercase tracking-wider">
                 Price Range
               </label>
-              <span className="text-xs font-bold text-text font-mono">
+              <span className="text-xs font-bold text-amber-800 font-mono">
                 {formatPrice(priceRange[0])} – {formatPrice(priceRange[1])}
               </span>
             </div>
@@ -221,22 +221,22 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
               step={100}
               value={priceRange[1]}
               onChange={(e) => onPriceChange([priceRange[0], Number(e.target.value)])}
-              className="w-full accent-pink cursor-pointer"
+              className="w-full accent-amber-600 cursor-pointer"
             />
-            <div className="flex justify-between text-[11px] text-text-muted mt-1 font-mono">
+            <div className="flex justify-between text-[11px] text-stone-500 mt-1 font-mono">
               <span>{formatPrice(0)}</span>
               <span>Max {formatPrice(maxPossiblePrice)}</span>
             </div>
           </div>
 
           {/* In-Stock Toggle */}
-          <div className="pt-4 border-t border-border">
-            <label className="flex items-center justify-between cursor-pointer p-3 bg-surface-2 rounded-xl border border-border hover:border-pink/30 transition-colors">
+          <div className="pt-4 border-t border-stone-200">
+            <label className="flex items-center justify-between cursor-pointer p-3 bg-stone-50 rounded-xl border border-stone-200 hover:bg-stone-100/70 transition-colors">
               <div>
-                <span className="block text-xs font-bold text-text">
+                <span className="block text-xs font-bold text-stone-900">
                   In-Stock at Boutique Only
                 </span>
-                <span className="block text-[11px] text-text-muted mt-0.5">
+                <span className="block text-[11px] text-stone-500 mt-0.5">
                   Hide pieces temporarily out of stock
                 </span>
               </div>
@@ -244,7 +244,7 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
                 type="checkbox"
                 checked={inStockOnly}
                 onChange={onToggleInStock}
-                className="w-4 h-4 rounded text-pink focus:ring-pink accent-pink cursor-pointer"
+                className="w-4 h-4 rounded text-amber-600 focus:ring-amber-500 accent-amber-600 cursor-pointer"
               />
             </label>
           </div>
@@ -252,18 +252,18 @@ export const FilterDrawer: React.FC<FilterDrawerProps> = ({
         </div>
 
         {/* Drawer Footer */}
-        <div className="p-4 sm:p-6 border-t border-border bg-surface flex items-center gap-3">
+        <div className="p-4 sm:p-6 border-t border-stone-200 bg-stone-50 flex items-center gap-3">
           {activeFilterCount > 0 && (
             <button
               onClick={onResetFilters}
-              className="px-4 py-3 rounded-xl border border-border text-text-muted hover:text-text hover:bg-surface-2 text-xs font-semibold transition-colors cursor-pointer"
+              className="px-4 py-3 rounded-xl border border-stone-300 text-stone-700 text-xs font-semibold hover:bg-stone-100 transition-colors cursor-pointer"
             >
               Clear All
             </button>
           )}
           <button
             onClick={onClose}
-            className="flex-1 py-3 px-4 btn-primary-glossy rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm text-center uppercase tracking-wider"
+            className="flex-1 py-3 px-4 bg-stone-900 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer shadow-sm text-center uppercase tracking-wider"
           >
             Show {resultsCount} {resultsCount === 1 ? 'Garment' : 'Garments'}
           </button>

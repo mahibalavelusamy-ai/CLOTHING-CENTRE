@@ -526,11 +526,11 @@ export const Storefront: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg text-text flex flex-col selection:bg-pink/30 selection:text-pink-tint pb-16 md:pb-0">
+    <div className="min-h-screen bg-[#fdfbf7] text-stone-900 flex flex-col selection:bg-amber-100 selection:text-amber-900 pb-16 md:pb-0">
       
       {/* Toast Notification Alert */}
       {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 bg-surface text-text text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 border border-border animate-in fade-in slide-from-bottom-2">
+        <div className="fixed bottom-5 right-5 z-50 bg-stone-900 text-stone-100 text-xs font-semibold px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 border border-stone-800 animate-in fade-in slide-from-bottom-2">
           <Check className="w-4 h-4 text-emerald-400" />
           <span>{toastMessage}</span>
         </div>
@@ -548,14 +548,14 @@ export const Storefront: React.FC = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={handleResendVerification}
-              className="px-2.5 py-1 btn-primary-glossy text-white rounded-md text-[11px] font-semibold cursor-pointer transition-colors"
+              className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-md text-[11px] font-semibold cursor-pointer transition-colors shadow-xs"
             >
               Resend Email
             </button>
             <button
               onClick={handleCheckVerification}
               disabled={checkingEmailVerification}
-              className="px-2.5 py-1 bg-surface-2 border border-border hover:border-pink/40 text-text rounded-md text-[11px] font-semibold cursor-pointer transition-colors disabled:opacity-50"
+              className="px-2.5 py-1 bg-white border border-stone-300 hover:border-amber-600 text-stone-700 rounded-md text-[11px] font-semibold cursor-pointer transition-colors disabled:opacity-50"
             >
               {checkingEmailVerification ? 'Checking...' : 'Check Status'}
             </button>
@@ -598,36 +598,37 @@ export const Storefront: React.FC = () => {
             <div className="space-y-12">
               <HeroSlideshow onSelectCategory={handleSelectCategory} />
               
-              <div className="bg-surface rounded-3xl border border-border p-8 sm:p-14 text-center shadow-xs max-w-2xl mx-auto my-8">
-                <div className="w-16 h-16 rounded-2xl bg-pink/15 border border-pink/30 text-pink flex items-center justify-center mx-auto mb-5 shadow-2xs">
-                  <Sparkles className="w-8 h-8 text-pink" />
+              <div className="bg-white rounded-3xl border border-stone-200/80 p-8 sm:p-14 text-center shadow-xs max-w-2xl mx-auto my-8">
+                <div className="w-16 h-16 rounded-2xl bg-amber-100 border border-amber-300 text-amber-800 flex items-center justify-center mx-auto mb-5 shadow-2xs">
+                  <Sparkles className="w-8 h-8 text-amber-700" />
                 </div>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-pink bg-pink/10 border border-pink/20 px-3.5 py-1 rounded-full inline-block mb-3">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-50 border border-amber-200 px-3.5 py-1 rounded-full inline-block mb-3">
                   Boutique Collection
                 </span>
-                <h2 className="font-serif-display text-2xl sm:text-4xl font-bold text-text mb-3">
+                <h2 className="font-serif-display text-2xl sm:text-4xl font-bold text-stone-900 mb-3">
                   New collection arriving soon
                 </h2>
-                <p className="text-sm sm:text-base text-text-muted max-w-md mx-auto mb-6 leading-relaxed">
+                <p className="text-sm sm:text-base text-stone-600 max-w-md mx-auto mb-6 leading-relaxed">
                   Welcome to {STORE_CENTRE_INFO.name}, Oddanchatram. Handcrafted sarees, blouses, co-ords, lounge wear, salwar materials, and decor collections are arriving soon.
                 </p>
-                <div className="p-4 bg-surface-2 rounded-2xl border border-border text-xs text-text-muted max-w-lg mx-auto mb-6 space-y-1 text-left sm:text-center">
-                  <p className="font-semibold text-text">Visit {STORE_CENTRE_INFO.name}:</p>
+                <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 text-xs text-stone-600 max-w-lg mx-auto mb-6 space-y-1 text-left sm:text-center">
+                  <p className="font-semibold text-stone-900">Visit {STORE_CENTRE_INFO.name}:</p>
                   <p>{STORE_CENTRE_INFO.address}</p>
-                  <p className="text-text">
-                    Call: <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="text-pink font-medium hover:underline">{STORE_CENTRE_INFO.phone}</a>
+                  <p className="text-stone-900">
+                    Call: <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="text-amber-800 font-medium hover:underline">{STORE_CENTRE_INFO.phone}</a>
                     {STORE_CENTRE_INFO.phone2 && (
-                      <> · <a href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`} className="text-pink font-medium hover:underline">{STORE_CENTRE_INFO.phone2}</a></>
+                      <> · <a href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`} className="text-amber-800 font-medium hover:underline">{STORE_CENTRE_INFO.phone2}</a></>
                     )}
                   </p>
                   {Boolean(STORE_CENTRE_INFO.hours) && (
-                    <p className="font-mono text-text-muted">{STORE_CENTRE_INFO.hours}</p>
+                    <p className="font-mono text-stone-500">{STORE_CENTRE_INFO.hours}</p>
                   )}
                 </div>
               </div>
 
               <BrandStoryBlock />
             </div>
+
           ) : (
             <div>
               {/* 1. Hero Slideshow */}
@@ -653,17 +654,17 @@ export const Storefront: React.FC = () => {
               <section className="mb-14">
                 <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-6">
                   <div>
-                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-pink">
+                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
                       Hand-Selected Racks
                     </span>
-                    <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-text mt-0.5">
+                    <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
                       Featured Collection
                     </h2>
                   </div>
 
                   <button
                     onClick={() => setIsFilterDrawerOpen(true)}
-                    className="px-4 py-2 btn-secondary-pink rounded-full text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-sm uppercase tracking-wider"
+                    className="px-4 py-2 border border-stone-300 hover:border-amber-600 text-stone-700 hover:text-amber-800 rounded-full text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-xs uppercase tracking-wider bg-white"
                   >
                     <SlidersHorizontal className="w-3.5 h-3.5" />
                     <span>Filter & Sort {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
@@ -681,8 +682,8 @@ export const Storefront: React.FC = () => {
                           onClick={() => setFeaturedTab(tab.id as Department)}
                           className={`whitespace-nowrap px-4 py-2 rounded-full text-xs font-semibold tracking-wider transition-all cursor-pointer ${
                             isActive
-                              ? 'bg-pink text-white shadow-xs font-bold'
-                              : 'bg-surface-2 hover:bg-surface text-text-muted hover:text-text border border-border'
+                              ? 'bg-stone-900 text-white shadow-xs font-bold'
+                              : 'bg-white hover:bg-stone-50 text-stone-600 hover:text-stone-900 border border-stone-200'
                           }`}
                         >
                           {tab.label}
@@ -715,13 +716,13 @@ export const Storefront: React.FC = () => {
         ) : (
           /* ==================== CATEGORY / SEARCH VIEW (TWO-PANE) ==================== */
           <div className="mb-14">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-stone-200">
               <div>
                 {/* Breadcrumbs */}
-                <div className="flex items-center gap-2 text-xs text-text-muted mb-1.5 font-medium">
+                <div className="flex items-center gap-2 text-xs text-stone-500 mb-1.5 font-medium">
                   <button
                     onClick={handleResetFilters}
-                    className="hover:text-pink transition-colors cursor-pointer"
+                    className="hover:text-amber-800 transition-colors cursor-pointer"
                   >
                     Storefront
                   </button>
@@ -730,20 +731,20 @@ export const Storefront: React.FC = () => {
                   {filters.category !== 'All' && (
                     <>
                       <span>/</span>
-                      <span className="text-text font-bold">{filters.category}</span>
+                      <span className="text-stone-900 font-bold">{filters.category}</span>
                     </>
                   )}
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <h1 className="font-serif-display text-2xl sm:text-3xl font-bold text-text">
+                  <h1 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900">
                     {filters.category !== 'All'
                       ? filters.category
                       : filters.department === 'all'
                       ? 'All Boutique Collections'
                       : DEPARTMENT_CONFIG[filters.department]?.label || filters.department}
                   </h1>
-                  <span className="text-xs bg-surface-2 border border-border text-text font-semibold px-2.5 py-0.5 rounded-full">
+                  <span className="text-xs bg-stone-100 border border-stone-200 text-stone-700 font-semibold px-2.5 py-0.5 rounded-full">
                     {filteredProducts.length} pieces
                   </span>
                 </div>
@@ -753,7 +754,7 @@ export const Storefront: React.FC = () => {
                 <button
                   id="category-filters-btn"
                   onClick={() => setIsFilterDrawerOpen(true)}
-                  className="px-4 py-2.5 btn-secondary-pink rounded-full text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-sm uppercase tracking-wider"
+                  className="px-4 py-2.5 border border-stone-300 hover:border-amber-600 text-stone-700 hover:text-amber-800 rounded-full text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-xs uppercase tracking-wider bg-white"
                 >
                   <SlidersHorizontal className="w-3.5 h-3.5" />
                   <span>Filters {activeFilterCount > 0 && `(${activeFilterCount})`}</span>
@@ -761,9 +762,9 @@ export const Storefront: React.FC = () => {
 
                 <button
                   onClick={() => setIsSizeGuideOpen(true)}
-                  className="px-4 py-2.5 bg-surface-2 hover:bg-surface text-text text-xs font-semibold rounded-full flex items-center gap-1.5 transition-colors cursor-pointer border border-border"
+                  className="px-4 py-2.5 bg-white hover:bg-stone-50 text-stone-700 text-xs font-semibold rounded-full flex items-center gap-1.5 transition-colors cursor-pointer border border-stone-300"
                 >
-                  <SlidersHorizontal className="w-3.5 h-3.5 text-pink" />
+                  <SlidersHorizontal className="w-3.5 h-3.5 text-stone-500" />
                   <span>Size Guide</span>
                 </button>
               </div>
@@ -772,35 +773,36 @@ export const Storefront: React.FC = () => {
             {/* Active Filter Chips */}
             {(activeFilterCount > 0 || filters.searchQuery) && (
               <div className="flex flex-wrap items-center gap-2 mb-6">
-                <span className="text-[11px] uppercase font-bold tracking-wider text-text-muted">
+                <span className="text-[11px] uppercase font-bold tracking-wider text-stone-500">
                   Filters Applied:
                 </span>
                 {filters.searchQuery && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink/15 border border-pink/30 text-pink text-xs font-medium">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-xs font-medium">
                     Search: "{filters.searchQuery}"
-                    <button onClick={() => setFilters(f => ({ ...f, searchQuery: '' }))} className="hover:text-pink-tint font-bold ml-0.5">×</button>
+                    <button onClick={() => setFilters(f => ({ ...f, searchQuery: '' }))} className="hover:text-amber-700 font-bold ml-0.5">×</button>
                   </span>
                 )}
                 {filters.sizes.map((size) => (
-                  <span key={size} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-2 border border-border text-text text-xs font-medium">
+                  <span key={size} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-stone-200 text-stone-700 text-xs font-medium">
                     Size: {size}
-                    <button onClick={() => setFilters(f => ({ ...f, sizes: f.sizes.filter(s => s !== size) }))} className="hover:text-pink font-bold ml-0.5">×</button>
+                    <button onClick={() => setFilters(f => ({ ...f, sizes: f.sizes.filter(s => s !== size) }))} className="hover:text-stone-900 font-bold ml-0.5">×</button>
                   </span>
                 ))}
                 {filters.inStockOnly && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-medium">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium">
                     In-Stock Only
-                    <button onClick={() => setFilters(f => ({ ...f, inStockOnly: false }))} className="hover:text-emerald-200 font-bold ml-0.5">×</button>
+                    <button onClick={() => setFilters(f => ({ ...f, inStockOnly: false }))} className="hover:text-emerald-950 font-bold ml-0.5">×</button>
                   </span>
                 )}
                 <button
                   onClick={handleResetFilters}
-                  className="text-xs text-pink hover:text-pink-tint font-semibold underline underline-offset-2 ml-1 cursor-pointer"
+                  className="text-xs text-amber-800 hover:text-amber-900 font-semibold underline underline-offset-2 ml-1 cursor-pointer"
                 >
                   Clear All
                 </button>
               </div>
             )}
+
 
             {/* TWO-PANE LAYOUT */}
             <div className="flex gap-4 sm:gap-6 lg:gap-8 items-start">
@@ -815,14 +817,14 @@ export const Storefront: React.FC = () => {
 
               <div className="flex-1 min-w-0">
                 {filteredProducts.length === 0 ? (
-                  <div className="bg-surface rounded-2xl border border-border p-8 sm:p-12 text-center shadow-xs">
-                    <div className="w-14 h-14 rounded-full bg-surface-2 border border-border flex items-center justify-center mx-auto text-pink mb-3">
+                  <div className="bg-white rounded-2xl border border-stone-200/80 p-8 sm:p-12 text-center shadow-xs">
+                    <div className="w-14 h-14 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center mx-auto text-amber-700 mb-3">
                       <Search className="w-6 h-6" />
                     </div>
-                    <h3 className="font-serif-display text-xl font-bold text-text mb-2">
+                    <h3 className="font-serif-display text-xl font-bold text-stone-900 mb-2">
                       No Matching Boutique Pieces Found
                     </h3>
-                    <p className="text-xs sm:text-sm text-text-muted max-w-md mx-auto mb-4 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-stone-500 max-w-md mx-auto mb-4 leading-relaxed">
                       We couldn't find any products matching your current filters. Try relaxing criteria or clearing the search.
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3">
@@ -865,37 +867,37 @@ export const Storefront: React.FC = () => {
       </main>
 
       {/* Luxury Footer */}
-      <footer className="mt-16 bg-surface text-text-muted border-t border-border text-xs">
+      <footer className="mt-16 bg-stone-900 text-stone-300 border-t border-stone-800 text-xs">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-border">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-stone-800">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-pink/15 text-pink flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">
                 <MapPin className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-text text-sm">Visit us</h4>
-                <p className="text-text-muted text-[11px] mt-0.5">{STORE_CENTRE_INFO.address}</p>
+                <h4 className="font-bold text-stone-100 text-sm">Visit us</h4>
+                <p className="text-stone-400 text-[11px] mt-0.5">{STORE_CENTRE_INFO.address}</p>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-pink/15 text-pink flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">
                 <Phone className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-text text-sm">Call us</h4>
-                <div className="text-text-muted text-[11px] mt-0.5 flex flex-col gap-0.5">
+                <h4 className="font-bold text-stone-100 text-sm">Call us</h4>
+                <div className="text-stone-400 text-[11px] mt-0.5 flex flex-col gap-0.5">
                   <a
                     href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`}
-                    className="hover:text-pink transition-colors"
+                    className="hover:text-amber-400 transition-colors"
                   >
                     {STORE_CENTRE_INFO.phone}
                   </a>
                   {STORE_CENTRE_INFO.phone2 && (
                     <a
                       href={`tel:${STORE_CENTRE_INFO.phone2.replace(/\s+/g, '')}`}
-                      className="hover:text-pink transition-colors"
+                      className="hover:text-amber-400 transition-colors"
                     >
                       {STORE_CENTRE_INFO.phone2}
                     </a>
@@ -905,25 +907,25 @@ export const Storefront: React.FC = () => {
             </div>
 
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-pink/15 text-pink flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">
                 <ShoppingBag className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-text text-sm">Order online</h4>
-                <p className="text-text-muted text-[11px] mt-0.5">Store pickup or home delivery</p>
+                <h4 className="font-bold text-stone-100 text-sm">Order online</h4>
+                <p className="text-stone-400 text-[11px] mt-0.5">Store pickup or home delivery</p>
               </div>
             </div>
           </div>
 
-          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-text-muted text-[11px]">
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-text-muted">
+          <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-stone-400 text-[11px]">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-stone-400">
               <span className="flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-text-muted shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-stone-500 shrink-0" />
                 <span>{STORE_CENTRE_INFO.address}</span>
               </span>
               <span className="flex items-center gap-1">
-                <Phone className="w-3.5 h-3.5 text-text-muted shrink-0" />
-                <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="hover:text-pink transition-colors">
+                <Phone className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="hover:text-amber-400 transition-colors">
                   {STORE_CENTRE_INFO.phone}
                 </a>
               </span>
@@ -932,7 +934,7 @@ export const Storefront: React.FC = () => {
                   href={`https://instagram.com/${STORE_CENTRE_INFO.instagram}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-pink transition-colors"
+                  className="hover:text-amber-400 transition-colors"
                 >
                   @{STORE_CENTRE_INFO.instagram}
                 </a>
@@ -942,7 +944,7 @@ export const Storefront: React.FC = () => {
             <div className="flex items-center gap-3">
               <a
                 href="/staff/login"
-                className="text-text-muted hover:text-pink transition-colors underline underline-offset-2"
+                className="text-stone-400 hover:text-amber-400 transition-colors underline underline-offset-2"
               >
                 Staff Portal
               </a>
@@ -953,6 +955,7 @@ export const Storefront: React.FC = () => {
 
         </div>
       </footer>
+
 
       {/* MODALS & DRAWERS */}
       <FilterDrawer

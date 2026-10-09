@@ -113,14 +113,14 @@ export const StaffOrders: React.FC = () => {
   const getPaymentBadge = (status: PaymentStatus | string) => {
     switch (status) {
       case 'paid':
-        return 'bg-emerald-950/50 text-emerald-300 border-emerald-800/60';
+        return 'bg-emerald-50 text-emerald-800 border-emerald-200';
       case 'verification_pending':
-        return 'bg-amber-950/50 text-amber-300 border-amber-800/60';
+        return 'bg-amber-50 text-amber-800 border-amber-200';
       case 'refunded':
-        return 'bg-rose-950/50 text-rose-300 border-rose-800/60';
+        return 'bg-rose-50 text-rose-800 border-rose-200';
       case 'unpaid':
       default:
-        return 'bg-surface-2 text-text-muted border-border';
+        return 'bg-stone-100 text-stone-600 border-stone-200';
     }
   };
 
@@ -131,14 +131,14 @@ export const StaffOrders: React.FC = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-bold text-text font-serif-display">
+            <h1 className="text-xl sm:text-2xl font-bold text-stone-900 font-serif-display">
               Orders & Fulfilment
             </h1>
-            <span className="text-xs bg-pink/10 text-pink font-mono font-bold px-2 py-0.5 rounded-full border border-pink/30">
+            <span className="text-xs bg-amber-50 text-amber-800 font-mono font-bold px-2 py-0.5 rounded-full border border-amber-200">
               {orders.length} Total
             </span>
           </div>
-          <p className="text-xs text-text-muted mt-1">
+          <p className="text-xs text-stone-500 mt-1">
             Manage customer purchases, dispatch status, store pickup schedules, and tax slips.
           </p>
         </div>
@@ -146,49 +146,49 @@ export const StaffOrders: React.FC = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex items-center justify-between">
+        <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex items-center justify-between">
           <div>
-            <p className="text-xs text-text-muted font-medium">Pending Action</p>
-            <p className="text-2xl font-bold text-amber-400 font-mono mt-0.5">{pendingCount}</p>
+            <p className="text-xs text-stone-500 font-medium">Pending Action</p>
+            <p className="text-2xl font-bold text-amber-700 font-mono mt-0.5">{pendingCount}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-950/50 border border-amber-800/60 flex items-center justify-center text-amber-400">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700">
             <Clock className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex items-center justify-between">
+        <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex items-center justify-between">
           <div>
-            <p className="text-xs text-text-muted font-medium">Completed Orders</p>
-            <p className="text-2xl font-bold text-emerald-400 font-mono mt-0.5">{completedCount}</p>
+            <p className="text-xs text-stone-500 font-medium">Completed Orders</p>
+            <p className="text-2xl font-bold text-emerald-700 font-mono mt-0.5">{completedCount}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-950/50 border border-emerald-800/60 flex items-center justify-center text-emerald-400">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700">
             <CheckCircle2 className="w-5 h-5" />
           </div>
         </div>
 
-        <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs flex items-center justify-between">
+        <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs flex items-center justify-between">
           <div>
-            <p className="text-xs text-text-muted font-medium">Total Orders Value</p>
-            <p className="text-2xl font-bold text-text font-mono mt-0.5">{formatPrice(totalRevenue)}</p>
+            <p className="text-xs text-stone-500 font-medium">Total Orders Value</p>
+            <p className="text-2xl font-bold text-stone-900 font-mono mt-0.5">{formatPrice(totalRevenue)}</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-surface-2 border border-border flex items-center justify-center text-pink">
+          <div className="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center text-stone-700">
             <DollarSign className="w-5 h-5" />
           </div>
         </div>
       </div>
 
       {/* Search & Status Filters */}
-      <div className="bg-surface p-4 rounded-2xl border border-border shadow-2xs space-y-3">
+      <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-2xs space-y-3">
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
           {/* Search */}
           <div className="sm:col-span-2 relative">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" />
             <input
               type="text"
               placeholder="Search by Order ID, customer name, phone, email, or payment ref..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 text-xs bg-surface-2 border border-border text-text placeholder-text-muted/60 rounded-xl focus:outline-none focus:border-pink font-medium"
+              className="w-full pl-9 pr-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 placeholder-stone-400 rounded-xl focus:outline-none focus:border-amber-600 font-medium"
             />
           </div>
 
@@ -197,7 +197,7 @@ export const StaffOrders: React.FC = () => {
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value as any)}
-              className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink font-medium"
+              className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 rounded-xl focus:outline-none focus:border-amber-600 font-medium"
             >
               {STATUS_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -210,7 +210,7 @@ export const StaffOrders: React.FC = () => {
             <select
               value={selectedPaymentStatus}
               onChange={(e) => setSelectedPaymentStatus(e.target.value as any)}
-              className="w-full px-3 py-2 text-xs bg-surface-2 border border-border text-text rounded-xl focus:outline-none focus:border-pink font-medium"
+              className="w-full px-3 py-2 text-xs bg-stone-50 border border-stone-200 text-stone-900 rounded-xl focus:outline-none focus:border-amber-600 font-medium"
             >
               {PAYMENT_STATUS_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>{opt.label}</option>
@@ -220,8 +220,8 @@ export const StaffOrders: React.FC = () => {
         </div>
 
         {/* Quick Payment Status Chips */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 border-t border-border">
-          <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider mr-1 shrink-0">Payment:</span>
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1 border-t border-stone-100">
+          <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider mr-1 shrink-0">Payment:</span>
           {PAYMENT_STATUS_OPTIONS.map((opt) => {
             const isActive = selectedPaymentStatus === opt.id;
             const count = opt.id === 'all'
@@ -234,8 +234,8 @@ export const StaffOrders: React.FC = () => {
                 onClick={() => setSelectedPaymentStatus(opt.id)}
                 className={`whitespace-nowrap px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
                   isActive
-                    ? 'bg-pink text-white border-pink shadow-xs'
-                    : 'bg-surface-2 text-text-muted border-border hover:text-text hover:border-pink/40'
+                    ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
+                    : 'bg-stone-50 text-stone-600 border-stone-200 hover:text-stone-900 hover:border-amber-500'
                 }`}
               >
                 {opt.label} ({count})
@@ -246,7 +246,7 @@ export const StaffOrders: React.FC = () => {
 
         {/* Quick Fulfillment Status Chips */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pt-1">
-          <span className="text-[11px] font-semibold text-text-muted uppercase tracking-wider mr-1 shrink-0">Status:</span>
+          <span className="text-[11px] font-semibold text-stone-500 uppercase tracking-wider mr-1 shrink-0">Status:</span>
           {STATUS_OPTIONS.map((opt) => {
             const isActive = selectedStatus === opt.id;
             const count = opt.id === 'all' 
@@ -259,8 +259,8 @@ export const StaffOrders: React.FC = () => {
                 onClick={() => setSelectedStatus(opt.id)}
                 className={`whitespace-nowrap px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer border ${
                   isActive
-                    ? 'bg-pink text-white border-pink shadow-xs'
-                    : 'bg-surface-2 text-text-muted border-border hover:text-text hover:border-pink/40'
+                    ? 'bg-stone-900 text-white border-stone-900 shadow-xs'
+                    : 'bg-stone-50 text-stone-600 border-stone-200 hover:text-stone-900 hover:border-stone-400'
                 }`}
               >
                 {opt.label} ({count})
@@ -271,14 +271,14 @@ export const StaffOrders: React.FC = () => {
       </div>
 
       {/* Orders Table */}
-      <div className="bg-surface rounded-2xl border border-border shadow-2xs overflow-hidden">
+      <div className="bg-white rounded-2xl border border-stone-200 shadow-2xs overflow-hidden">
         {filteredOrders.length === 0 ? (
           <div className="p-12 text-center">
-            <Receipt className="w-12 h-12 text-text-muted/40 mx-auto mb-3" />
-            <h3 className="font-serif-display text-base font-bold text-text">
+            <Receipt className="w-12 h-12 text-stone-300 mx-auto mb-3" />
+            <h3 className="font-serif-display text-base font-bold text-stone-900">
               No Orders Found
             </h3>
-            <p className="text-xs text-text-muted mt-1">
+            <p className="text-xs text-stone-500 mt-1">
               Try adjusting your search criteria or status filter.
             </p>
           </div>
@@ -286,7 +286,7 @@ export const StaffOrders: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-surface-2 border-b border-border text-text-muted text-[11px] uppercase tracking-wider">
+                <tr className="bg-stone-50 border-b border-stone-200 text-stone-500 text-[11px] uppercase tracking-wider">
                   <th className="py-3 px-4 font-semibold">Order ID</th>
                   <th className="py-3 px-4 font-semibold">Customer</th>
                   <th className="py-3 px-4 font-semibold">Date & Time</th>
@@ -298,27 +298,27 @@ export const StaffOrders: React.FC = () => {
                   <th className="py-3 px-4 font-semibold text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border text-xs">
+              <tbody className="divide-y divide-stone-100 text-xs">
                 {filteredOrders.map((order) => {
                   const itemCount = order.items.reduce((sum, it) => sum + it.quantity, 0);
 
                   return (
-                    <tr key={order.id} className="hover:bg-surface-2/60 transition-colors">
+                    <tr key={order.id} className="hover:bg-stone-50/80 transition-colors">
                       {/* ID */}
-                      <td className="py-3 px-4 font-mono font-bold text-pink whitespace-nowrap">
+                      <td className="py-3 px-4 font-mono font-bold text-amber-700 whitespace-nowrap">
                         #{order.id}
                       </td>
 
                       {/* Customer */}
                       <td className="py-3 px-4">
-                        <p className="font-semibold text-text">{order.customer.name}</p>
-                        <p className="text-[11px] text-text-muted font-mono">{order.customer.phone}</p>
+                        <p className="font-semibold text-stone-900">{order.customer.name}</p>
+                        <p className="text-[11px] text-stone-500 font-mono">{order.customer.phone}</p>
                       </td>
 
                       {/* Date */}
-                      <td className="py-3 px-4 whitespace-nowrap text-text-muted">
+                      <td className="py-3 px-4 whitespace-nowrap text-stone-500">
                         <p>{new Date(order.createdAt).toLocaleDateString()}</p>
-                        <p className="text-[10px] text-text-muted/70 font-mono">
+                        <p className="text-[10px] text-stone-400 font-mono">
                           {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                       </td>
@@ -326,13 +326,13 @@ export const StaffOrders: React.FC = () => {
                       {/* Fulfilment */}
                       <td className="py-3 px-4 whitespace-nowrap">
                         {order.customer.deliveryType === 'store_pickup' ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-300 bg-amber-950/50 px-2 py-0.5 rounded-md border border-amber-800/60">
-                            <Store className="w-3 h-3 text-amber-400" />
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">
+                            <Store className="w-3 h-3 text-amber-600" />
                             Store Pickup
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-300 bg-blue-950/50 px-2 py-0.5 rounded-md border border-blue-800/60">
-                            <Truck className="w-3 h-3 text-blue-400" />
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">
+                            <Truck className="w-3 h-3 text-blue-600" />
                             Home Delivery
                           </span>
                         )}
@@ -342,7 +342,7 @@ export const StaffOrders: React.FC = () => {
                       <td className="py-3 px-4 whitespace-nowrap">
                         <div className="space-y-1">
                           <div className="flex items-center gap-1.5">
-                            <span className="font-semibold text-text text-xs">
+                            <span className="font-semibold text-stone-800 text-xs">
                               {formatPaymentMethod(order.paymentMethod)}
                             </span>
                             <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPaymentBadge(order.paymentStatus || 'unpaid')}`}>
@@ -350,8 +350,8 @@ export const StaffOrders: React.FC = () => {
                             </span>
                           </div>
                           {order.paymentReference && (
-                            <p className="text-[10px] font-mono text-text-muted">
-                              Ref: <span className="font-bold text-pink-tint">{order.paymentReference}</span>
+                            <p className="text-[10px] font-mono text-stone-500">
+                              Ref: <span className="font-bold text-stone-700">{order.paymentReference}</span>
                             </p>
                           )}
                           <div className="flex items-center gap-1 pt-1">
@@ -359,7 +359,7 @@ export const StaffOrders: React.FC = () => {
                               type="button"
                               onClick={() => onUpdateOrderPaymentStatus(order.id, 'paid')}
                               disabled={(order.paymentStatus || 'unpaid') === 'paid'}
-                              className="px-2 py-0.5 text-[10px] font-bold bg-emerald-950/50 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-800/60 rounded disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
+                              className="px-2 py-0.5 text-[10px] font-bold bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 rounded disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
                               title="Mark as Paid"
                             >
                               Mark paid
@@ -368,7 +368,7 @@ export const StaffOrders: React.FC = () => {
                               type="button"
                               onClick={() => onUpdateOrderPaymentStatus(order.id, 'unpaid')}
                               disabled={(order.paymentStatus || 'unpaid') === 'unpaid'}
-                              className="px-2 py-0.5 text-[10px] font-bold bg-surface-2 hover:bg-surface text-text-muted hover:text-text border border-border rounded disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
+                              className="px-2 py-0.5 text-[10px] font-bold bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 border border-stone-200 rounded disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
                               title="Mark as Unpaid"
                             >
                               Mark unpaid
@@ -377,7 +377,7 @@ export const StaffOrders: React.FC = () => {
                               type="button"
                               onClick={() => onUpdateOrderPaymentStatus(order.id, 'refunded')}
                               disabled={(order.paymentStatus || 'unpaid') === 'refunded'}
-                              className="px-2 py-0.5 text-[10px] font-bold bg-rose-950/50 hover:bg-rose-600 text-rose-300 hover:text-white border border-rose-800/60 rounded disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
+                              className="px-2 py-0.5 text-[10px] font-bold bg-rose-50 hover:bg-rose-600 text-rose-700 hover:text-white border border-rose-200 rounded disabled:opacity-30 disabled:pointer-events-none cursor-pointer transition-colors"
                               title="Mark as Refunded"
                             >
                               Mark refunded
@@ -388,15 +388,15 @@ export const StaffOrders: React.FC = () => {
 
                       {/* Items */}
                       <td className="py-3 px-4">
-                        <span className="font-semibold text-text">{itemCount} pcs</span>
-                        <p className="text-[10px] text-text-muted truncate max-w-[140px]">
+                        <span className="font-semibold text-stone-900">{itemCount} pcs</span>
+                        <p className="text-[10px] text-stone-500 truncate max-w-[140px]">
                           {order.items[0]?.item.name}
                           {order.items.length > 1 && ` +${order.items.length - 1} more`}
                         </p>
                       </td>
 
                       {/* Total */}
-                      <td className="py-3 px-4 text-right font-mono font-bold text-text whitespace-nowrap">
+                      <td className="py-3 px-4 text-right font-mono font-bold text-stone-900 whitespace-nowrap">
                         {formatPrice(order.totalAmount)}
                       </td>
 
@@ -423,16 +423,16 @@ export const StaffOrders: React.FC = () => {
                               href={buildLink(order.customer.phone, buildStatusMessage(order, order.status))}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="px-2.5 py-1.5 bg-emerald-950/40 hover:bg-emerald-600 text-emerald-300 hover:text-white border border-emerald-800/60 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer group"
+                              className="px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white border border-emerald-200 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer group"
                               title={`Message customer on WhatsApp (${order.customer.phone})`}
                             >
-                              <MessageCircle className="w-3.5 h-3.5 text-emerald-400 group-hover:text-white" />
+                              <MessageCircle className="w-3.5 h-3.5 text-emerald-600 group-hover:text-white" />
                               <span className="hidden sm:inline">Message customer</span>
                             </a>
                           )}
                           <button
                             onClick={() => handleOpenDetail(order)}
-                            className="px-3 py-1.5 bg-surface-2 hover:bg-pink hover:text-white text-text rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer border border-border"
+                            className="px-3 py-1.5 bg-stone-100 hover:bg-stone-900 hover:text-white text-stone-700 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer border border-stone-200"
                           >
                             <Eye className="w-3.5 h-3.5" />
                             <span>View Slip</span>
