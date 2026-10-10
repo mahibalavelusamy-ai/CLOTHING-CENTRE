@@ -15,7 +15,16 @@ import {
 } from 'lucide-react';
 
 export const StaffLogin: React.FC = () => {
-  const { user, isStaff, signInWithEmail, signInWithGoogle, loading, signOutUser, sendPasswordReset } = useAuth();
+  const { 
+    user, 
+    isStaff, 
+    signInWithEmail, 
+    signInWithGoogle, 
+    loading, 
+    signOutUser, 
+    sendPasswordReset,
+    checkIsAuthorizedStaff 
+  } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,8 +57,14 @@ export const StaffLogin: React.FC = () => {
         await sendPasswordReset(email);
         setSuccessNotice('Password reset instructions sent. Please check your email inbox.');
       } else {
-        await signInWithEmail(email, password);
-        // Auth listener will evaluate isStaff and navigate
+        const credUser = await signInWithEmail(email, password);
+        const { authorized } = await checkIsAuthorizedStaff(credUser.email || email);
+        if (!authorized) {
+          await signOutUser();
+          throw new Error(
+            `Access Denied: "${credUser.email || email}" is not an authorized staff account. Only whitelisted staff and administration emails approved by the Administrator can access this portal.`
+          );
+        }
       }
     } catch (err: any) {
       console.error('Staff auth error:', err);
@@ -64,7 +79,14 @@ export const StaffLogin: React.FC = () => {
     setSuccessNotice(null);
     setSubmitting(true);
     try {
-      await signInWithGoogle('customer'); // Role resolution handles admin/staff
+      const credUser = await signInWithGoogle('customer');
+      const { authorized } = await checkIsAuthorizedStaff(credUser.email || '');
+      if (!authorized) {
+        await signOutUser();
+        throw new Error(
+          `Access Denied: "${credUser.email}" is not registered as an authorized staff or administrator account. Please ask the Store Admin to add your email address in the Team portal.`
+        );
+      }
     } catch (err: any) {
       console.error('Staff Google login error:', err);
       setError(getAuthErrorMessage(err));

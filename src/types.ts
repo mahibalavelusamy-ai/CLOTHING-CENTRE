@@ -82,6 +82,16 @@ export interface UserProfile {
   address?: string;
 }
 
+export interface AuthorizedStaff {
+  id: string;
+  email: string;
+  role: 'staff' | 'admin';
+  displayName?: string;
+  notes?: string;
+  addedBy: string;
+  addedAt: string;
+}
+
 export type PaymentMethod = 'cod' | 'upi' | 'pay_at_store' | 'online';
 export type PaymentStatus = 'unpaid' | 'verification_pending' | 'paid' | 'refunded';
 

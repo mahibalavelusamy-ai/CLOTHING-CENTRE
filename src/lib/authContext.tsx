@@ -12,7 +12,9 @@ import {
   saveUserProfileToFirestore,
   BOOTSTRAPPED_ADMIN_EMAIL,
   sendVerificationEmailToUser,
-  sendPasswordReset
+  sendPasswordReset,
+  getAuthorizedStaffByEmail,
+  isEmailAuthorizedStaff
 } from './firebase';
 import { UserProfile, UserRole } from '../types';
 
@@ -31,6 +33,7 @@ interface AuthContextType {
   reloadUser: () => Promise<User | null>;
   sendVerificationEmail: () => Promise<void>;
   sendPasswordReset: (email: string) => Promise<void>;
+  checkIsAuthorizedStaff: (email: string) => Promise<{ authorized: boolean; role: UserRole }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -41,13 +44,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   const fetchOrCreateProfile = async (firebaseUser: User, fallbackRole: UserRole = 'customer'): Promise<UserProfile> => {
+    const emailLower = (firebaseUser.email || '').toLowerCase().trim();
+    const isBootstrappedAdmin = emailLower === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+
     try {
       const existing = await getUserProfileFromFirestore(firebaseUser.uid);
-      const isBootstrappedAdmin = firebaseUser.email?.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
+
+      let targetRole: UserRole = fallbackRole;
+      if (isBootstrappedAdmin) {
+        targetRole = 'admin';
+      } else if (emailLower) {
+        const authorizedEntry = await getAuthorizedStaffByEmail(emailLower);
+        if (authorizedEntry) {
+          targetRole = authorizedEntry.role;
+        } else if (existing?.role === 'staff' || existing?.role === 'admin') {
+          targetRole = existing.role;
+        }
+      }
 
       if (existing) {
-        if (isBootstrappedAdmin && existing.role !== 'admin') {
-          const updated: UserProfile = { ...existing, role: 'admin' };
+        if (existing.role !== targetRole) {
+          const updated: UserProfile = { ...existing, role: targetRole };
           await saveUserProfileToFirestore(updated);
           return updated;
         }
@@ -55,20 +72,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // Create new profile
-      const assignedRole: UserRole = isBootstrappedAdmin ? 'admin' : fallbackRole;
       const newProfile: UserProfile = {
         uid: firebaseUser.uid,
         email: firebaseUser.email || '',
         displayName: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
-        role: assignedRole,
+        role: targetRole,
         createdAt: new Date().toISOString()
       };
       await saveUserProfileToFirestore(newProfile);
       return newProfile;
     } catch (err) {
       console.error('Error fetching or creating profile:', err);
-      // Fallback in-memory profile
-      const isBootstrappedAdmin = firebaseUser.email?.toLowerCase() === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase();
       return {
         uid: firebaseUser.uid,
         email: firebaseUser.email || '',
@@ -188,7 +202,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         refreshProfile,
         reloadUser,
         sendVerificationEmail: handleSendVerificationEmail,
-        sendPasswordReset: handleSendPasswordReset
+        sendPasswordReset: handleSendPasswordReset,
+        checkIsAuthorizedStaff: isEmailAuthorizedStaff
       }}
     >
       {children}

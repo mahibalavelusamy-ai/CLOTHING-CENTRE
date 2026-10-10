@@ -1,5 +1,32 @@
 rules_version = '2';
 
+// ===============================================================
+// Assumed Data Model & Security Architecture
+// ===============================================================
+//
+// Collection: /test/{testId}
+//   - Connection health checks (public read).
+//
+// Collection: /users/{userId}
+//   - Document ID: Firebase Auth UID
+//   - Fields: uid (string), email (string), role ('customer' | 'staff' | 'admin')
+//
+// Collection: /authorized_staff/{staffId}
+//   - Document ID: Valid alphanumeric/hyphen/underscore identifier
+//   - Fields:
+//       - email: string (required, 1-254 chars)
+//       - role: string (required, 'staff' | 'admin')
+//   - Reads: allow get, list if isSignedIn()
+//   - Writes: allow create, update, delete only if isAdmin()
+//
+// Collection: /clothing_items/{itemId}
+//   - Garment catalogue (public read, staff/admin manage)
+//
+// Collection: /orders/{orderId}
+//   - Customer orders (owner/staff read, authenticated customer create, staff/admin manage)
+//
+// ===============================================================
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -40,6 +67,14 @@ service cloud.firestore {
       );
     }
 
+    // Authorized staff domain validator
+    function isValidAuthorizedStaff(data) {
+      return data.email is string &&
+        data.email.size() > 0 &&
+        data.email.size() <= 254 &&
+        data.role in ['staff', 'admin'];
+    }
+
     // Health / Connection Test
     match /test/{testId} {
       allow read: if true;
@@ -73,6 +108,22 @@ service cloud.firestore {
 
       // Only admin can delete user records
       allow delete: if isValidId(userId) && isAdmin();
+    }
+
+    // Authorized Staff Roster
+    match /authorized_staff/{staffId} {
+      // Authenticated users need to check authorization during login or when viewing staff roster
+      allow get: if isValidId(staffId) && isSignedIn();
+      allow list: if isSignedIn();
+
+      // Only administrators can add, edit, or remove pre-authorized staff
+      allow create: if isValidId(staffId) && isAdmin() &&
+        isValidAuthorizedStaff(incoming());
+
+      allow update: if isValidId(staffId) && isAdmin() &&
+        isValidAuthorizedStaff(incoming());
+
+      allow delete: if isValidId(staffId) && isAdmin();
     }
 
     // Clothing Items Collection

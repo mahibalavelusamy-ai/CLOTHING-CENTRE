@@ -27,7 +27,7 @@ import {
   runTransaction 
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
-import { ClothingItem, CustomerOrder, Size, UserProfile, UserRole } from '../types';
+import { ClothingItem, CustomerOrder, Size, UserProfile, UserRole, AuthorizedStaff } from '../types';
 
 // Initialize Firebase App
 const app = initializeApp(firebaseConfig);
@@ -527,6 +527,184 @@ export async function getAllUsersFromFirestore(): Promise<UserProfile[]> {
     return users;
   } catch (error) {
     handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+
+// Authorized Staff & Role Whitelist Operations
+export function subscribeToAuthorizedStaff(
+  onUpdate: (staff: AuthorizedStaff[]) => void,
+  onError?: (error: unknown) => void
+) {
+  const collectionPath = 'authorized_staff';
+  return onSnapshot(
+    collection(db, collectionPath),
+    (snapshot) => {
+      const staff: AuthorizedStaff[] = [];
+      snapshot.forEach((d) => {
+        staff.push({ id: d.id, ...d.data() } as AuthorizedStaff);
+      });
+      staff.sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
+      onUpdate(staff);
+    },
+    (error) => {
+      if (onError) onError(error);
+      const msg = error instanceof Error ? error.message : String(error);
+      if (msg.includes('Missing or insufficient permissions') || msg.includes('permission-denied')) {
+        handleFirestoreError(error, OperationType.GET, collectionPath);
+      } else {
+        console.warn(`Firestore subscription notice for ${collectionPath}:`, msg);
+      }
+    }
+  );
+}
+
+export async function getAuthorizedStaffList(): Promise<AuthorizedStaff[]> {
+  const path = 'authorized_staff';
+  try {
+    const snapshot = await getDocs(collection(db, path));
+    const staff: AuthorizedStaff[] = [];
+    snapshot.forEach((d) => {
+      staff.push({ id: d.id, ...d.data() } as AuthorizedStaff);
+    });
+    staff.sort((a, b) => new Date(b.addedAt).getTime() - new Date(a.addedAt).getTime());
+    return staff;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.LIST, path);
+  }
+}
+
+export async function getAuthorizedStaffByEmail(email: string): Promise<AuthorizedStaff | null> {
+  const path = 'authorized_staff';
+  const cleanEmail = email.toLowerCase().trim();
+  try {
+    const q = query(collection(db, path), where('email', '==', cleanEmail));
+    const snapshot = await getDocs(q);
+    if (!snapshot.empty) {
+      const docData = snapshot.docs[0];
+      return { id: docData.id, ...docData.data() } as AuthorizedStaff;
+    }
+    return null;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.GET, path);
+  }
+}
+
+export async function isEmailAuthorizedStaff(email: string): Promise<{ authorized: boolean; role: UserRole }> {
+  const cleanEmail = email.toLowerCase().trim();
+  if (cleanEmail === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase()) {
+    return { authorized: true, role: 'admin' };
+  }
+  try {
+    const staffMember = await getAuthorizedStaffByEmail(cleanEmail);
+    if (staffMember) {
+      return { authorized: true, role: staffMember.role };
+    }
+    return { authorized: false, role: 'customer' };
+  } catch (err) {
+    console.warn('Error checking authorized staff list:', err);
+    return { authorized: false, role: 'customer' };
+  }
+}
+
+export async function addAuthorizedStaffMember(data: {
+  email: string;
+  role: 'staff' | 'admin';
+  displayName?: string;
+  notes?: string;
+  addedBy: string;
+}): Promise<AuthorizedStaff> {
+  const cleanEmail = data.email.toLowerCase().trim();
+  const path = 'authorized_staff';
+
+  if (cleanEmail === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase()) {
+    throw new Error('This email is the primary Super Administrator and is permanently protected.');
+  }
+
+  const existing = await getAuthorizedStaffByEmail(cleanEmail);
+  if (existing) {
+    throw new Error(`The email "${cleanEmail}" is already authorized as ${existing.role.toUpperCase()}.`);
+  }
+
+  try {
+    const newDocRef = doc(collection(db, path));
+    const newEntry: AuthorizedStaff = {
+      id: newDocRef.id,
+      email: cleanEmail,
+      role: data.role,
+      displayName: data.displayName?.trim() || cleanEmail.split('@')[0],
+      notes: data.notes?.trim() || '',
+      addedBy: data.addedBy,
+      addedAt: new Date().toISOString()
+    };
+    await setDoc(newDocRef, newEntry);
+
+    // If matching user exists in 'users', upgrade their role
+    try {
+      const usersSnap = await getDocs(query(collection(db, 'users'), where('email', '==', cleanEmail)));
+      usersSnap.forEach(async (uDoc) => {
+        await updateDoc(doc(db, 'users', uDoc.id), { role: data.role });
+      });
+    } catch (userErr) {
+      console.warn('Notice: Could not sync role to existing user record:', userErr);
+    }
+
+    return newEntry;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, path);
+  }
+}
+
+export async function updateAuthorizedStaffRole(
+  staffId: string, 
+  email: string, 
+  newRole: 'staff' | 'admin'
+): Promise<void> {
+  const path = `authorized_staff/${staffId}`;
+  const cleanEmail = email.toLowerCase().trim();
+
+  if (cleanEmail === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase()) {
+    throw new Error('Cannot change the role of the primary Super Administrator.');
+  }
+
+  try {
+    await updateDoc(doc(db, 'authorized_staff', staffId), { role: newRole });
+
+    // Sync to users collection
+    try {
+      const usersSnap = await getDocs(query(collection(db, 'users'), where('email', '==', cleanEmail)));
+      usersSnap.forEach(async (uDoc) => {
+        await updateDoc(doc(db, 'users', uDoc.id), { role: newRole });
+      });
+    } catch (userErr) {
+      console.warn('Notice: Could not sync updated role to users record:', userErr);
+    }
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, path);
+  }
+}
+
+export async function removeAuthorizedStaffMember(staffId: string, email: string): Promise<void> {
+  const path = `authorized_staff/${staffId}`;
+  const cleanEmail = email.toLowerCase().trim();
+
+  if (cleanEmail === BOOTSTRAPPED_ADMIN_EMAIL.toLowerCase()) {
+    throw new Error('Cannot revoke access for the primary Super Administrator.');
+  }
+
+  try {
+    await deleteDoc(doc(db, 'authorized_staff', staffId));
+
+    // Revert user role in users collection to 'customer'
+    try {
+      const usersSnap = await getDocs(query(collection(db, 'users'), where('email', '==', cleanEmail)));
+      usersSnap.forEach(async (uDoc) => {
+        await updateDoc(doc(db, 'users', uDoc.id), { role: 'customer' });
+      });
+    } catch (userErr) {
+      console.warn('Notice: Could not revert user role:', userErr);
+    }
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, path);
   }
 }
 
