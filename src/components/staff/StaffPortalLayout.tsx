@@ -35,7 +35,8 @@ import {
   CheckCircle2,
   AlertTriangle,
   Users,
-  Clock
+  Clock,
+  Calendar
 } from 'lucide-react';
 
 export interface StaffOutletContext {
@@ -308,12 +309,11 @@ export const StaffPortalLayout: React.FC = () => {
   const pendingOrdersCount = orders.filter((o) => o.status === 'Confirmed' || o.status === 'Ready for Pickup').length;
 
   const navLinks = [
-    { to: '/staff/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { to: '/staff/dashboard', label: 'Executive Dashboard', icon: LayoutDashboard },
     { to: '/staff/products', label: 'Products & Catalogue', icon: Package, badge: inventory.length },
     { to: '/staff/inventory', label: 'Stock & Inventory', icon: Boxes, alert: lowStockCount > 0 ? lowStockCount : undefined },
     { to: '/staff/orders', label: 'Customer Orders', icon: Receipt, alert: pendingOrdersCount > 0 ? pendingOrdersCount : undefined },
-    ...(isAdmin ? [{ to: '/staff/team', label: 'Team & Roles', icon: Users }] : []),
-    { to: '/staff/settings', label: 'Settings & RBAC', icon: Settings }
+    ...(isAdmin ? [{ to: '/staff/team', label: 'Staff Whitelist & RBAC', icon: Users }] : [])
   ];
 
   const handleSignOut = async () => {
@@ -321,61 +321,79 @@ export const StaffPortalLayout: React.FC = () => {
     navigate('/staff/login');
   };
 
+  const todayFormatted = new Intl.DateTimeFormat('en-IN', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(new Date());
+
   return (
-    <div className="min-h-screen bg-bg flex flex-col lg:flex-row text-text font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col lg:flex-row text-[#1D1D1F] font-sans antialiased selection:bg-[#6D1A33] selection:text-white">
       {/* Toast Notice */}
       {actionNotice && (
-        <div className="fixed top-4 right-4 z-50 bg-surface text-text text-xs px-4 py-3 rounded-xl shadow-2xl border border-border flex items-center gap-2 animate-in slide-in-from-top-2">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-          <span>{actionNotice}</span>
+        <div className="fixed top-5 right-5 z-50 bg-white text-[#1D1D1F] text-xs px-4 py-3 rounded-2xl shadow-xl border border-stone-200/90 flex items-center gap-2.5 animate-in slide-in-from-top-2">
+          {noticeType === 'error' ? (
+            <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+          ) : (
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          )}
+          <span className="font-medium">{actionNotice}</span>
         </div>
       )}
 
       {/* Mobile Top Header */}
-      <div className="lg:hidden bg-stone-950 text-white px-4 py-3 border-b border-stone-800 flex items-center justify-between sticky top-0 z-40 safe-area-top">
+      <div className="lg:hidden bg-[#111113] text-white px-4 py-3 border-b border-[#222226] flex items-center justify-between sticky top-0 z-40 safe-area-top shadow-md">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center">
-            <Store className="w-4 h-4" />
+          <div className="w-8 h-8 rounded-xl bg-[#6D1A33] border border-[#C9A45C]/30 text-white flex items-center justify-center font-bold font-serif-display shadow-sm">
+            Y
           </div>
           <div>
-            <h1 className="text-sm font-bold font-serif-display leading-tight">Yaazh Boutique</h1>
-            <p className="text-[10px] text-amber-400 font-medium">Staff Portal</p>
+            <div className="flex items-center gap-1.5">
+              <h1 className="text-sm font-bold font-serif-display leading-tight">Yaazh</h1>
+              <span className="text-[10px] text-[#C9A45C] font-serif">யாழ்</span>
+            </div>
+            <p className="text-[10px] text-stone-400 font-medium">Boutique Staff Portal</p>
           </div>
         </div>
 
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="p-1.5 rounded-lg bg-stone-900 text-stone-300 hover:text-white cursor-pointer"
+          className="p-2 rounded-xl bg-white/10 text-stone-300 hover:text-white cursor-pointer transition-colors"
         >
           {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
       </div>
 
-      {/* Desktop & Mobile Sidebar */}
+      {/* Desktop & Mobile Executive Sidebar */}
       <aside
         className={`${
           mobileMenuOpen ? 'block' : 'hidden'
-        } lg:block w-full lg:w-64 bg-stone-950 text-stone-300 flex-shrink-0 lg:min-h-screen border-r border-stone-800 flex flex-col justify-between z-30`}
+        } lg:block w-full lg:w-72 bg-[#111113] text-stone-300 flex-shrink-0 lg:min-h-screen border-r border-[#222226] flex flex-col justify-between z-30 shadow-2xl`}
       >
         <div>
           {/* Brand header */}
-          <div className="p-5 border-b border-stone-800 hidden lg:block">
+          <div className="p-5 border-b border-[#222226] hidden lg:block">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center shadow-inner">
-                <Store className="w-5 h-5" />
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#6D1A33] to-[#451020] border border-[#C9A45C]/40 text-[#C9A45C] flex items-center justify-center font-bold text-lg font-serif-display shadow-lg shadow-[#6D1A33]/20">
+                Y
               </div>
-              <div>
-                <h2 className="text-sm font-bold font-serif-display text-white tracking-wide">
-                  Yaazh Boutique
-                </h2>
-                <p className="text-[10px] text-amber-400 font-semibold tracking-wider uppercase">
-                  Staff & Admin Portal
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-bold font-serif-display text-white tracking-wide">
+                    Yaazh
+                  </h2>
+                  <span className="text-xs text-[#C9A45C] font-serif">யாழ்</span>
+                </div>
+                <p className="text-[10px] text-stone-400 font-medium tracking-wider uppercase">
+                  Staff & Operations
                 </p>
               </div>
             </div>
-            <div className="mt-3 flex items-center justify-between text-[10px] text-stone-400 pt-2 border-t border-stone-800">
-              <span className="truncate">{STORE_CENTRE_INFO.address.split(',')[1]?.trim() || 'Oddanchatram'}</span>
-              <span className="inline-flex items-center gap-1 text-emerald-400">
+
+            <div className="mt-4 flex items-center justify-between text-[11px] text-stone-400 pt-3 border-t border-[#222226]/80">
+              <span className="truncate">Kallimandayam & Oddanchatram</span>
+              <span className="inline-flex items-center gap-1.5 text-emerald-400 font-mono text-[10px] font-semibold bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Live DB
               </span>
@@ -383,7 +401,7 @@ export const StaffPortalLayout: React.FC = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-3 space-y-1">
+          <nav className="p-3.5 space-y-1.5">
             {navLinks.map((item) => {
               const Icon = item.icon;
               return (
@@ -391,25 +409,25 @@ export const StaffPortalLayout: React.FC = () => {
                   key={item.to}
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
+                    `flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all group ${
                       isActive
-                        ? 'bg-amber-600 text-white shadow-md shadow-amber-900/40 font-bold'
-                        : 'text-stone-400 hover:text-white hover:bg-stone-900'
+                        ? 'bg-[#6D1A33] text-white shadow-lg shadow-[#6D1A33]/30 font-bold'
+                        : 'text-stone-400 hover:text-white hover:bg-white/[0.06]'
                     }`
                   }
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 shrink-0" />
+                    <Icon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
                     <span>{item.label}</span>
                   </div>
 
                   {item.alert !== undefined && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-600 text-white">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-600 text-white shadow-xs">
                       {item.alert}
                     </span>
                   )}
                   {item.badge !== undefined && item.alert === undefined && (
-                    <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-stone-850 text-stone-300 border border-stone-800">
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-white/10 text-stone-300 border border-white/10">
                       {item.badge}
                     </span>
                   )}
@@ -419,66 +437,129 @@ export const StaffPortalLayout: React.FC = () => {
           </nav>
         </div>
 
-        {/* User profile & actions */}
-        <div className="p-3 border-t border-stone-800 bg-stone-950/60 space-y-2">
+        {/* User profile & actions footer */}
+        <div className="p-3.5 border-t border-[#222226] bg-[#0E0E10] space-y-2.5">
           {/* Quick link to Storefront */}
           <a
             href="/"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-stone-400 hover:text-amber-400 hover:bg-stone-900 text-xs transition-colors"
+            className="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-stone-400 hover:text-amber-400 hover:bg-white/[0.05] text-xs transition-colors group"
           >
             <div className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5" />
+              <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               <span>Customer Storefront</span>
             </div>
-            <span className="text-[10px] text-stone-500 font-mono">/</span>
+            <span className="text-[10px] text-stone-500 font-mono">↗</span>
           </a>
 
-          {/* User profile info */}
-          <div className="p-2.5 rounded-xl bg-stone-900 border border-stone-800 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="font-semibold text-stone-100 truncate max-w-[130px]">
-                {profile?.displayName || user?.email?.split('@')[0] || 'Staff'}
-              </span>
-              <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                isAdmin ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' : 'bg-stone-800 text-stone-400 border border-stone-700'
+          {/* User profile card */}
+          <div className="p-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs uppercase shrink-0 ${
+                  isAdmin
+                    ? 'bg-[#C9A45C]/20 text-[#C9A45C] border border-[#C9A45C]/40'
+                    : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                }`}>
+                  {profile?.displayName?.[0] || user?.email?.[0] || 'S'}
+                </div>
+                <div className="min-w-0">
+                  <span className="font-semibold text-stone-100 truncate block text-xs">
+                    {profile?.displayName || user?.email?.split('@')[0] || 'Staff'}
+                  </span>
+                  <p className="text-[10px] text-stone-400 truncate">{user?.email}</p>
+                </div>
+              </div>
+
+              <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${
+                isAdmin 
+                  ? 'bg-[#C9A45C]/20 text-[#C9A45C] border border-[#C9A45C]/40' 
+                  : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
               }`}>
                 {isAdmin ? 'Admin' : 'Staff'}
               </span>
             </div>
-            <p className="text-[10px] text-stone-400 truncate mt-0.5">{user?.email}</p>
           </div>
 
           {/* Sign out */}
           <button
             onClick={handleSignOut}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-stone-400 hover:text-rose-400 hover:bg-rose-950/30 text-xs transition-colors cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-stone-400 hover:text-rose-400 hover:bg-rose-950/30 text-xs font-semibold transition-colors cursor-pointer"
           >
             <LogOut className="w-3.5 h-3.5" />
-            <span>Sign Out</span>
+            <span>Sign Out Session</span>
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto max-h-screen bg-stone-100">
-        <Outlet
-          context={{
-            inventory,
-            orders,
-            onUpdateItemStock: handleUpdateItemStock,
-            onUpdateItemPrice: handleUpdateItemPrice,
-            onAddNewItem: handleAddNewItem,
-            onUpdateItem: handleUpdateItem,
-            onDeleteItem: handleDeleteItem,
-            onUpdateOrderStatus: handleUpdateOrderStatus,
-            onUpdateOrderPaymentStatus: handleUpdateOrderPaymentStatus,
-            onDeleteOrder: handleDeleteOrder,
-            lowStockCount,
-            pendingOrdersCount
-          } satisfies StaffOutletContext}
-        />
+      {/* Main Content Area with Desktop Top Bar */}
+      <main className="flex-1 flex flex-col min-w-0 overflow-y-auto max-h-screen bg-[#F8F9FA]">
+        {/* Top desktop header strip */}
+        <header className="hidden lg:flex items-center justify-between px-8 py-3.5 bg-white border-b border-[#E8E8ED] sticky top-0 z-20 shadow-2xs">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-xs text-[#6E6E73]">
+              <Calendar className="w-3.5 h-3.5 text-stone-400" />
+              <span>{todayFormatted}</span>
+            </div>
+            <span className="text-stone-300">·</span>
+            <span className="text-xs font-medium text-stone-600">
+              Oddanchatram & Kallimandayam Operations
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2.5">
+            {lowStockCount > 0 && (
+              <NavLink
+                to="/staff/inventory"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-colors"
+              >
+                <AlertTriangle className="w-3.5 h-3.5" />
+                <span>{lowStockCount} Low Stock</span>
+              </NavLink>
+            )}
+
+            {pendingOrdersCount > 0 && (
+              <NavLink
+                to="/staff/orders"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors"
+              >
+                <Clock className="w-3.5 h-3.5" />
+                <span>{pendingOrdersCount} Orders Pending</span>
+              </NavLink>
+            )}
+
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-semibold bg-[#F5F5F7] text-[#1D1D1F] border border-[#E8E8ED] hover:bg-[#EFEFF2] transition-colors"
+            >
+              <span>View Storefront</span>
+              <ExternalLink className="w-3 h-3 text-stone-500" />
+            </a>
+          </div>
+        </header>
+
+        {/* View content outlet */}
+        <div className="flex-1">
+          <Outlet
+            context={{
+              inventory,
+              orders,
+              onUpdateItemStock: handleUpdateItemStock,
+              onUpdateItemPrice: handleUpdateItemPrice,
+              onAddNewItem: handleAddNewItem,
+              onUpdateItem: handleUpdateItem,
+              onDeleteItem: handleDeleteItem,
+              onUpdateOrderStatus: handleUpdateOrderStatus,
+              onUpdateOrderPaymentStatus: handleUpdateOrderPaymentStatus,
+              onDeleteOrder: handleDeleteOrder,
+              lowStockCount,
+              pendingOrdersCount
+            } satisfies StaffOutletContext}
+          />
+        </div>
       </main>
 
       {/* Toast Notification Alert */}

@@ -462,27 +462,48 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           </div>
 
           {/* Row 8: Sizes & Stock Allocation */}
-          <div className="p-4 bg-stone-50 rounded-xl border border-stone-200">
-            <h4 className="text-xs font-bold text-stone-900 mb-2">
-              Size Stock Allocation ({DEPARTMENT_CONFIG[department].label})
-            </h4>
+          <div className="p-4 bg-[#F5F5F7] rounded-2xl border border-[#E8E8ED]">
+            <div className="flex items-center justify-between mb-2.5">
+              <h4 className="text-xs font-bold text-stone-900">
+                Size Stock Allocation ({DEPARTMENT_CONFIG[department].label})
+              </h4>
+              <span className="text-[10px] text-stone-500">Allocated units for physical store</span>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-3">
-              {DEPARTMENT_CONFIG[department].sizes.map((s) => (
-                <div key={s} className="bg-white p-2.5 rounded-lg border border-stone-200 text-center">
-                  <span className="block text-xs font-bold text-stone-800 mb-1">{s}</span>
-                  <input
-                    type="number"
-                    min="0"
-                    value={sizeStocks[s] !== undefined ? sizeStocks[s] : 5}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value) || 0;
-                      setSizeStocks((prev) => ({ ...prev, [s]: val }));
-                    }}
-                    className="w-full py-1 text-center font-mono font-semibold text-xs border border-stone-300 rounded focus:border-amber-600 bg-white text-stone-900"
-                  />
-                  <span className="text-[10px] text-stone-400 mt-0.5 block">units</span>
-                </div>
-              ))}
+              {DEPARTMENT_CONFIG[department].sizes.map((s) => {
+                const currentStock = sizeStocks[s] !== undefined ? sizeStocks[s] : 5;
+                return (
+                  <div key={s} className="bg-white p-2.5 rounded-xl border border-stone-200 text-center shadow-2xs">
+                    <span className="block text-xs font-bold text-stone-900 mb-1">{s}</span>
+                    <input
+                      type="number"
+                      min="0"
+                      value={currentStock}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value) || 0;
+                        setSizeStocks((prev) => ({ ...prev, [s]: val }));
+                      }}
+                      className="w-full py-1 text-center font-mono font-bold text-xs border border-stone-200 rounded-lg focus:border-[#6D1A33] bg-stone-50 text-stone-900"
+                    />
+                    <div className="flex items-center justify-center gap-1 mt-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setSizeStocks((prev) => ({ ...prev, [s]: Math.max(0, currentStock + 5) }))}
+                        className="px-1.5 py-0.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-[10px] font-mono rounded"
+                      >
+                        +5
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setSizeStocks((prev) => ({ ...prev, [s]: Math.max(0, currentStock + 10) }))}
+                        className="px-1.5 py-0.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-[10px] font-mono rounded"
+                      >
+                        +10
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -498,10 +519,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              className="px-6 py-2.5 bg-[#6D1A33] hover:bg-[#561428] text-white font-bold rounded-xl text-xs shadow-md shadow-[#6D1A33]/20 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
-              <span>{saving ? 'Saving...' : (isEditing ? 'Save Changes' : 'Publish Garment')}</span>
+              <span>{saving ? 'Publishing...' : (isEditing ? 'Save Changes' : 'Publish Garment')}</span>
             </button>
           </div>
         </form>
