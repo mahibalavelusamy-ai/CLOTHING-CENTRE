@@ -138,6 +138,81 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
 
   // BLOUSES & CROP TOPS
   {
+    id: 'yb-crop-top-01',
+    sku: 'YB-CRP-IKAT-BLU-01',
+    name: 'Cotton Ikat Chevron V-Neck Crop Top Blouse',
+    department: 'blouses',
+    category: 'Crop Tops',
+    price: 1090,
+    originalPrice: 1450,
+    discountPercent: 25,
+    rating: 4.9,
+    reviewCount: 38,
+    colors: [
+      { name: 'Indigo Blue & White Zigzag', hex: '#24486d' }
+    ],
+    sizes: [
+      { size: '32', stock: 4 },
+      { size: '34', stock: 6 },
+      { size: '36', stock: 8 },
+      { size: '38', stock: 7 },
+      { size: '40', stock: 5 },
+      { size: '42', stock: 3 }
+    ],
+    images: [
+      '/products/crop-tops/crop-top-blue-chevron.jpg'
+    ],
+    description: 'Artisan handloom cotton crop top blouse featuring bold indigo chevron Ikat weave, rustic wooden buttons, tailored V-neckline, and comfort elbow sleeves with 2-inch alteration margins.',
+    fabric: '100% Pure Handloom Cotton with Wooden Button Placket',
+    careGuide: 'Gentle hand wash in cold water with mild detergent. Dry in shade.',
+    fitType: 'Regular Fit',
+    occasion: 'Daily Wear',
+    tags: ['Bestseller', 'Handloom', 'New Arrival'],
+    inStockTotal: 33,
+    barcode: '8907833982015'
+  },
+  {
+    id: 'yb-crop-top-02',
+    sku: 'YB-CRP-BLOCK-LEAF-02',
+    name: 'Hand Block Printed Botanical Leaf Cotton Crop Top',
+    department: 'blouses',
+    category: 'Crop Tops',
+    price: 1090,
+    originalPrice: 1399,
+    discountPercent: 22,
+    rating: 4.8,
+    reviewCount: 42,
+    colors: [
+      { name: 'Mustard Yellow Leaf', hex: '#d4af37' },
+      { name: 'Madder Maroon Kalamkari', hex: '#7a1f28' },
+      { name: 'Ivory & Black Motif', hex: '#eae6df' },
+      { name: 'Midnight Black Leaf', hex: '#212121' }
+    ],
+    sizes: [
+      { size: '32', stock: 3 },
+      { size: '34', stock: 5 },
+      { size: '36', stock: 9 },
+      { size: '38', stock: 8 },
+      { size: '40', stock: 4 },
+      { size: '42', stock: 2 }
+    ],
+    images: [
+      '/products/crop-tops/crop-top-mustard-leaf.jpg',
+      '/products/crop-tops/crop-top-maroon-kalamkari.jpg',
+      '/products/crop-tops/crop-top-ivory-black.jpg',
+      '/products/crop-tops/crop-top-black-leaf.jpg',
+      '/products/crop-tops/crop-tops-collection-banner.png'
+    ],
+    description: 'Handcrafted pure cotton crop top blouse with delicate block-printed botanical motifs, wooden button-down front, breathable pure cotton lining, and generous 2-inch inner alteration margin for pairing with sarees, lehengas, or high-waist trousers.',
+    fabric: '100% Block Printed Cotton with Pure Cotton Lining',
+    careGuide: 'Hand wash separately with cold water. Avoid direct harsh sunlight.',
+    fitType: 'Regular Fit',
+    occasion: 'Festive',
+    tags: ['Bestseller', 'Festive Special', 'New Arrival'],
+    inStockTotal: 31,
+    barcode: '8907833982016'
+  },
+  {
     id: 'yb-blouse-01',
     sku: 'YB-BLS-AJRAKH-01',
     name: 'Ajrakh Hand Block Printed Boat Neck Designer Blouse',
@@ -160,8 +235,9 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       { size: '42', stock: 3 }
     ],
     images: [
-      'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80'
+      '/products/crop-tops/crop-top-maroon-kalamkari.jpg',
+      '/products/crop-tops/crop-top-black-leaf.jpg',
+      '/products/crop-tops/crop-tops-collection-banner.png'
     ],
     description: 'Pre-stitched pure cotton Ajrakh blouse tailored with front boat neck, deep back cut with latkans, and 2-inch internal alteration margins.',
     fabric: '100% Ajrakh Hand-block Printed Cotton with Pure Cotton Lining',

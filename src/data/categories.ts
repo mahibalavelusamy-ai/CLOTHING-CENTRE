@@ -50,8 +50,16 @@ export const CATEGORY_TILES: CategoryTile[] = [
     label: 'Block Printed Blouses',
     department: 'blouses',
     category: 'Block Printed Blouses',
-    image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=600&q=80',
+    image: '/products/crop-tops/crop-top-blue-chevron.jpg',
     tint: '#E8F8F5',
+  },
+  {
+    id: 'blouses-crop-tops',
+    label: 'Cotton Crop Tops',
+    department: 'blouses',
+    category: 'Crop Tops',
+    image: '/products/crop-tops/crop-top-mustard-leaf.jpg',
+    tint: '#FEF9E7',
   },
   {
     id: 'blouses-readymade',

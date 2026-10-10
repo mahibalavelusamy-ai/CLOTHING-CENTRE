@@ -21,6 +21,7 @@ export const DEPARTMENT_CONFIG: Record<Exclude<Department, 'all'>, DepartmentMet
     label: 'Blouses & Crop Tops',
     categories: [
       'Block Printed Blouses',
+      'Crop Tops',
       'Readymade Blouses',
     ],
     sizes: ['32', '34', '36', '38', '40', '42', '44', '46'],
