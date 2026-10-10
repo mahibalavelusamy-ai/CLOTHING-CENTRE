@@ -289,9 +289,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     className="w-9 h-9 rounded-full object-cover shrink-0"
                   />
                   <div>
-                    <h3 className="font-serif-display text-base font-bold text-stone-900 uppercase">
-                      {STORE_CENTRE_INFO.name}
-                    </h3>
+                    <div className="flex items-baseline gap-1.5">
+                      <h3 className="font-serif-display text-base font-bold text-stone-900 uppercase">
+                        {STORE_CENTRE_INFO.name}
+                      </h3>
+                      <span className="font-tamil text-xs font-semibold text-amber-700">
+                        யாழ்
+                      </span>
+                    </div>
                     <p className="text-stone-600 text-[11px]">{STORE_CENTRE_INFO.address}</p>
                     <p className="text-stone-600 text-[11px]">
                       Phone: {STORE_CENTRE_INFO.phone} {STORE_CENTRE_INFO.phone2 ? `• ${STORE_CENTRE_INFO.phone2}` : ''}
@@ -690,7 +695,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Special instructions or delivery preferences"
+                  placeholder="e.g. Saree pre-pleating request, gift wrapping, or gate code"
                   value={orderNote}
                   onChange={(e) => setOrderNote(e.target.value)}
                   className="w-full px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg text-stone-900 focus:outline-none focus:border-amber-600"

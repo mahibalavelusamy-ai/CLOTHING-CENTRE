@@ -869,7 +869,29 @@ export const Storefront: React.FC = () => {
       {/* Luxury Footer */}
       <footer className="mt-16 bg-stone-900 text-stone-300 border-t border-stone-800 text-xs pb-20 md:pb-0">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
-          
+          {/* Boutique Brand Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-stone-800 gap-4 mb-8">
+            <div>
+              <div className="flex items-baseline gap-2">
+                <span className="font-serif-display text-xl sm:text-2xl font-bold text-amber-50 tracking-wide uppercase">
+                  {STORE_CENTRE_INFO.name}
+                </span>
+                <span className="font-tamil text-sm sm:text-base font-semibold text-amber-400">
+                  யாழ்
+                </span>
+              </div>
+              <p className="text-stone-400 text-xs mt-1">
+                {STORE_CENTRE_INFO.tagline} • Handpicked Sarees, Blouses, Salwars & Co-ords
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] text-amber-300/90 bg-amber-950/60 border border-amber-800/40 px-3 py-1.5 rounded-full font-medium flex items-center gap-1.5">
+                <Sparkles className="w-3 h-3 text-amber-400" />
+                <span>Saree Pre-Pleating Service Available In Store</span>
+              </span>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-stone-800">
             <div className="flex items-start gap-3">
               <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center shrink-0">

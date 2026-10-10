@@ -45,6 +45,10 @@
   font-family: 'Playfair Display', Georgia, serif;
 }
 
+.font-tamil {
+  font-family: 'Noto Serif Tamil', serif;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

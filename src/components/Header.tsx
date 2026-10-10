@@ -149,6 +149,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>{STORE_CENTRE_INFO.hours.split('|')[0]?.trim()}</span>
               </span>
             )}
+            <span className="hidden lg:inline-flex items-center gap-1.5 text-amber-300 font-medium whitespace-nowrap">
+              <Sparkles className="w-3 h-3 text-amber-400 shrink-0" />
+              <span>Saree Pre-Pleating Available In Store</span>
+            </span>
             <span className="hidden md:inline-flex items-center gap-1.5 truncate text-stone-400">
               <MapPin className="w-3.5 h-3.5 text-stone-500 shrink-0" />
               <span className="truncate">{STORE_CENTRE_INFO.address}</span>
@@ -241,9 +245,12 @@ export const Header: React.FC<HeaderProps> = ({
               />
             )}
             <div className="min-w-0">
-              <div className="flex items-center gap-2">
+              <div className="flex items-baseline gap-1.5">
                 <span className="font-serif-display text-lg sm:text-2xl font-bold tracking-tight text-amber-50 uppercase truncate group-hover:text-amber-300 transition-colors">
                   {STORE_CENTRE_INFO.name}
+                </span>
+                <span className="font-tamil text-xs sm:text-sm font-semibold text-amber-400/90 tracking-normal shrink-0">
+                  யாழ்
                 </span>
               </div>
               <p className="text-[10px] sm:text-[11px] text-stone-400 tracking-wider uppercase font-medium truncate">

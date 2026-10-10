@@ -198,21 +198,39 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
               {item.description}
             </p>
 
-            {/* Fabric & Fit badges (Silhouette hidden when fitType is missing) */}
-            <div className="bg-stone-50 rounded-xl p-3 mt-4 border border-stone-200 text-xs space-y-1.5">
+            {/* Fabric & Fit badges */}
+            <div className="bg-stone-50 rounded-xl p-3.5 mt-4 border border-stone-200 text-xs space-y-2">
               <div className="flex">
-                <span className="text-stone-500 w-24 shrink-0 font-medium">Fabric:</span>
-                <span className="text-stone-800 font-medium">{item.fabric}</span>
+                <span className="text-stone-500 w-28 shrink-0 font-medium">Fabric:</span>
+                <span className="text-stone-900 font-medium">{item.fabric}</span>
               </div>
+              {item.occasion && (
+                <div className="flex">
+                  <span className="text-stone-500 w-28 shrink-0 font-medium">Occasion:</span>
+                  <span className="text-stone-900 font-medium">{item.occasion}</span>
+                </div>
+              )}
+              {item.blouseIncluded && (
+                <div className="flex">
+                  <span className="text-stone-500 w-28 shrink-0 font-medium">Blouse Piece:</span>
+                  <span className="text-emerald-800 font-semibold">Unstitched matching blouse piece included (0.8m)</span>
+                </div>
+              )}
+              {item.department === 'sarees' && (
+                <div className="flex">
+                  <span className="text-stone-500 w-28 shrink-0 font-medium">Boutique Service:</span>
+                  <span className="text-amber-800 font-medium">Saree pre-pleating & box-folding available on request</span>
+                </div>
+              )}
               {item.fitType && (
                 <div className="flex">
-                  <span className="text-stone-500 w-24 shrink-0 font-medium">Silhouette:</span>
-                  <span className="text-stone-800 font-medium">{item.fitType}</span>
+                  <span className="text-stone-500 w-28 shrink-0 font-medium">Silhouette:</span>
+                  <span className="text-stone-900 font-medium">{item.fitType}</span>
                 </div>
               )}
               <div className="flex">
-                <span className="text-stone-500 w-24 shrink-0 font-medium">Care Guide:</span>
-                <span className="text-stone-500">{item.careGuide}</span>
+                <span className="text-stone-500 w-28 shrink-0 font-medium">Care Guide:</span>
+                <span className="text-stone-600">{item.careGuide}</span>
               </div>
             </div>
 

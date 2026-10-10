@@ -56,13 +56,13 @@ export const BrandStoryBlock: React.FC = () => {
               <HeartHandshake className="w-5 h-5" />
             </div>
             <span className="text-[10px] uppercase font-bold tracking-widest text-stone-400 block">
-              Handcrafted Decor
+              Easy Fulfilment
             </span>
             <h3 className="font-serif-display text-lg font-bold text-stone-900">
-              Plate Decor & Crafting
+              Store Pickup & Delivery
             </h3>
             <p className="text-xs text-stone-600 leading-relaxed">
-              Custom decorated plates and handmade craft items tailored for engagement thamboolam, festive ceremonies, and gift presentations.
+              Order online and collect from MR Complex, Kallimandayam at a time slot you choose, or enjoy doorstep delivery with zero fee on orders above ₹1,999.
             </p>
           </div>
 
