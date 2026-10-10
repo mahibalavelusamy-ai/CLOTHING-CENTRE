@@ -61,7 +61,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     if (!codeToApply) return;
 
     if (!COUPONS[codeToApply]) {
-      setCouponError('Invalid coupon code. Try YAAZH10, FESTIVE25 or WELCOME10');
+      setCouponError('Invalid coupon code. Try YAAZH10, MUHURTHAM20, DEEPAVALI25 or NAMASTE10');
       return;
     }
 
@@ -80,7 +80,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const handleWhatsAppOrder = () => {
     if (cartItems.length === 0) return;
     const cleanPhone = STORE_CENTRE_INFO.phone.replace(/[^0-9]/g, '');
-    let msg = `*New Boutique Order Inquiry - Yaazh Boutique*\n\n`;
+    let msg = `*வணக்கம் Yaazh Boutique, Oddanchatram - New Order Inquiry*\n\n`;
     cartItems.forEach((c, idx) => {
       msg += `${idx + 1}. *${c.item.name}*\n`;
       msg += `   • Size: ${c.selectedSize} | Color: ${c.selectedColor.name}\n`;

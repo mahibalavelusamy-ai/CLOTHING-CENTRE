@@ -321,7 +321,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               <span className="text-stone-900 font-semibold">{order.deliveryFee > 0 ? formatPrice(order.deliveryFee) : 'FREE'}</span>
             </div>
             <div className="flex justify-between text-xs">
-              <span>GST (5% Apparel):</span>
+              <span>GST (CGST 2.5% + SGST 2.5%):</span>
               <span className="text-stone-900 font-semibold">{formatPrice(order.tax)}</span>
             </div>
             <div className="flex justify-between text-base font-bold text-[#1D1D1F] pt-2.5 border-t border-stone-200">

@@ -138,15 +138,15 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="max-w-7xl mx-auto flex items-center justify-center gap-6 sm:gap-10 flex-wrap text-center font-normal">
           <span className="flex items-center gap-1.5 font-medium">
             <Sparkles className="w-3 h-3 text-[#6D1A33] shrink-0" />
-            <span>Saree pre-pleating available in store</span>
+            <span>Saree pre-pleating in store · புடவை மடிப்பு சேவை</span>
           </span>
           <span className="hidden sm:inline-flex items-center gap-1.5">
-            <span>Free home delivery on orders above ₹1,999</span>
+            <span>Free express delivery across Tamil Nadu & India above ₹1,999</span>
           </span>
           <span className="hidden md:inline-flex items-center gap-1.5">
             <Phone className="w-3 h-3 text-[#6E6E73] shrink-0" />
             <a href={`tel:${STORE_CENTRE_INFO.phone.replace(/\s+/g, '')}`} className="text-[#6D1A33] font-medium hover:underline">
-              Call {STORE_CENTRE_INFO.phone}
+              Boutique Call & WhatsApp {STORE_CENTRE_INFO.phone}
             </a>
           </span>
         </div>
@@ -228,7 +228,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsSearchFocused(false);
                   }
                 }}
-                placeholder="Search sarees, blouses, co-ords…"
+                placeholder="Search Kanjivaram silk, crop tops, blouses, salwar suits…"
                 className="w-full pl-9 pr-8 py-2 bg-[#F5F5F7] hover:bg-[#EFEFF2] focus:bg-white border border-transparent focus:border-[#6D1A33] focus:ring-2 focus:ring-[#6D1A33]/15 rounded-full text-[13px] text-[#1D1D1F] placeholder-[#6E6E73] transition-all outline-none"
               />
               {searchQuery && (

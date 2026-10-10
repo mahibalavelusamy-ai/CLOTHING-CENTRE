@@ -11,23 +11,30 @@ interface SizeGuideModalProps {
 }
 
 const BLOUSE_SPECS = [
-  { size: '32', bust: '32"', underbust: '27"', shoulder: '13.5"' },
-  { size: '34', bust: '34"', underbust: '29"', shoulder: '14.0"' },
-  { size: '36', bust: '36"', underbust: '31"', shoulder: '14.5"' },
-  { size: '38', bust: '38"', underbust: '33"', shoulder: '15.0"' },
-  { size: '40', bust: '40"', underbust: '35"', shoulder: '15.5"' },
-  { size: '42', bust: '42"', underbust: '37"', shoulder: '16.0"' },
-  { size: '44', bust: '44"', underbust: '39"', shoulder: '16.5"' },
-  { size: '46', bust: '46"', underbust: '41"', shoulder: '17.0"' }
+  { size: '32', bust: '32" (81 cm)', underbust: '27" (68 cm)', shoulder: '13.5"' },
+  { size: '34', bust: '34" (86 cm)', underbust: '29" (73 cm)', shoulder: '14.0"' },
+  { size: '36', bust: '36" (91 cm)', underbust: '31" (78 cm)', shoulder: '14.5"' },
+  { size: '38', bust: '38" (96 cm)', underbust: '33" (83 cm)', shoulder: '15.0"' },
+  { size: '40', bust: '40" (101 cm)', underbust: '35" (88 cm)', shoulder: '15.5"' },
+  { size: '42', bust: '42" (106 cm)', underbust: '37" (93 cm)', shoulder: '16.0"' },
+  { size: '44', bust: '44" (112 cm)', underbust: '39" (99 cm)', shoulder: '16.5"' },
+  { size: '46', bust: '46" (117 cm)', underbust: '41" (104 cm)', shoulder: '17.0"' }
 ];
 
 const COORDS_SPECS = [
-  { size: 'S', bust: '34" - 35"', waist: '26" - 28"', hip: '36" - 38"' },
-  { size: 'M', bust: '36" - 37"', waist: '29" - 31"', hip: '39" - 41"' },
-  { size: 'L', bust: '38" - 39"', waist: '32" - 34"', hip: '42" - 44"' },
-  { size: 'XL', bust: '40" - 42"', waist: '35" - 37"', hip: '45" - 47"' },
-  { size: '2XL', bust: '43" - 45"', waist: '38" - 40"', hip: '48" - 50"' },
-  { size: '3XL', bust: '46" - 48"', waist: '41" - 43"', hip: '51" - 53"' }
+  { size: 'S', bust: '34" - 35" (86-89 cm)', waist: '26" - 28" (66-71 cm)', hip: '36" - 38"' },
+  { size: 'M', bust: '36" - 37" (91-94 cm)', waist: '29" - 31" (73-78 cm)', hip: '39" - 41"' },
+  { size: 'L', bust: '38" - 39" (96-99 cm)', waist: '32" - 34" (81-86 cm)', hip: '42" - 44"' },
+  { size: 'XL', bust: '40" - 42" (101-106 cm)', waist: '35" - 37" (89-94 cm)', hip: '45" - 47"' },
+  { size: '2XL', bust: '43" - 45" (109-114 cm)', waist: '38" - 40" (96-101 cm)', hip: '48" - 50"' },
+  { size: '3XL', bust: '46" - 48" (117-122 cm)', waist: '41" - 43" (104-109 cm)', hip: '51" - 53"' }
+];
+
+const SAREE_SPECS = [
+  { aspect: 'Saree Body & Pallu', dimension: '5.5 Meters (Full Standard Draped Length)' },
+  { aspect: 'Blouse Piece', dimension: '0.8 Meters (Matching unstitched pure fabric piece attached)' },
+  { aspect: 'Saree Width', dimension: '45 to 48 Inches (Standard height drape)' },
+  { aspect: 'In-Store Pre-Pleating', dimension: '5 to 7 uniform front pleats with secured pallu folds' },
 ];
 
 export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({
@@ -35,13 +42,13 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({
   onClose,
   onSelectRecommendedSize
 }) => {
-  const [activeTab, setActiveTab] = useState<'blouses' | 'coords'>('blouses');
+  const [activeTab, setActiveTab] = useState<'blouses' | 'coords' | 'sarees'>('blouses');
 
   if (!isOpen) return null;
 
   const whatsappInquiryUrl = buildLink(
     STORE_CENTRE_INFO.whatsapp,
-    `Hello ${STORE_CENTRE_INFO.name}, I need sizing assistance with a garment.`
+    `வணக்கம் ${STORE_CENTRE_INFO.name}, I need sizing and fitting assistance for an ethnic garment.`
   );
 
   return (
@@ -80,27 +87,37 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({
           </button>
         </div>
 
-        {/* 2 Tabs: Blouses and Co-ords & Lounge Wear */}
-        <div className="flex items-center gap-2 mt-5 border-b border-stone-200 pb-2">
+        {/* 3 Tabs: Blouses, Co-ords & Sarees */}
+        <div className="flex items-center gap-2 mt-5 border-b border-stone-200 pb-2 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveTab('blouses')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'blouses'
                 ? 'bg-stone-900 text-white shadow-xs'
                 : 'bg-stone-100 text-stone-600 hover:text-stone-900'
             }`}
           >
-            Blouses (32 – 46)
+            Blouses & Tops (32 – 46)
+          </button>
+          <button
+            onClick={() => setActiveTab('sarees')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+              activeTab === 'sarees'
+                ? 'bg-stone-900 text-white shadow-xs'
+                : 'bg-stone-100 text-stone-600 hover:text-stone-900'
+            }`}
+          >
+            Sarees & Pre-Pleating (புடவை)
           </button>
           <button
             onClick={() => setActiveTab('coords')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === 'coords'
                 ? 'bg-stone-900 text-white shadow-xs'
                 : 'bg-stone-100 text-stone-600 hover:text-stone-900'
             }`}
           >
-            Co-ords & Lounge (S – 3XL)
+            Co-ords & Suits (S – 3XL)
           </button>
         </div>
 
@@ -156,7 +173,41 @@ export const SizeGuideModal: React.FC<SizeGuideModalProps> = ({
           </div>
         )}
 
-        {/* Tab 2: Co-ords & Lounge Wear */}
+        {/* Tab 2: Sarees & Pre-Pleating */}
+        {activeTab === 'sarees' && (
+          <div className="mt-5 space-y-4">
+            <div className="overflow-x-auto rounded-xl border border-stone-200">
+              <table className="w-full text-xs text-left">
+                <thead className="bg-stone-100 text-stone-700 font-semibold uppercase tracking-wider text-[11px]">
+                  <tr>
+                    <th className="py-2.5 px-3">Garment Aspect</th>
+                    <th className="py-2.5 px-3">Standard Dimension</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-stone-200 bg-white">
+                  {SAREE_SPECS.map((spec) => (
+                    <tr key={spec.aspect} className="hover:bg-amber-50/40 transition-colors">
+                      <td className="py-2.5 px-3 font-bold text-stone-900">{spec.aspect}</td>
+                      <td className="py-2.5 px-3 text-stone-700">{spec.dimension}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="p-3.5 bg-amber-50/80 border border-amber-200/80 rounded-xl space-y-2 text-xs text-amber-950">
+              <div className="flex items-center gap-2 font-bold text-amber-900">
+                <Sparkles className="w-4 h-4 text-amber-700 shrink-0" />
+                <span>In-Store Saree Pre-Pleating Service (புடவை மடிப்பு சேவை):</span>
+              </div>
+              <p className="text-amber-900 text-[11px] leading-relaxed">
+                Before your wedding, engagement, or school farewell, bring your saree to Yaazh Boutique. Our master draper will steam-press, pin uniform 5-7 front pleats, and fold it into an elegant presentation box. Ready to slip into and drape in less than 60 seconds!
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Tab 3: Co-ords & Lounge Wear */}
         {activeTab === 'coords' && (
           <div className="mt-5 space-y-4">
             <div className="overflow-x-auto rounded-xl border border-stone-200">

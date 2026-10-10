@@ -9,7 +9,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-saree-01',
     sku: 'YB-SAR-KANJI-01',
-    name: 'Kanjivaram Silk Handloom Saree with Pure Zari Border',
+    name: 'Kanjivaram Pure Silk Handloom Saree with Mayilkan & Korvai Zari Border',
     department: 'sarees',
     category: 'Handloom Sarees',
     price: 4850,
@@ -18,9 +18,9 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.9,
     reviewCount: 38,
     colors: [
-      { name: 'Royal Crimson Wine', hex: '#6b1124' },
-      { name: 'Peacock Green', hex: '#0f4d43' },
-      { name: 'Temple Mustard', hex: '#c98a2c' }
+      { name: 'Kumkum Wine (குங்கும சிவப்பு)', hex: '#6b1124' },
+      { name: 'Mayil Kazhuthu Peacock Green (மயில் கழுத்து)', hex: '#0f4d43' },
+      { name: 'Santhanam Mustard (சந்தன மஞ்சள்)', hex: '#c98a2c' }
     ],
     sizes: [
       { size: 'Free Size', stock: 12 }
@@ -29,7 +29,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Masterfully handwoven Kanjivaram silk saree featuring elaborate temple borders and rich floral zari pallu. Comes with unstitched matching silk blouse piece.',
+    description: 'Masterfully handwoven Kanjivaram silk saree featuring traditional temple korvai borders, peacock motifs, and rich floral zari pallu. Comes with unstitched matching pure silk blouse piece (0.8m). In-store saree pre-pleating available.',
     fabric: 'Pure Handloom Silk Blend with Gold Zari',
     careGuide: 'Dry Clean Only. Store wrapped in pure cotton or muslin fabric.',
     fitType: 'Regular Fit',
@@ -42,7 +42,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-saree-02',
     sku: 'YB-SAR-TUSS-02',
-    name: 'Pure Tussar Ghicha Silk Hand Block Printed Saree',
+    name: 'Pure Tussar Ghicha Silk Hand Block Kalamkari Saree',
     department: 'sarees',
     category: 'Tussar Sarees',
     price: 3650,
@@ -51,8 +51,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.8,
     reviewCount: 29,
     colors: [
-      { name: 'Natural Ochre & Indigo', hex: '#c59b27' },
-      { name: 'Terracotta Rust', hex: '#b84a39' }
+      { name: 'Natural Ochre & Neelam Indigo', hex: '#c59b27' },
+      { name: 'Terracotta Madder Rust', hex: '#b84a39' }
     ],
     sizes: [
       { size: 'Free Size', stock: 8 }
@@ -61,7 +61,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Authentic wild Tussar Ghicha silk with earthy natural texture and intricate hand-carved wooden block prints. Breathable drape suited for high-tea and festive gatherings.',
+    description: 'Authentic wild Tussar Ghicha silk with earthy natural texture and intricate hand-carved wooden block Kalamkari prints. Breathable drape suited for pooja rituals, high-tea, and festive gatherings.',
     fabric: '100% Pure Tussar Ghicha Silk',
     careGuide: 'Gentle dry clean recommended. Avoid direct perfume spray on fabric.',
     fitType: 'Regular Fit',
@@ -74,7 +74,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-saree-03',
     sku: 'YB-SAR-CHETT-03',
-    name: 'Chettinad Pure Cotton Saree with Contrast Temple Border',
+    name: 'Chettinad Heritage Pure Cotton Saree with Rudraksha Temple Border',
     department: 'sarees',
     category: 'Cotton Sarees',
     price: 1850,
@@ -83,8 +83,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.9,
     reviewCount: 45,
     colors: [
-      { name: 'Turmeric Yellow & Bottle Green', hex: '#e5a93c' },
-      { name: 'Sindhoori Maroon', hex: '#7a1c1c' }
+      { name: 'Manjal Yellow & Kili Pachai (மஞ்சள் / கிளிப்பச்சை)', hex: '#e5a93c' },
+      { name: 'Sindhoori Maroon & Temple Korvai (குங்கும சிவப்பு)', hex: '#7a1c1c' }
     ],
     sizes: [
       { size: 'Free Size', stock: 16 }
@@ -93,7 +93,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Traditional Tamil Nadu heritage Chettinad weave with high count breathable cotton, classic rudraksha & korvai borders, offering supreme all-day summer comfort.',
+    description: 'Traditional Tamil Nadu heritage Chettinad weave with high count breathable combed cotton, classic rudraksha & korvai borders, offering supreme all-day summer comfort.',
     fabric: '100% Fine Combed Chettinad Cotton',
     careGuide: 'First wash dry clean or cold salt water dip; gentle hand wash thereafter.',
     fitType: 'Regular Fit',
@@ -106,7 +106,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-saree-04',
     sku: 'YB-SAR-ORGAN-04',
-    name: 'Pastel Organza Floral Embroidered Saree with Scallop Lace',
+    name: 'Sheer Organza Silk Floral Resham Saree with Scallop Zari Border',
     department: 'sarees',
     category: 'Silk Blend Sarees',
     price: 2950,
@@ -115,8 +115,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.7,
     reviewCount: 24,
     colors: [
-      { name: 'Blush Rose', hex: '#e8a598' },
-      { name: 'Powder Lavender', hex: '#b39ddb' }
+      { name: 'Gulabi Rose (குலாபி ரோஸ்)', hex: '#e8a598' },
+      { name: 'Neelambari Lavender (நீலாம்பரி)', hex: '#b39ddb' }
     ],
     sizes: [
       { size: 'Free Size', stock: 9 }
@@ -125,7 +125,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Dreamy semi-sheer organza silk saree embellished with delicate resham thread embroidery and cutwork scalloped borders. Contemporary pastel aesthetic for evening parties.',
+    description: 'Dreamy semi-sheer organza silk saree embellished with delicate resham thread embroidery and cutwork scalloped borders. Contemporary pastel aesthetic for wedding receptions and evening sangeet.',
     fabric: 'Pure Sheer Organza with Resham Embroidery',
     careGuide: 'Strictly dry clean only. Steam iron on reverse.',
     fitType: 'Regular Fit',
@@ -183,10 +183,10 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.8,
     reviewCount: 42,
     colors: [
-      { name: 'Mustard Yellow Leaf', hex: '#d4af37' },
-      { name: 'Madder Maroon Kalamkari', hex: '#7a1f28' },
-      { name: 'Ivory & Black Motif', hex: '#eae6df' },
-      { name: 'Midnight Black Leaf', hex: '#212121' }
+      { name: 'Haldi Mustard Leaf (மஞ்சள்)', hex: '#d4af37' },
+      { name: 'Madder Maroon Kalamkari (செம்மண் சிவப்பு)', hex: '#7a1f28' },
+      { name: 'Chandan Ivory & Black (சந்தன வெள்ளை)', hex: '#eae6df' },
+      { name: 'Kari Midnight Black (கருப்பு)', hex: '#212121' }
     ],
     sizes: [
       { size: '32', stock: 3 },
@@ -203,7 +203,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       '/products/crop-tops/crop-top-black-leaf.jpg',
       '/products/crop-tops/crop-tops-collection-banner.png'
     ],
-    description: 'Handcrafted pure cotton crop top blouse with delicate block-printed botanical motifs, wooden button-down front, breathable pure cotton lining, and generous 2-inch inner alteration margin for pairing with sarees, lehengas, or high-waist trousers.',
+    description: 'Handcrafted pure cotton crop top blouse with delicate block-printed botanical motifs, wooden button-down front, breathable pure cotton lining, and generous 2-inch inner alteration margin (உள் மடிப்பு) for pairing with sarees, lehengas, or high-waist skirts.',
     fabric: '100% Block Printed Cotton with Pure Cotton Lining',
     careGuide: 'Hand wash separately with cold water. Avoid direct harsh sunlight.',
     fitType: 'Regular Fit',
@@ -215,7 +215,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-blouse-01',
     sku: 'YB-BLS-AJRAKH-01',
-    name: 'Ajrakh Hand Block Printed Boat Neck Designer Blouse',
+    name: 'Ajrakh Hand Block Printed Boat Neck Designer Blouse with Latkans',
     department: 'blouses',
     category: 'Block Printed Blouses',
     price: 1350,
@@ -224,8 +224,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.9,
     reviewCount: 31,
     colors: [
-      { name: 'Indigo Blue & Madder', hex: '#1f3a52' },
-      { name: 'Earth Black & Rust', hex: '#2c2523' }
+      { name: 'Neelam Indigo & Madder (நீலம் & சிவப்பு)', hex: '#1f3a52' },
+      { name: 'Earth Black & Rust (செம்மண்)', hex: '#2c2523' }
     ],
     sizes: [
       { size: '34', stock: 4 },
@@ -239,7 +239,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       '/products/crop-tops/crop-top-black-leaf.jpg',
       '/products/crop-tops/crop-tops-collection-banner.png'
     ],
-    description: 'Pre-stitched pure cotton Ajrakh blouse tailored with front boat neck, deep back cut with latkans, and 2-inch internal alteration margins.',
+    description: 'Pre-stitched pure cotton Ajrakh blouse tailored with front boat neck, deep back cut with decorative latkans, and 2-inch internal alteration margins (உள் மடிப்பு).',
     fabric: '100% Ajrakh Hand-block Printed Cotton with Pure Cotton Lining',
     careGuide: 'Dry clean recommended for first two washes. Hand wash separately.',
     fitType: 'Regular Fit',
@@ -251,7 +251,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-blouse-02',
     sku: 'YB-BLS-ZARDOZI-02',
-    name: 'Raw Silk Zardozi Hand Embroidered Bridal Blouse',
+    name: 'South Indian Raw Silk Zardozi Hand Embroidered Bridal Blouse',
     department: 'blouses',
     category: 'Readymade Blouses',
     price: 2450,
@@ -260,9 +260,9 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 5.0,
     reviewCount: 19,
     colors: [
-      { name: 'Royal Emerald Green', hex: '#0f5238' },
-      { name: 'Ruby Wine', hex: '#6a0dad' },
-      { name: 'Antique Gold', hex: '#c5a059' }
+      { name: 'Maragatham Emerald Green (மரகத பச்சை)', hex: '#0f5238' },
+      { name: 'Manickam Ruby Wine (மாணிக்க சிவப்பு)', hex: '#6a0dad' },
+      { name: 'Swarnam Antique Gold (தங்க ஜரிகை)', hex: '#c5a059' }
     ],
     sizes: [
       { size: '34', stock: 3 },
@@ -274,7 +274,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Rich South Indian raw silk bridal blouse embellished with authentic zardozi, kasab thread, and moti handwork on sleeves and neckline.',
+    description: 'Rich South Indian raw silk bridal blouse embellished with authentic zardozi, kasab thread, and moti handwork on sleeves and neckline for Muhurtham rituals.',
     fabric: 'Pure Raw Silk with Padded Cups & Cotton Lining',
     careGuide: 'Dry clean only. Keep away from water and direct perfume.',
     fitType: 'Regular Fit',
@@ -297,9 +297,9 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.8,
     reviewCount: 42,
     colors: [
-      { name: 'Earthy Sage Green', hex: '#6b7c65' },
-      { name: 'Warm Terracotta', hex: '#ad503d' },
-      { name: 'Ivory Sand', hex: '#ded6c7' }
+      { name: 'Earthy Sage Green (பச்சை)', hex: '#6b7c65' },
+      { name: 'Terracotta Madder (செம்மண்)', hex: '#ad503d' },
+      { name: 'Chandan Sand (சந்தனம்)', hex: '#ded6c7' }
     ],
     sizes: [
       { size: 'S', stock: 4 },
@@ -312,7 +312,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Effortlessly modern 2-piece linen blend tunic top paired with matching ankle-length trousers with deep pockets. Ideal for office chic, brunch, or casual dinners.',
+    description: 'Effortlessly elegant 2-piece linen blend tunic top paired with matching ankle-length trousers with deep pockets. Ideal for work, temple visits, or travel.',
     fabric: 'Breathable Pure Linen Cotton Blend',
     careGuide: 'Machine wash on delicate cold cycle. Warm iron while slightly damp.',
     fitType: 'Relaxed Fit',
@@ -326,7 +326,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-salwar-01',
     sku: 'YB-SLW-CHAND-01',
-    name: 'Chanderi Silk Salwar Suit Material with Zari Border Dupatta',
+    name: 'Chanderi Silk Salwar Suit Material with Banarasi Zari Dupatta',
     department: 'salwar',
     category: 'Salwar Materials',
     price: 2190,
@@ -335,8 +335,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.9,
     reviewCount: 27,
     colors: [
-      { name: 'Lilac Mist', hex: '#a68cb8' },
-      { name: 'Mint Jade', hex: '#7ea494' }
+      { name: 'Lilac Mist (லேவண்டர்)', hex: '#a68cb8' },
+      { name: 'Maragatha Jade (மரகதம்)', hex: '#7ea494' }
     ],
     sizes: [
       { size: 'Free Size', stock: 15 }
@@ -345,8 +345,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Unstitched 3-piece luxury suit set: 2.5m Chanderi silk top with hand-woven booties, 2.0m soft santoon bottom, and 2.5m shimmering woven zari dupatta.',
-    fabric: 'Chanderi Silk Kurta, Premium Santoon Bottom, Zari Weave Dupatta',
+    description: 'Traditional Indian unstitched 3-piece luxury suit set: 2.5m Chanderi silk kurta with hand-woven booties, 2.0m soft santoon bottom, and 2.5m shimmering Banarasi woven zari dupatta.',
+    fabric: 'Chanderi Silk Kurta, Premium Santoon Bottom, Banarasi Zari Dupatta',
     careGuide: 'Dry clean recommended to preserve gold zari finish.',
     fitType: 'Regular Fit',
     occasion: 'Festive',
@@ -368,8 +368,8 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.9,
     reviewCount: 36,
     colors: [
-      { name: 'Pastel Aqua Floral', hex: '#689f9e' },
-      { name: 'Blush Petal', hex: '#d99198' }
+      { name: 'Pastel Aqua Floral (கடல் நீலம்)', hex: '#689f9e' },
+      { name: 'Gulabi Petal (குலாபி ரோஸ்)', hex: '#d99198' }
     ],
     sizes: [
       { size: 'S', stock: 5 },
@@ -395,7 +395,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-decor-01',
     sku: 'YB-DCR-URLI-01',
-    name: 'Traditional Handcrafted Brass Urli with Floating Flower Rim',
+    name: 'Traditional Handcrafted Solid Brass Urli (உருளி) with Floating Flower Rim',
     department: 'decor',
     category: 'Craft Items',
     price: 1950,
@@ -404,7 +404,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 5.0,
     reviewCount: 22,
     colors: [
-      { name: 'Antique Brass Gold', hex: '#b59247' }
+      { name: 'Antique Brass Gold (பித்தளை)', hex: '#b59247' }
     ],
     sizes: [
       { size: 'Free Size', stock: 10 }
@@ -413,7 +413,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: 'Sublime antique polished solid brass urli bowl for floating marigold blossoms and diyas at your home entrance or pooja room. Handcrafted by traditional artisans.',
+    description: 'Sublime antique polished solid brass urli (உருளி) bowl for floating marigold blossoms and diyas at your home entrance or pooja room. Handcrafted by traditional Tamil Nadu metal artisans.',
     fabric: 'Solid Cast Brass with Anti-Tarnish Coating',
     careGuide: 'Wipe with soft dry cloth. Clean periodically with pitambari or lemon juice for mirror glow.',
     occasion: 'Festive',
@@ -424,7 +424,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
   {
     id: 'yb-decor-02',
     sku: 'YB-DCR-PICHWAI-02',
-    name: 'Hand-Painted Pichwai Lotus Festive Wooden Decor Plate',
+    name: 'Hand-Painted Pichwai Lotus Festive Wooden Thali Decor Plate (தாம்பூல தட்டு)',
     department: 'decor',
     category: 'Decorated Plates',
     price: 990,
@@ -433,7 +433,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
     rating: 4.8,
     reviewCount: 17,
     colors: [
-      { name: 'Temple Vermillion & Gold', hex: '#a62626' }
+      { name: 'Temple Vermillion & Gold (குங்குமம் & தங்கம்)', hex: '#a62626' }
     ],
     sizes: [
       { size: 'Free Size', stock: 14 }
@@ -442,7 +442,7 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
       'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80'
     ],
-    description: '10-inch decorative wooden thali plate hand-painted with holy Pichwai lotus pond motifs and embellished gold acrylic accents. Comes with wall hook and table stand.',
+    description: '10-inch decorative wooden thali plate hand-painted with sacred Pichwai lotus pond motifs and embellished gold acrylic accents for auspicious celebrations, pooja rituals, and festive home decor.',
     fabric: 'Treated Teak Wood Base with Acrylic & Lacquer Gloss',
     careGuide: 'Wipe with dry microfiber cloth. Do not soak in water.',
     occasion: 'Festive',
@@ -454,19 +454,26 @@ export const INITIAL_CLOTHING_ITEMS: ClothingItem[] = [
 
 export const STORE_CENTRE_INFO = {
   name: 'Yaazh Boutique',
-  tagline: 'Elegance · Tradition · Style',
-  address: 'MR Complex, Kallimandayam, Oddanchatram, Dindigul, Tamil Nadu 624616, India',
-  hours: 'Mon - Sun: 9:30 AM - 9:00 PM',
+  tamilName: 'யாழ் ஆடைகள் & பட்டு மையம்',
+  tagline: 'பாரம்பரியம் · கலைநயம் · நேர்த்தி (Authentic Indian Handlooms & Silks)',
+  address: 'MR Complex, Near Bus Stand, Kallimandayam Main Road, Oddanchatram, Dindigul District, Tamil Nadu 624616, India',
+  hours: 'Mon - Sun: 9:30 AM - 9:00 PM (IST)',
   phone: '+91 95978 33982',
   phone2: '+91 90478 54136',
   whatsapp: '919597833982',
-  upiId: '',
+  upiId: '9597833982@upi',
+  gstin: '33AADFY9832K1ZP',
+  state: 'Tamil Nadu',
+  stateCode: '33',
   instagram: 'yaazh_botique',
   facebook: 'yaazhbotique',
 };
 
 export const COUPONS: Record<string, { percent: number; minOrder: number; description: string }> = {
-  YAAZH10: { percent: 10, minOrder: 1500, description: '10% OFF on boutique orders above ₹1,500' },
+  YAAZH10: { percent: 10, minOrder: 1500, description: '10% OFF on boutique handloom orders above ₹1,500' },
+  MUHURTHAM20: { percent: 20, minOrder: 4000, description: '20% OFF Muhurtham Wedding & Bridal Special on orders above ₹4,000' },
+  DEEPAVALI25: { percent: 25, minOrder: 3500, description: '25% OFF Festive Celebration Special on orders above ₹3,500' },
   FESTIVE25: { percent: 25, minOrder: 3500, description: '25% OFF Festive Special on orders above ₹3,500' },
+  NAMASTE10: { percent: 10, minOrder: 999, description: '10% OFF Welcome gift on your first boutique purchase' },
   WELCOME10: { percent: 10, minOrder: 999, description: '10% OFF on your first purchase' },
 };

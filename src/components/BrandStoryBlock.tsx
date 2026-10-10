@@ -14,11 +14,16 @@ export const BrandStoryBlock: React.FC = () => {
             <div className="w-10 h-10 rounded-2xl bg-[#F3E8EB] text-[#6D1A33] flex items-center justify-center">
               <Scissors className="w-5 h-5" />
             </div>
-            <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">
-              Saree pre-pleating
-            </h3>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">
+                Saree pre-pleating
+              </h3>
+              <span className="font-tamil text-xs font-semibold text-[#6D1A33]">
+                புடவை மடிப்பு
+              </span>
+            </div>
             <p className="text-[15px] leading-relaxed text-[#6E6E73] font-normal">
-              Bring your saree to the store. We pleat and box-fold it with artisanal precision so it is ready to drape effortlessly on your special day.
+              Bring your silk saree to our store before weddings or celebrations. We pleat, pin, steam-press, and box-fold it with artisanal precision so you can drape in under 60 seconds.
             </p>
           </div>
 
@@ -27,11 +32,16 @@ export const BrandStoryBlock: React.FC = () => {
             <div className="w-10 h-10 rounded-2xl bg-[#F3E8EB] text-[#6D1A33] flex items-center justify-center">
               <Sparkles className="w-5 h-5" />
             </div>
-            <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">
-              Curated ethnic collections
-            </h3>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">
+                Authentic handlooms
+              </h3>
+              <span className="font-tamil text-xs font-semibold text-[#6D1A33]">
+                தூய கைத்தறி
+              </span>
+            </div>
             <p className="text-[15px] leading-relaxed text-[#6E6E73] font-normal">
-              Handpicked Kanjivaram & Tussar silk sarees, hand-block printed cotton crop tops, designer blouses, and coordinates crafted with generational mastery.
+              Directly curated from generational master weavers across Kanchipuram, Chettinad, and Arani. Pure zari borders, artisan block printed crop tops, and tailored designer blouses.
             </p>
           </div>
 
@@ -40,11 +50,16 @@ export const BrandStoryBlock: React.FC = () => {
             <div className="w-10 h-10 rounded-2xl bg-[#F3E8EB] text-[#6D1A33] flex items-center justify-center">
               <Store className="w-5 h-5" />
             </div>
-            <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">
-              Pick up in store
-            </h3>
+            <div className="flex items-baseline gap-2">
+              <h3 className="text-xl font-semibold text-[#1D1D1F] tracking-tight">
+                Counter pickup & video call
+              </h3>
+              <span className="font-tamil text-xs font-semibold text-[#6D1A33]">
+                நேரடி சேகரிப்பு
+              </span>
+            </div>
             <p className="text-[15px] leading-relaxed text-[#6E6E73] font-normal">
-              Order online, choose your preferred collection time window, and collect from MR Complex with zero fee, or enjoy free doorstep delivery on orders above ₹1,999.
+              Pick up at MR Complex, Oddanchatram at zero fee, or request a live WhatsApp video shopping call to inspect fabric luster in natural daylight before doorstep delivery across India.
             </p>
           </div>
 

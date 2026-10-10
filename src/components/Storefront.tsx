@@ -929,8 +929,15 @@ export const Storefront: React.FC = () => {
             <div className="text-[13px] font-semibold text-[#1D1D1F] mb-3">Flagship Boutique</div>
             <p className="text-[#424245] leading-relaxed">
               {STORE_CENTRE_INFO.address}<br />
-              Open every day, 9:30 AM to 9:00 PM
+              Open every day, 9:30 AM to 9:00 PM (IST)<br />
+              <span className="text-[12px] text-[#6E6E73] mt-1 block">GSTIN: {STORE_CENTRE_INFO.gstin} • Tamil Nadu (33)</span>
             </p>
+            <div className="mt-3 flex items-center gap-1.5 flex-wrap">
+              <span className="text-[11px] font-semibold bg-[#F5F5F7] px-2 py-0.5 rounded text-stone-700 border border-[#E8E8ED]">BHIM UPI</span>
+              <span className="text-[11px] font-semibold bg-[#F5F5F7] px-2 py-0.5 rounded text-stone-700 border border-[#E8E8ED]">GPay</span>
+              <span className="text-[11px] font-semibold bg-[#F5F5F7] px-2 py-0.5 rounded text-stone-700 border border-[#E8E8ED]">PhonePe</span>
+              <span className="text-[11px] font-semibold bg-[#F5F5F7] px-2 py-0.5 rounded text-stone-700 border border-[#E8E8ED]">Pay at Store</span>
+            </div>
           </div>
         </div>
 

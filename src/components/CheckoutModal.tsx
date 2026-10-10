@@ -406,7 +406,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   <span className="font-mono text-stone-900">{orderComplete.deliveryFee === 0 ? 'FREE' : formatPrice(orderComplete.deliveryFee)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>GST (5%):</span>
+                  <span>GST (CGST 2.5% + SGST 2.5%):</span>
                   <span className="font-mono text-stone-900">{formatPrice(orderComplete.tax)}</span>
                 </div>
                 <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t border-stone-200">
@@ -431,10 +431,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   ||| | | |||| | ||| |||| | | |||
                 </div>
                 <p className="text-[10px] text-stone-500 font-mono mt-1">
-                  BARCODE: {orderComplete.id} • PRESENT AT YAAZH BOUTIQUE
+                  ORDER TOKEN: {orderComplete.id} • GSTIN: {STORE_GSTIN}
                 </p>
-                <p className="text-[10px] text-stone-500 mt-2 italic">
-                  Thank you for visiting Yaazh Boutique, Oddanchatram.
+                <p className="text-[11px] text-stone-700 font-medium mt-2 font-tamil">
+                  வணக்கம் & நன்றி! Thank you for choosing Yaazh Boutique, Oddanchatram.
                 </p>
               </div>
             </div>
@@ -623,11 +623,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     onChange={(e) => setPickupSlot(e.target.value)}
                     className="w-full px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg text-stone-800 focus:outline-none focus:border-amber-600"
                   >
-                    <option value="Today (2:00 PM – 4:00 PM)">Today (2:00 PM – 4:00 PM)</option>
-                    <option value="Today (4:00 PM – 7:00 PM)">Today (4:00 PM – 7:00 PM)</option>
-                    <option value="Today (7:00 PM – 8:30 PM)">Today (7:00 PM – 8:30 PM)</option>
-                    <option value="Tomorrow (10:30 AM – 1:30 PM)">Tomorrow (10:30 AM – 1:30 PM)</option>
-                    <option value="Tomorrow (2:00 PM – 6:00 PM)">Tomorrow (2:00 PM – 6:00 PM)</option>
+                    <option value="Today (2:00 PM – 5:00 PM IST)">Today (2:00 PM – 5:00 PM IST)</option>
+                    <option value="Today: Evening (5:30 PM – 8:30 PM IST)">Today: Evening (5:30 PM – 8:30 PM IST)</option>
+                    <option value="Tomorrow: Morning (10:00 AM – 1:30 PM IST)">Tomorrow: Morning (10:00 AM – 1:30 PM IST)</option>
+                    <option value="Tomorrow: Afternoon (2:00 PM – 5:00 PM IST)">Tomorrow: Afternoon (2:00 PM – 5:00 PM IST)</option>
+                    <option value="Tomorrow: Evening (5:30 PM – 8:30 PM IST)">Tomorrow: Evening (5:30 PM – 8:30 PM IST)</option>
                   </select>
                 </div>
               )}
@@ -675,11 +675,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
                 {deliveryType === 'home_delivery' && (
                   <div className="sm:col-span-2">
-                    <label className="block text-[11px] font-medium text-stone-600 mb-1">Delivery Address *</label>
+                    <label className="block text-[11px] font-medium text-stone-600 mb-1">Doorstep Delivery Address *</label>
                     <textarea
                       required
                       rows={2}
-                      placeholder="Flat/House No., Building, Street, Landmark, City & PIN code..."
+                      placeholder="Door/Flat No., Street / Nagar, Landmark (அடையாளம்), Town/City, State (e.g. Tamil Nadu) - 6 Digit PIN (e.g. 624616)..."
                       value={shippingAddress}
                       onChange={(e) => setShippingAddress(e.target.value)}
                       className="w-full px-3 py-2 text-xs bg-white border border-stone-300 rounded-lg text-stone-900 focus:outline-none focus:border-amber-600"
@@ -691,11 +691,11 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               {/* Optional Order Note */}
               <div className="mt-3">
                 <label className="flex items-center gap-1.5 text-[11px] font-semibold text-stone-600 mb-1">
-                  <span>Order Note / Special Instructions (Optional):</span>
+                  <span>Order Note / Special Request (Optional):</span>
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Saree pre-pleating request, gift wrapping, or gate code"
+                  placeholder="e.g. Saree pre-pleating request, wedding gift wrap, or bell/gate instructions"
                   value={orderNote}
                   onChange={(e) => setOrderNote(e.target.value)}
                   className="w-full px-3 py-1.5 text-xs bg-white border border-stone-300 rounded-lg text-stone-900 focus:outline-none focus:border-amber-600"

@@ -35,60 +35,60 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 'slide-1',
-    eyebrow: 'EXCLUSIVE HANDLOOMS',
-    tamilTag: 'பாரம்பரிய காஞ்சிபுரம்',
-    headline: 'Kanjivaram, woven for the days you remember.',
-    subtext: 'Handloom silk sarees with pure zari borders, chosen piece by piece for our flagship boutique in Oddanchatram.',
+    eyebrow: 'TRADITIONAL HANDLOOMS · தூய கைத்தறி',
+    tamilTag: 'பாரம்பரிய காஞ்சிபுரம் & பட்டு',
+    headline: 'Kanjivaram Silk, woven for weddings & auspicious Muhurthams.',
+    subtext: 'Handloom pure silk sarees with korvai temple borders and pure zari pallu, curated piece by piece for our flagship boutique in Oddanchatram.',
     buttonText: 'Shop Sarees',
-    consultationQuery: 'Hello Yaazh Boutique! I would like to consult a stylist regarding your Handwoven Kanjivaram & Tussar Sarees collection.',
+    consultationQuery: 'வணக்கம் Yaazh Boutique! I would like to consult your stylist regarding your Handwoven Kanjivaram, Tussar & Chettinad Sarees.',
     department: 'sarees',
     category: 'All',
     imageUrl: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1600&q=85',
-    statPill: 'Pure Zari • Handwoven'
+    statPill: 'Pure Silk Mark • Handwoven Zari'
   },
   {
     id: 'slide-2',
-    eyebrow: 'ARTISANAL TAILORING',
-    tamilTag: 'பிரத்தியேக தையல்',
+    eyebrow: 'ARTISANAL TAILORING · பிரத்தியேக தையல்',
+    tamilTag: 'பிளவுஸ் & காட்டன் டாப்ஸ்',
     headline: 'Handcrafted Cotton Crop Tops & Designer Blouses.',
-    subtext: 'Botanical block prints, rustic wooden buttons, and tailored cuts with 2-inch alteration margins in sizes 32 to 46.',
+    subtext: 'Natural botanical block prints, rustic wooden buttons, and tailored cuts with 2-inch alteration margins (உள் மடிப்பு) in sizes 32 to 46.',
     buttonText: 'Shop Crop Tops & Blouses',
-    consultationQuery: 'Hello Yaazh Boutique! I would like to inquire about your Cotton Crop Tops & Designer Blouses collection.',
+    consultationQuery: 'வணக்கம் Yaazh Boutique! I would like to inquire about your Cotton Crop Tops & Designer Blouses collection with alteration margins.',
     department: 'blouses',
     category: 'All',
     imageUrl: '/products/crop-tops/crop-tops-collection-banner.png',
-    statPill: 'Pure Cotton • Wooden Buttons'
+    statPill: 'Pure Cotton • 2" Alteration Margin'
   },
   {
     id: 'slide-3',
-    eyebrow: 'EFFORTLESS MODERN LUXURY',
-    tamilTag: 'வசதியான நவீன ஆடைகள்',
-    headline: 'Co-ord Sets & Pure Mulmul Lounge Wear.',
-    subtext: 'Breezy pure linen coordinates and feather-light mulmul silhouettes crafted for everyday grace, travel, and festive ease.',
-    buttonText: 'Discover Co-ords',
-    consultationQuery: 'Hello Yaazh Boutique! I would like to know more about available sizes and colors in your Co-ord & Lounge Wear collection.',
+    eyebrow: 'FESTIVE & CONTEMPORARY · பண்டிகை கால ஆடைகள்',
+    tamilTag: 'சல்வார் & கோ-ஆர்ட் செட்ஸ்',
+    headline: 'Chanderi Suits, Co-ord Sets & Pure Mulmul Silhouettes.',
+    subtext: 'Breezy pure mulmul cotton coordinates and Banarasi zari suits crafted for pooja celebrations, family gatherings, and everyday grace.',
+    buttonText: 'Discover Co-ords & Suits',
+    consultationQuery: 'வணக்கம் Yaazh Boutique! I would like to know more about available sizes in your Co-ord Sets & Chanderi Salwar Suits.',
     department: 'coords',
     category: 'All',
     imageUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1600&q=85',
-    statPill: 'Breathable Mulmul & Linen'
+    statPill: 'Chanderi & Mulmul • Festive Grace'
   },
 ];
 
 const TRUST_POINTS = [
   {
     icon: ShieldCheck,
-    title: '100% Handloom',
-    desc: 'Curated authentic weaves',
+    title: '100% Handloom & Silk Mark',
+    desc: 'நேரடி நெசவாளர் தூய தயாரிப்பு',
   },
   {
     icon: Scissors,
     title: 'Saree Pre-Pleating',
-    desc: 'Ready drape on request',
+    desc: 'புடவை மடிப்பு & பெட்டி மடிப்பு',
   },
   {
     icon: Truck,
     title: 'Free Express Delivery',
-    desc: 'On orders above ₹1,999',
+    desc: 'Orders above ₹1,999 across India',
   },
   {
     icon: Store,

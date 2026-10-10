@@ -3,13 +3,14 @@
  * To be replaced later by real search and order analytics.
  */
 export const TRENDING_SEARCHES: string[] = [
-  'Sarees',
-  'Tussar sarees',
-  'Pochampally sarees',
-  'Silk check sarees',
-  'Block print blouse',
-  'Crop tops',
-  'Co-ord sets',
-  'Lounge wear',
-  'Salwar material',
+  'Kanjivaram Silk',
+  'Chettinad Cotton',
+  'Tussar Kalamkari',
+  'Pre-pleated Sarees',
+  'Cotton Crop Tops',
+  'Ajrakh Blouse',
+  'Bridal Zardozi Blouse',
+  'Chanderi Salwar Suits',
+  'Mulmul Lounge Wear',
+  'Traditional Brass Urli',
 ];

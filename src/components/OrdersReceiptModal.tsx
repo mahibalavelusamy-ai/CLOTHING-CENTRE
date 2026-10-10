@@ -181,7 +181,7 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                         Phone: {STORE_CENTRE_INFO.phone} {STORE_CENTRE_INFO.phone2 ? `• ${STORE_CENTRE_INFO.phone2}` : ''}
                       </p>
                       {Boolean(STORE_GSTIN) && (
-                        <p className="text-[11px] text-stone-500">GSTIN: {STORE_GSTIN}</p>
+                        <p className="text-[11px] text-stone-500">GSTIN: {STORE_GSTIN} • State: Tamil Nadu (33)</p>
                       )}
                     </div>
                   </div>
@@ -263,7 +263,7 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                     <span className="font-mono text-stone-900">{selectedOrder.deliveryFee === 0 ? 'FREE' : formatPrice(selectedOrder.deliveryFee)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>GST (5%):</span>
+                    <span>GST (CGST 2.5% + SGST 2.5%):</span>
                     <span className="font-mono text-stone-900">{formatPrice(selectedOrder.tax)}</span>
                   </div>
                   <div className="flex justify-between font-bold text-sm text-stone-900 pt-1 border-t border-stone-300">
@@ -288,6 +288,10 @@ export const OrdersReceiptModal: React.FC<OrdersReceiptModalProps> = ({
                       <span className="font-bold text-stone-900">{selectedOrder.paymentReference}</span>
                     </div>
                   )}
+                </div>
+
+                <div className="text-center pt-2.5 border-t border-dashed border-stone-300 text-[11px] text-stone-600 font-tamil">
+                  வணக்கம் & நன்றி! Visit again to Yaazh Boutique, Oddanchatram.
                 </div>
 
                 {/* Actions */}

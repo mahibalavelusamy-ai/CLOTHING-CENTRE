@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, Phone, Scissors } from 'lucide-react';
+import { Sparkles, Phone, Scissors, Truck, Video } from 'lucide-react';
 
 const MESSAGES = [
   {
     icon: Sparkles,
-    text: 'Welcome to Yaazh Boutique, Oddanchatram',
-  },
-  {
-    icon: Phone,
-    text: 'Call us: +91 95978 33982',
+    text: 'வணக்கம்! Welcome to Yaazh Boutique, Oddanchatram & Kallimandayam',
   },
   {
     icon: Scissors,
-    text: 'Saree pre-pleating available in store',
+    text: 'Saree Pre-Pleating & Box Folding in Store · புடவை மடிப்பு சேவை',
+  },
+  {
+    icon: Truck,
+    text: 'Free Express Delivery across Tamil Nadu & India on orders above ₹1,999',
+  },
+  {
+    icon: Phone,
+    text: 'WhatsApp Video Shopping & Inquiries: +91 95978 33982',
   },
 ];
 

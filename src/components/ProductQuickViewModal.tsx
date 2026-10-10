@@ -219,7 +219,19 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
               {item.department === 'sarees' && (
                 <div className="flex">
                   <span className="text-stone-500 w-28 shrink-0 font-medium">Boutique Service:</span>
-                  <span className="text-amber-800 font-medium">Saree pre-pleating & box-folding available on request</span>
+                  <span className="text-amber-800 font-medium">Saree pre-pleating & box-folding on request (புடவை மடிப்பு சேவை)</span>
+                </div>
+              )}
+              {item.department === 'blouses' && (
+                <div className="flex">
+                  <span className="text-stone-500 w-28 shrink-0 font-medium">Tailoring Margin:</span>
+                  <span className="text-amber-800 font-medium">Generous 2-inch inner fabric seam allowance on both sides (உள் மடிப்பு)</span>
+                </div>
+              )}
+              {item.tags.includes('Handloom') && (
+                <div className="flex">
+                  <span className="text-stone-500 w-28 shrink-0 font-medium">Authenticity:</span>
+                  <span className="text-emerald-800 font-semibold">100% Handloom Certified · நேரடி நெசவாளர் தூய தயாரிப்பு</span>
                 </div>
               )}
               {item.fitType && (
