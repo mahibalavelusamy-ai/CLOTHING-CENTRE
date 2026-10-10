@@ -65,11 +65,15 @@ export const Header: React.FC<HeaderProps> = ({
   });
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const mobileSearchContainerRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const insideDesktop = searchContainerRef.current && searchContainerRef.current.contains(target);
+      const insideMobile = mobileSearchContainerRef.current && mobileSearchContainerRef.current.contains(target);
+      if (!insideDesktop && !insideMobile) {
         setIsSearchFocused(false);
       }
     };
@@ -248,8 +252,8 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
 
-          {/* Center: Search Bar as the VISUAL CENTRE */}
-          <div className="relative flex-1 max-w-xl mx-1 sm:mx-4" ref={searchContainerRef}>
+          {/* Center: Search Bar on Desktop/Tablet (md and above) */}
+          <div className="hidden md:block relative flex-1 max-w-xl mx-4" ref={searchContainerRef}>
             <div className="relative w-full">
               <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
@@ -271,7 +275,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   id="clear-search-btn"
                   onClick={() => onSearchChange('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-200 text-xs p-1"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-200 text-xs p-1 cursor-pointer"
                   aria-label="Clear search"
                 >
                   <X className="w-3.5 h-3.5" />
@@ -279,10 +283,9 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </div>
 
-            {/* Amazon-style Trending & Recent Searches Dropdown Panel */}
+            {/* Trending & Recent Searches Dropdown Panel */}
             {isSearchFocused && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-stone-900 border border-stone-700/80 rounded-2xl shadow-2xl z-50 overflow-hidden divide-y divide-stone-800 animate-in fade-in slide-in-from-top-1 duration-150">
-                
                 {/* Live Suggestions matching search query */}
                 {searchQuery.trim().length > 0 && liveSuggestions.length > 0 && (
                   <div className="p-3">
@@ -309,7 +312,7 @@ export const Header: React.FC<HeaderProps> = ({
                   </div>
                 )}
 
-                {/* Recent Searches (last 5, stored in localStorage) */}
+                {/* Recent Searches */}
                 {recentSearches.length > 0 && (
                   <div className="p-3">
                     <div className="flex items-center justify-between mb-2 px-2">
@@ -339,7 +342,7 @@ export const Header: React.FC<HeaderProps> = ({
                   </div>
                 )}
 
-                {/* Trending Searches (8 items with flame icon) */}
+                {/* Trending Searches */}
                 <div className="p-3 bg-stone-900/50">
                   <div className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-amber-400 mb-2 px-2">
                     <Flame className="w-3.5 h-3.5 text-amber-400" />
@@ -358,18 +361,17 @@ export const Header: React.FC<HeaderProps> = ({
                     ))}
                   </div>
                 </div>
-
               </div>
             )}
           </div>
 
-          {/* Right: Actions (My Orders, Account, Wishlist & Cart Bag) */}
+          {/* Right: Actions (Desktop has all; Mobile has Account & Bag since Bottom Nav has Wishlist/Orders) */}
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-            {/* My Orders */}
+            {/* My Orders (Desktop only - mobile uses bottom nav) */}
             <button
               id="my-orders-trigger-btn"
               onClick={onOpenOrders}
-              className="p-2 sm:p-2.5 rounded-full text-stone-300 hover:text-white hover:bg-stone-800 transition-colors relative cursor-pointer"
+              className="hidden md:inline-flex p-2 sm:p-2.5 rounded-full text-stone-300 hover:text-white hover:bg-stone-800 transition-colors relative cursor-pointer"
               title="My Orders & Receipts"
               aria-label="My Orders"
             >
@@ -392,11 +394,11 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {/* Wishlist */}
+            {/* Wishlist (Desktop only - mobile uses bottom nav) */}
             <button
               id="wishlist-trigger-btn"
               onClick={onOpenWishlist}
-              className="p-2 sm:p-2.5 rounded-full text-stone-300 hover:text-white hover:bg-stone-800 transition-colors relative cursor-pointer"
+              className="hidden md:inline-flex p-2 sm:p-2.5 rounded-full text-stone-300 hover:text-white hover:bg-stone-800 transition-colors relative cursor-pointer"
               title="Saved Items"
               aria-label="Wishlist"
             >
@@ -412,7 +414,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="cart-trigger-btn"
               onClick={onOpenCart}
-              className="flex items-center gap-2 sm:gap-2.5 bg-amber-600 hover:bg-amber-500 text-stone-950 font-semibold px-3 sm:px-4 py-2 rounded-full transition-colors cursor-pointer shadow-sm shrink-0"
+              className="flex items-center gap-1.5 sm:gap-2.5 bg-amber-600 hover:bg-amber-500 text-stone-950 font-semibold px-3 sm:px-4 py-2 rounded-full transition-colors cursor-pointer shadow-sm shrink-0"
               title="Shopping Bag"
               aria-label="Shopping Bag"
             >
@@ -429,6 +431,118 @@ export const Header: React.FC<HeaderProps> = ({
               </span>
             </button>
           </div>
+        </div>
+
+        {/* Mobile Dedicated Full-Width Search Input (md:hidden) */}
+        <div className="md:hidden mt-2.5 relative w-full" ref={mobileSearchContainerRef}>
+          <div className="relative w-full">
+            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              id="clothing-search-input-mobile"
+              type="text"
+              value={searchQuery}
+              onFocus={() => setIsSearchFocused(true)}
+              onChange={(e) => onSearchChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && searchQuery.trim()) {
+                  saveRecentSearch(searchQuery.trim());
+                  setIsSearchFocused(false);
+                }
+              }}
+              placeholder="Search sarees, blouses, co-ords, salwar materials..."
+              className="w-full pl-10 pr-9 py-2.5 bg-stone-800/90 border border-stone-700 hover:border-stone-600 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-full text-xs text-stone-100 placeholder-stone-400 shadow-inner transition-all outline-none"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => onSearchChange('')}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-200 text-xs p-1 cursor-pointer"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Dropdown Panel */}
+          {isSearchFocused && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-stone-900 border border-stone-700/80 rounded-2xl shadow-2xl z-50 overflow-hidden divide-y divide-stone-800 animate-in fade-in slide-in-from-top-1 duration-150">
+              {/* Live Suggestions matching search query */}
+              {searchQuery.trim().length > 0 && liveSuggestions.length > 0 && (
+                <div className="p-3">
+                  <div className="text-[10px] uppercase font-bold tracking-wider text-amber-400 mb-2 px-2">
+                    Matching Suggestions
+                  </div>
+                  <div className="space-y-1">
+                    {liveSuggestions.map((sug, idx) => (
+                      <button
+                        key={`mob-${sug.text}-${idx}`}
+                        onClick={() => handleSelectSearchTerm(sug.text)}
+                        className="w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-left text-stone-200 hover:bg-stone-800 hover:text-amber-300 transition-colors cursor-pointer group"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Search className="w-3.5 h-3.5 text-stone-500 group-hover:text-amber-400 shrink-0" />
+                          <span className="font-medium">{sug.text}</span>
+                        </div>
+                        <span className="text-[10px] text-stone-500 uppercase tracking-wider">
+                          {sug.type}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Recent Searches */}
+              {recentSearches.length > 0 && (
+                <div className="p-3">
+                  <div className="flex items-center justify-between mb-2 px-2">
+                    <div className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-stone-400">
+                      <History className="w-3 h-3 text-stone-400" />
+                      <span>Recent Searches</span>
+                    </div>
+                    <button
+                      onClick={clearRecentSearches}
+                      className="text-[10px] text-stone-400 hover:text-amber-400 transition-colors cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 px-1">
+                    {recentSearches.map((term) => (
+                      <button
+                        key={`mob-${term}`}
+                        onClick={() => handleSelectSearchTerm(term)}
+                        className="flex items-center gap-1 px-2.5 py-1 bg-stone-800 hover:bg-stone-700/80 text-stone-300 hover:text-white rounded-full text-xs transition-colors cursor-pointer border border-stone-700/60"
+                      >
+                        <Clock className="w-3 h-3 text-stone-500" />
+                        <span>{term}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Trending Searches */}
+              <div className="p-3 bg-stone-900/50">
+                <div className="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-amber-400 mb-2 px-2">
+                  <Flame className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Trending Searches</span>
+                </div>
+                <div className="grid grid-cols-1 gap-1 px-1">
+                  {TRENDING_SEARCHES.slice(0, 6).map((term) => (
+                    <button
+                      key={`mob-${term}`}
+                      onClick={() => handleSelectSearchTerm(term)}
+                      className="flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-left text-stone-300 hover:bg-stone-800 hover:text-amber-300 transition-colors cursor-pointer group"
+                    >
+                      <span className="truncate">{term}</span>
+                      <ArrowUpRight className="w-3 h-3 text-stone-500 group-hover:text-amber-400 shrink-0 ml-1" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

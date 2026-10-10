@@ -61,6 +61,7 @@ const SLIDES: Slide[] = [
 export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   useEffect(() => {
     if (isPaused) return;
@@ -72,11 +73,31 @@ export const HeroSlideshow: React.FC<HeroSlideshowProps> = ({ onSelectCategory }
 
   const slide = SLIDES[currentSlide];
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStart - touchEnd;
+    if (diff > 45) {
+      // Swiped left -> next
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    } else if (diff < -45) {
+      // Swiped right -> prev
+      setCurrentSlide((prev) => (prev === 0 ? SLIDES.length - 1 : prev - 1));
+    }
+    setTouchStart(null);
+  };
+
   return (
     <div 
-      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-950 text-white shadow-xl mb-12 border border-stone-800"
+      className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-stone-950 text-white shadow-xl mb-12 border border-stone-800 touch-pan-y"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Background imagery with luxury gradient overlays */}
       <div className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[380px] sm:min-h-[460px] w-full overflow-hidden">

@@ -41,7 +41,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Visual media container */}
-      <div className="relative aspect-[3/4] bg-stone-100 overflow-hidden">
+      <div 
+        onClick={() => onQuickView(item)}
+        className="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer"
+      >
         {activeImage ? (
           <img
             src={activeImage}
@@ -144,7 +147,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       {/* Details Container */}
-      <div className="p-3.5 flex flex-col justify-between flex-1">
+      <div className="p-2.5 sm:p-3.5 flex flex-col justify-between flex-1">
         <div>
           {/* Category Eyebrow & SKU */}
           <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-stone-500 font-semibold mb-1">
@@ -157,7 +160,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Title */}
           <h3
             onClick={() => onQuickView(item)}
-            className="text-stone-900 font-semibold text-sm leading-snug line-clamp-1 hover:text-amber-800 transition-colors cursor-pointer"
+            className="text-stone-900 font-semibold text-xs sm:text-sm leading-snug line-clamp-1 hover:text-amber-800 transition-colors cursor-pointer"
             title={item.name}
           >
             {item.name}
@@ -165,56 +168,55 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
           {/* Occasion & Blouse Piece Chips */}
           {(item.occasion || item.blouseIncluded) && (
-            <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
+            <div className="flex items-center flex-wrap gap-1 mt-1 sm:mt-1.5">
               {item.occasion && (
-                <span className="text-[10px] font-medium bg-stone-100 text-stone-700 border border-stone-200 px-2 py-0.5 rounded">
+                <span className="text-[9px] sm:text-[10px] font-medium bg-stone-100 text-stone-700 border border-stone-200 px-1.5 py-0.5 rounded">
                   {item.occasion}
                 </span>
               )}
               {item.blouseIncluded && (
-                <span className="text-[10px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded flex items-center gap-1">
+                <span className="text-[9px] sm:text-[10px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded flex items-center gap-1">
                   <Sparkles className="w-2.5 h-2.5 text-emerald-600" />
-                  Blouse piece included
+                  Blouse included
                 </span>
               )}
             </div>
           )}
 
-          {/* Fabric & Fit badge (Fit hidden when fitType is missing) */}
+          {/* Fabric & Fit badge */}
           {(item.fitType || item.fabric) && (
-            <p className="text-xs text-stone-500 mt-1 line-clamp-1">
+            <p className="text-[11px] sm:text-xs text-stone-500 mt-1 line-clamp-1">
               {[item.fitType, item.fabric?.split(',')[0]].filter(Boolean).join(' • ')}
             </p>
           )}
 
           {/* Price, Savings & Rating */}
-          <div className="flex items-center justify-between gap-2 mt-2.5">
-            <div className="flex items-baseline flex-wrap gap-x-2 gap-y-0.5 min-w-0">
-              <span className="text-base font-bold text-stone-900 font-mono">
+          <div className="flex items-center justify-between gap-1.5 mt-2 sm:mt-2.5">
+            <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-0.5 min-w-0">
+              <span className="text-sm sm:text-base font-bold text-stone-900 font-mono">
                 {formatPrice(item.price)}
               </span>
               {item.originalPrice && (
-                <span className="text-xs text-stone-400 line-through font-mono">
+                <span className="text-[11px] sm:text-xs text-stone-400 line-through font-mono">
                   {formatPrice(item.originalPrice)}
                 </span>
               )}
               {item.discountPercent && (
-                <span className="text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded whitespace-nowrap">
+                <span className="text-[9px] sm:text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-1 py-0.2 rounded whitespace-nowrap">
                   Save {item.discountPercent}%
                 </span>
               )}
             </div>
 
-            <div className="flex items-center gap-1 text-xs text-stone-500 shrink-0">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 shrink-0" />
-              <span className="font-semibold text-[11px] text-stone-800">{item.rating}</span>
-              <span className="text-[10px] text-stone-400">({item.reviewCount})</span>
+            <div className="flex items-center gap-0.5 text-xs text-stone-500 shrink-0">
+              <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400 shrink-0" />
+              <span className="font-semibold text-[10px] sm:text-[11px] text-stone-800">{item.rating}</span>
             </div>
           </div>
         </div>
 
         {/* Interactive Controls (Sizes & Colors) */}
-        <div className="mt-3 pt-3 border-t border-stone-100">
+        <div className="mt-2.5 pt-2.5 sm:mt-3 sm:pt-3 border-t border-stone-100">
           {/* Color swatches */}
           {item.colors.length > 0 && (
             <div className="flex items-center justify-between mb-2">
@@ -224,7 +226,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     key={color.name}
                     id={`color-swatch-${item.id}-${idx}`}
                     onClick={() => setSelectedColorIdx(idx)}
-                    className={`w-4 h-4 rounded-full border transition-all cursor-pointer ${
+                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border transition-all cursor-pointer ${
                       selectedColorIdx === idx
                         ? 'ring-2 ring-amber-600 ring-offset-1 ring-offset-white scale-110'
                         : 'border-stone-300 hover:scale-105'
@@ -235,7 +237,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   />
                 ))}
               </div>
-              <span className="text-[10px] text-stone-500 font-medium truncate max-w-[110px]">
+              <span className="text-[9px] sm:text-[10px] text-stone-500 font-medium truncate max-w-[90px] sm:max-w-[110px]">
                 {item.colors[selectedColorIdx]?.name}
               </span>
             </div>
@@ -244,14 +246,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Size Selector */}
           {isFreeSize ? (
             /* Free Size items: show 'Free Size' as a single label and auto-select */
-            <div className="mb-3 flex items-center justify-between bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1 text-xs">
-              <span className="text-[11px] font-medium text-stone-500 uppercase tracking-wider">Size</span>
-              <span className="text-xs font-bold text-stone-900 bg-white px-2 py-0.5 rounded border border-stone-200 shadow-2xs">
+            <div className="mb-2.5 sm:mb-3 flex items-center justify-between bg-stone-50 border border-stone-200 rounded-lg px-2 py-1 text-xs">
+              <span className="text-[10px] sm:text-[11px] font-medium text-stone-500 uppercase tracking-wider">Size</span>
+              <span className="text-[11px] sm:text-xs font-bold text-stone-900 bg-white px-2 py-0.5 rounded border border-stone-200 shadow-2xs">
                 Free Size
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-1 mb-3 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-1 mb-2.5 sm:mb-3 overflow-x-auto no-scrollbar touch-scroll">
               {item.sizes.map((s) => {
                 const isSelected = selectedSize === s.size;
                 const hasStock = s.stock > 0;
@@ -261,7 +263,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     id={`size-pill-${item.id}-${s.size}`}
                     disabled={!hasStock}
                     onClick={() => setSelectedSize(s.size)}
-                    className={`flex-1 min-w-[28px] py-1 text-[10px] font-semibold rounded border transition-all select-none relative ${
+                    className={`flex-1 min-w-[24px] sm:min-w-[28px] py-1 text-[9px] sm:text-[10px] font-semibold rounded border transition-all select-none relative ${
                       !hasStock
                         ? 'opacity-40 bg-stone-100 border-stone-200 text-stone-400 cursor-not-allowed line-through'
                         : isSelected
@@ -283,21 +285,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             id={`add-to-cart-btn-${item.id}`}
             disabled={isOutOfStock || currentSizeStock === 0}
             onClick={() => onAddToCart(item, selectedSize, selectedColorIdx)}
-            className={`w-full py-2 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer ${
+            className={`w-full py-2 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer ${
               isOutOfStock || currentSizeStock === 0
                 ? 'bg-stone-100 border border-stone-200 text-stone-400 cursor-not-allowed'
-                : 'bg-amber-600 hover:bg-amber-700 text-white shadow-sm'
+                : 'bg-amber-600 hover:bg-amber-700 text-white shadow-sm active:scale-98'
             }`}
           >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>
+            <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">
               {isOutOfStock
                 ? 'Sold Out'
                 : currentSizeStock === 0
-                ? `${selectedSize} Out of Stock`
+                ? 'Out of Stock'
                 : isFreeSize
                 ? 'Add to Bag'
-                : `Add ${selectedSize} to Bag`}
+                : `Add ${selectedSize}`}
             </span>
           </button>
         </div>

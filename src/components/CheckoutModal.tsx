@@ -257,9 +257,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-2xl max-w-3xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 relative"
+        className="bg-white rounded-t-3xl sm:rounded-2xl max-w-3xl w-full max-h-[94vh] sm:max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 relative safe-area-bottom sm:pb-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* If Order is complete -> Display Printable Tax Receipt */}
@@ -466,7 +466,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmitOrder} className="p-6 sm:p-8">
+          <form onSubmit={handleSubmitOrder} className="p-4 sm:p-8">
             <div className="flex items-center justify-between pb-4 border-b border-stone-200 mb-6">
               <div className="flex items-center gap-2.5">
                 <div className="w-9 h-9 rounded-lg bg-amber-600 text-white flex items-center justify-center shadow-xs">

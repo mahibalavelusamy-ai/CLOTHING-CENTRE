@@ -34,8 +34,8 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
         </div>
       </div>
 
-      {/* Grid: 4 columns on mobile, up to 8 on desktop */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 sm:gap-4">
+      {/* Grid: 3 columns on mobile, up to 8 on desktop */}
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5 sm:gap-4">
         {visibleTiles.map((tile) => {
           const count = categoryCounts ? categoryCounts[tile.category] : undefined;
 

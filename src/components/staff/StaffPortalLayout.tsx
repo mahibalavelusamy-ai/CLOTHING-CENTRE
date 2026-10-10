@@ -332,7 +332,7 @@ export const StaffPortalLayout: React.FC = () => {
       )}
 
       {/* Mobile Top Header */}
-      <div className="lg:hidden bg-stone-950 text-white px-4 py-3 border-b border-stone-800 flex items-center justify-between sticky top-0 z-40">
+      <div className="lg:hidden bg-stone-950 text-white px-4 py-3 border-b border-stone-800 flex items-center justify-between sticky top-0 z-40 safe-area-top">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center">
             <Store className="w-4 h-4" />

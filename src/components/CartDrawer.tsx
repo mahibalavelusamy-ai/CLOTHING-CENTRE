@@ -104,8 +104,8 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         onClick={onClose} 
       />
 
-      <div className="fixed inset-y-0 right-0 max-w-full flex pl-8 sm:pl-10">
-        <div className="w-screen max-w-md bg-white shadow-2xl border-l border-stone-200 flex flex-col justify-between">
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10">
+        <div className="w-full sm:w-[440px] max-w-full bg-white shadow-2xl border-l border-stone-200 flex flex-col justify-between">
           
           {/* Header */}
           <div className="p-4 sm:p-5 border-b border-stone-200 flex items-center justify-between bg-stone-50">
@@ -275,7 +275,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
           {/* Footer & Checkout Area */}
           {cartItems.length > 0 && (
-            <div className="p-4 sm:p-5 border-t border-stone-200 bg-stone-50 space-y-3">
+            <div className="p-4 sm:p-5 border-t border-stone-200 bg-stone-50 space-y-3 safe-area-bottom">
               {/* Coupon Chips & Input */}
               <div className="space-y-2">
                 {!appliedCoupon && (

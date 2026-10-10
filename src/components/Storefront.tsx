@@ -590,7 +590,7 @@ export const Storefront: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
         
         {isHomeView ? (
           /* ==================== HOME PAGE LAYOUT ==================== */
@@ -694,7 +694,7 @@ export const Storefront: React.FC = () => {
                 )}
 
                 {/* Product Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
                   {featuredProducts.slice(0, 8).map((item) => (
                     <ProductCard
                       key={`featured-${item.id}`}
@@ -805,7 +805,7 @@ export const Storefront: React.FC = () => {
 
 
             {/* TWO-PANE LAYOUT */}
-            <div className="flex gap-4 sm:gap-6 lg:gap-8 items-start">
+            <div className="flex flex-col md:flex-row gap-3 sm:gap-6 lg:gap-8 items-start">
               <CategoryRail
                 currentDepartment={filters.department}
                 currentCategory={filters.category}
@@ -815,7 +815,7 @@ export const Storefront: React.FC = () => {
                 onSelectDepartment={(dept) => setFilters(f => ({ ...f, department: dept, category: 'All' }))}
               />
 
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 w-full">
                 {filteredProducts.length === 0 ? (
                   <div className="bg-white rounded-2xl border border-stone-200/80 p-8 sm:p-12 text-center shadow-xs">
                     <div className="w-14 h-14 rounded-full bg-stone-100 border border-stone-200 flex items-center justify-center mx-auto text-amber-700 mb-3">
@@ -845,7 +845,7 @@ export const Storefront: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-5">
                     {filteredProducts.map((item) => (
                       <ProductCard
                         key={item.id}
@@ -867,7 +867,7 @@ export const Storefront: React.FC = () => {
       </main>
 
       {/* Luxury Footer */}
-      <footer className="mt-16 bg-stone-900 text-stone-300 border-t border-stone-800 text-xs">
+      <footer className="mt-16 bg-stone-900 text-stone-300 border-t border-stone-800 text-xs pb-20 md:pb-0">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 py-12">
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pb-10 border-b border-stone-800">

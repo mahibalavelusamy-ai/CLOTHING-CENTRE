@@ -65,9 +65,9 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-stone-950/70 backdrop-blur-xs animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-stone-200 flex flex-col md:flex-row relative text-stone-900"
+        className="bg-white rounded-t-3xl sm:rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-stone-200 flex flex-col md:flex-row relative text-stone-900 safe-area-bottom sm:pb-0"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -373,9 +373,9 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-800/80 bg-emerald-950/50 hover:bg-emerald-900/60 text-emerald-300 transition-colors cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 transition-colors cursor-pointer"
             >
-              <MessageCircle className="w-4 h-4 text-emerald-400" />
+              <MessageCircle className="w-4 h-4 text-emerald-600" />
               <span>Ask on WhatsApp</span>
             </a>
           </div>
