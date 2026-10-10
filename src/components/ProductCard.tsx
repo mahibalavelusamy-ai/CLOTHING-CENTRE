@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Eye, ShoppingBag, Star, AlertCircle, Sparkles } from 'lucide-react';
+import { Heart, Star, Sparkles } from 'lucide-react';
 import { ClothingItem, Size } from '../types';
 import { formatPrice } from '../lib/format';
 
@@ -17,294 +17,140 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   isWishlisted,
   onToggleWishlist,
   onQuickView,
-  onAddToCart,
 }) => {
-  const [selectedColorIdx, setSelectedColorIdx] = useState(0);
-  const isFreeSize = item.sizes.length === 1 && item.sizes[0].size === 'Free Size';
-
-  const [selectedSize, setSelectedSize] = useState<Size>(() => {
-    if (isFreeSize) return 'Free Size';
-    const available = item.sizes.find(s => s.stock > 0);
-    return available ? available.size : item.sizes[0].size;
-  });
+  const [selectedColorIdx] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const activeImage = item.images[isHovered && item.images.length > 1 ? 1 : 0] || item.images[0];
-  const currentSizeStock = item.sizes.find(s => s.size === selectedSize)?.stock ?? 0;
   const isOutOfStock = item.inStockTotal === 0;
+
+  // Primary badge tag
+  const primaryTag = item.tags.includes('Bestseller') 
+    ? 'Bestseller' 
+    : (item.tags.includes('New Arrival') 
+        ? 'New' 
+        : (item.tags.includes('Festive Special') 
+            ? 'Festive' 
+            : (item.tags.includes('Handloom') ? 'Handloom' : null)));
 
   return (
     <div
       id={`product-card-${item.id}`}
-      className="group bg-white rounded-xl border border-stone-200/80 overflow-hidden shadow-xs hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+      className="card relative flex flex-col justify-between text-left group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Visual media container */}
-      <div 
+      <button 
         onClick={() => onQuickView(item)}
-        className="relative aspect-[3/4] bg-stone-100 overflow-hidden cursor-pointer"
+        className="w-full block bg-transparent border-0 p-0 text-left cursor-pointer"
+        aria-label={item.name}
       >
-        {activeImage ? (
-          <img
-            src={activeImage}
-            alt={item.name}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <div className="w-full h-full bg-[#f6f3ed] flex flex-col items-center justify-center p-6 text-center select-none border-b border-stone-200/50">
-            <div className="w-11 h-11 rounded-full bg-amber-100/80 border border-amber-200/80 text-amber-900 flex items-center justify-center mb-3 shadow-2xs">
-              <Sparkles className="w-4 h-4 text-amber-800" />
-            </div>
-            <span className="font-serif-display text-sm sm:text-base font-bold text-stone-900 leading-snug line-clamp-3">
-              {item.name}
-            </span>
-            <span className="text-[10px] uppercase font-bold tracking-widest text-amber-900/80 mt-2 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
-              {item.category}
-            </span>
-          </div>
-        )}
-
-        {/* Badges (rendered only if tags or discount exist) */}
-        {(item.tags.length > 0 || item.discountPercent) && (
-          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10 pointer-events-none items-start">
-            {item.tags.map((tag) => {
-              let badgeStyle = 'bg-stone-900 text-stone-100 border-stone-800';
-              if (tag === 'Bestseller') {
-                badgeStyle = 'bg-amber-600 text-white border-amber-500 font-bold shadow-xs';
-              } else if (tag === 'Sale') {
-                badgeStyle = 'bg-rose-600 text-white border-rose-500 font-bold';
-              } else if (tag === 'New Arrival') {
-                badgeStyle = 'bg-amber-100 text-amber-900 border-amber-300 font-bold';
-              } else if (tag === 'Festive Special') {
-                badgeStyle = 'bg-purple-900/80 text-purple-200 border-purple-700 font-bold';
-              } else if (tag === 'Handloom') {
-                badgeStyle = 'bg-emerald-950/80 text-emerald-300 border-emerald-700 font-bold';
-              }
-              return (
-                <span
-                  key={tag}
-                  className={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border shadow-xs ${badgeStyle}`}
-                >
-                  {tag}
-                </span>
-              );
-            })}
-            {item.discountPercent && (
-              <span className="bg-rose-600 text-white border border-rose-500 text-[10px] font-bold px-2 py-0.5 rounded shadow-xs uppercase tracking-wider">
-                {item.discountPercent}% OFF
-              </span>
-            )}
-          </div>
-        )}
-
-        {/* Wishlist Heart Button */}
-        <button
-          id={`wishlist-btn-${item.id}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleWishlist(item);
-          }}
-          className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-stone-400 hover:text-rose-600 border border-stone-200/80 shadow-sm flex items-center justify-center transition-all cursor-pointer z-10"
-          title={isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'}
-        >
-          <Heart
-            className={`w-4 h-4 transition-colors ${
-              isWishlisted ? 'fill-rose-500 text-rose-500' : ''
-            }`}
-          />
-        </button>
-
-        {/* Stock Alert Badge if low (status color amber kept) */}
-        {item.inStockTotal > 0 && item.inStockTotal <= 6 && (
-          <div className="absolute bottom-2 left-2 right-2 bg-amber-950/90 text-amber-300 border border-amber-800/80 text-[10px] font-medium px-2 py-1 rounded backdrop-blur-xs flex items-center justify-center gap-1">
-            <AlertCircle className="w-3 h-3 text-amber-400" />
-            <span>Only {item.inStockTotal} left</span>
-          </div>
-        )}
-
-        {isOutOfStock && (
-          <div className="absolute inset-0 bg-stone-950/75 backdrop-blur-xs flex items-center justify-center">
-            <span className="bg-stone-900 border border-stone-700 text-stone-300 text-xs font-bold tracking-wider px-3 py-1.5 rounded uppercase">
-              Temporarily Sold Out
-            </span>
-          </div>
-        )}
-
-        {/* Quick View Floating Overlay on Desktop */}
-        <div className="absolute inset-x-2 bottom-2 hidden group-hover:flex items-center justify-center gap-2 z-10 transition-opacity">
-          <button
-            id={`quick-view-btn-${item.id}`}
-            onClick={() => onQuickView(item)}
-            className="flex-1 bg-white/95 hover:bg-stone-900 hover:text-white text-stone-800 border border-stone-200 text-xs font-semibold py-2 px-3 rounded-lg shadow-md flex items-center justify-center gap-1.5 backdrop-blur-xs transition-all cursor-pointer"
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>Quick View</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Details Container */}
-      <div className="p-2.5 sm:p-3.5 flex flex-col justify-between flex-1">
-        <div>
-          {/* Category Eyebrow & SKU */}
-          <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-stone-500 font-semibold mb-1">
-            <span className="truncate">{item.category}</span>
-            <span className="font-mono text-[9px] text-stone-400 tracking-normal shrink-0 ml-1">
-              {item.sku}
-            </span>
-          </div>
-
-          {/* Title */}
-          <h3
-            onClick={() => onQuickView(item)}
-            className="text-stone-900 font-semibold text-xs sm:text-sm leading-snug line-clamp-1 hover:text-amber-800 transition-colors cursor-pointer"
-            title={item.name}
-          >
-            {item.name}
-          </h3>
-
-          {/* Occasion & Blouse Piece Chips */}
-          {(item.occasion || item.blouseIncluded) && (
-            <div className="flex items-center flex-wrap gap-1 mt-1 sm:mt-1.5">
-              {item.occasion && (
-                <span className="text-[9px] sm:text-[10px] font-medium bg-stone-100 text-stone-700 border border-stone-200 px-1.5 py-0.5 rounded">
-                  {item.occasion}
-                </span>
-              )}
-              {item.blouseIncluded && (
-                <span className="text-[9px] sm:text-[10px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded flex items-center gap-1">
-                  <Sparkles className="w-2.5 h-2.5 text-emerald-600" />
-                  Blouse included
-                </span>
-              )}
-            </div>
-          )}
-
-          {/* Fabric & Fit badge */}
-          {(item.fitType || item.fabric) && (
-            <p className="text-[11px] sm:text-xs text-stone-500 mt-1 line-clamp-1">
-              {[item.fitType, item.fabric?.split(',')[0]].filter(Boolean).join(' • ')}
-            </p>
-          )}
-
-          {/* Price, Savings & Rating */}
-          <div className="flex items-center justify-between gap-1.5 mt-2 sm:mt-2.5">
-            <div className="flex items-baseline flex-wrap gap-x-1.5 gap-y-0.5 min-w-0">
-              <span className="text-sm sm:text-base font-bold text-stone-900 font-mono">
-                {formatPrice(item.price)}
-              </span>
-              {item.originalPrice && (
-                <span className="text-[11px] sm:text-xs text-stone-400 line-through font-mono">
-                  {formatPrice(item.originalPrice)}
-                </span>
-              )}
-              {item.discountPercent && (
-                <span className="text-[9px] sm:text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-1 py-0.2 rounded whitespace-nowrap">
-                  Save {item.discountPercent}%
-                </span>
-              )}
-            </div>
-
-            <div className="flex items-center gap-0.5 text-xs text-stone-500 shrink-0">
-              <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-amber-400 text-amber-400 shrink-0" />
-              <span className="font-semibold text-[10px] sm:text-[11px] text-stone-800">{item.rating}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Interactive Controls (Sizes & Colors) */}
-        <div className="mt-2.5 pt-2.5 sm:mt-3 sm:pt-3 border-t border-stone-100">
-          {/* Color swatches */}
-          {item.colors.length > 0 && (
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5">
-                {item.colors.map((color, idx) => (
-                  <button
-                    key={color.name}
-                    id={`color-swatch-${item.id}-${idx}`}
-                    onClick={() => setSelectedColorIdx(idx)}
-                    className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border transition-all cursor-pointer ${
-                      selectedColorIdx === idx
-                        ? 'ring-2 ring-amber-600 ring-offset-1 ring-offset-white scale-110'
-                        : 'border-stone-300 hover:scale-105'
-                    }`}
-                    style={{ backgroundColor: color.hex }}
-                    title={color.name}
-                    aria-label={`Color ${color.name}`}
-                  />
-                ))}
-              </div>
-              <span className="text-[9px] sm:text-[10px] text-stone-500 font-medium truncate max-w-[90px] sm:max-w-[110px]">
-                {item.colors[selectedColorIdx]?.name}
-              </span>
-            </div>
-          )}
-
-          {/* Size Selector */}
-          {isFreeSize ? (
-            /* Free Size items: show 'Free Size' as a single label and auto-select */
-            <div className="mb-2.5 sm:mb-3 flex items-center justify-between bg-stone-50 border border-stone-200 rounded-lg px-2 py-1 text-xs">
-              <span className="text-[10px] sm:text-[11px] font-medium text-stone-500 uppercase tracking-wider">Size</span>
-              <span className="text-[11px] sm:text-xs font-bold text-stone-900 bg-white px-2 py-0.5 rounded border border-stone-200 shadow-2xs">
-                Free Size
-              </span>
-            </div>
+        {/* Rounded Apple-style Neutral Tile (aspect 4/5) */}
+        <div className="tile bg-[#F5F5F7] rounded-[20px] aspect-[4/5] flex items-center justify-center relative transition-colors duration-200 group-hover:bg-[#EFEFF2] overflow-hidden">
+          {activeImage ? (
+            <img
+              src={activeImage}
+              alt={item.name}
+              className="w-full h-full object-cover rounded-[20px] transition-transform duration-500 ease-out group-hover:scale-105"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+            />
           ) : (
-            <div className="flex items-center gap-1 mb-2.5 sm:mb-3 overflow-x-auto no-scrollbar touch-scroll">
-              {item.sizes.map((s) => {
-                const isSelected = selectedSize === s.size;
-                const hasStock = s.stock > 0;
-                return (
-                  <button
-                    key={s.size}
-                    id={`size-pill-${item.id}-${s.size}`}
-                    disabled={!hasStock}
-                    onClick={() => setSelectedSize(s.size)}
-                    className={`flex-1 min-w-[24px] sm:min-w-[28px] py-1 text-[9px] sm:text-[10px] font-semibold rounded border transition-all select-none relative ${
-                      !hasStock
-                        ? 'opacity-40 bg-stone-100 border-stone-200 text-stone-400 cursor-not-allowed line-through'
-                        : isSelected
-                        ? 'bg-stone-900 border-stone-900 text-white shadow-xs cursor-pointer font-bold'
-                        : 'border-stone-200 text-stone-700 hover:border-amber-600 bg-stone-50 hover:bg-white cursor-pointer'
-                    }`}
-                    title={hasStock ? `${s.size} (${s.stock} in stock)` : `${s.size} - Out of stock`}
-                    aria-label={hasStock ? `Select size ${s.size}` : `Size ${s.size} is out of stock`}
-                  >
-                    {s.size}
-                  </button>
-                );
-              })}
-            </div>
+            /* Fallback luxury draped textile visual */
+            <div 
+              style={{
+                width: '54%',
+                height: '74%',
+                backgroundColor: item.colors[selectedColorIdx]?.hex || '#6D1A33',
+                borderRadius: '16px 16px 8px 8px',
+                borderBottom: '14px solid #C9A45C'
+              }}
+              className="shadow-sm"
+            />
           )}
 
-          {/* Add to Bag Button */}
-          <button
-            id={`add-to-cart-btn-${item.id}`}
-            disabled={isOutOfStock || currentSizeStock === 0}
-            onClick={() => onAddToCart(item, selectedSize, selectedColorIdx)}
-            className={`w-full py-2 px-2 sm:px-3 rounded-lg text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1 sm:gap-1.5 transition-colors cursor-pointer ${
-              isOutOfStock || currentSizeStock === 0
-                ? 'bg-stone-100 border border-stone-200 text-stone-400 cursor-not-allowed'
-                : 'bg-amber-600 hover:bg-amber-700 text-white shadow-sm active:scale-98'
-            }`}
-          >
-            <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">
-              {isOutOfStock
-                ? 'Sold Out'
-                : currentSizeStock === 0
-                ? 'Out of Stock'
-                : isFreeSize
-                ? 'Add to Bag'
-                : `Add ${selectedSize}`}
+          {/* Primary Tag Pill */}
+          {primaryTag && (
+            <span className="absolute left-3.5 top-3.5 bg-white/95 text-[#1D1D1F] text-[12px] font-medium px-2.5 py-1 rounded-full shadow-xs">
+              {primaryTag}
             </span>
-          </button>
-        </div>
-      </div>
-    </div>
+          )}
 
+          {/* Subtle Label */}
+          <span className="absolute left-3.5 bottom-3 text-[11px] text-[#6E6E73] pointer-events-none">
+            Product photo
+          </span>
+
+          {/* Out of Stock Overlay */}
+          {isOutOfStock && (
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center">
+              <span className="bg-[#1D1D1F] text-white text-xs font-semibold px-3 py-1.5 rounded-full uppercase tracking-wider">
+                Sold Out
+              </span>
+            </div>
+          )}
+        </div>
+
+        {/* Product Meta */}
+        <div className="text-[13px] text-[#6E6E73] mt-3.5 truncate font-normal">
+          {item.category}
+        </div>
+        <div className="text-[15px] font-medium text-[#1D1D1F] line-clamp-1 leading-snug mt-0.5 group-hover:text-[#6D1A33] transition-colors">
+          {item.name}
+        </div>
+
+        {/* Pricing Row */}
+        <div className="flex items-baseline gap-2 mt-1.5 flex-wrap">
+          <span className="text-[16px] font-semibold text-[#1D1D1F]">
+            {formatPrice(item.price)}
+          </span>
+          {item.originalPrice && (
+            <span className="text-[14px] text-[#6E6E73] line-through">
+              {formatPrice(item.originalPrice)}
+            </span>
+          )}
+          {item.discountPercent && (
+            <span className="text-[14px] text-[#6D1A33] font-medium">
+              {item.discountPercent}% off
+            </span>
+          )}
+        </div>
+
+        {/* Color Dots & Star Rating */}
+        <div className="flex items-center gap-1.5 mt-2.5">
+          {item.colors.slice(0, 4).map((c, i) => (
+            <span
+              key={i}
+              className="w-3 h-3 rounded-full block border border-black/10 shadow-2xs"
+              style={{ backgroundColor: c.hex }}
+              title={c.name}
+            />
+          ))}
+          <span className="text-[13px] text-[#6E6E73] ml-1 flex items-center gap-0.5">
+            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+            <span>{item.rating.toFixed(1)}</span>
+            <span>({item.reviewCount})</span>
+          </span>
+        </div>
+      </button>
+
+      {/* Floating Wishlist Heart Button */}
+      <button
+        id={`wishlist-btn-${item.id}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleWishlist(item);
+        }}
+        className="absolute top-2.5 right-2.5 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-[#1D1D1F] flex items-center justify-center shadow-xs transition-colors cursor-pointer border border-[#E8E8ED]"
+        title={isWishlisted ? 'Remove from saved' : 'Save piece'}
+        aria-label={isWishlisted ? 'Remove from saved' : 'Save piece'}
+      >
+        <Heart
+          className={`w-4 h-4 transition-colors ${
+            isWishlisted ? 'fill-[#6D1A33] text-[#6D1A33]' : 'text-[#1D1D1F]'
+          }`}
+        />
+      </button>
+    </div>
   );
 };

@@ -22,20 +22,26 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
   }
 
   return (
-    <section className="mb-14">
-      <div className="flex items-center justify-between mb-6">
+    <section className="mb-16">
+      <div className="flex items-end justify-between mb-7 flex-wrap gap-4">
         <div>
-          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-amber-800">
-            Curated Departments
-          </span>
-          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
-            Shop by Category
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#1D1D1F] leading-tight">
+            Shop by category
           </h2>
+          <p className="text-sm sm:text-base text-[#6E6E73] mt-1 font-normal">
+            Curated handpicked weaves, tailored cuts, and festive pieces.
+          </p>
         </div>
+        <button
+          onClick={() => onSelectCategory('all', 'All')}
+          className="text-[#6D1A33] hover:text-[#561428] text-sm sm:text-base font-medium hover:underline bg-transparent border-0 cursor-pointer p-0"
+        >
+          Shop everything →
+        </button>
       </div>
 
-      {/* Grid: 3 columns on mobile, up to 8 on desktop */}
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5 sm:gap-4">
+      {/* Grid: 2 columns on mobile, up to 6 on desktop */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5 sm:gap-4">
         {visibleTiles.map((tile) => {
           const count = categoryCounts ? categoryCounts[tile.category] : undefined;
 
@@ -43,38 +49,31 @@ export const CategoryTileGrid: React.FC<CategoryTileGridProps> = ({
             <button
               key={tile.id}
               onClick={() => onSelectCategory(tile.department, tile.category)}
-              className="group flex flex-col items-center text-center cursor-pointer transition-transform duration-200 hover:-translate-y-1 focus:outline-none"
+              className="card bg-transparent border-0 p-0 text-left cursor-pointer group"
             >
-              {/* Rounded-square tile with solid or gradient tinted background */}
-              <div
-                className="w-full aspect-square rounded-2xl p-3 flex flex-col items-center justify-center overflow-hidden border border-stone-200/80 shadow-2xs group-hover:shadow-md transition-all relative"
-                style={{ backgroundColor: tile.tint || '#fafaf9' }}
-              >
+              {/* Rounded tile with soft background */}
+              <div className="tile bg-[#F5F5F7] rounded-[20px] aspect-square flex items-center justify-center transition-colors duration-200 group-hover:bg-[#EFEFF2] overflow-hidden p-3 relative">
                 {tile.image ? (
                   <img
                     src={tile.image}
                     alt={tile.label}
-                    className="w-full h-full object-cover rounded-xl group-hover:scale-108 transition-transform duration-300"
+                    className="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
                 ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center text-center p-1.5 select-none">
-                    <span className="font-serif-display text-xs sm:text-sm font-bold text-stone-900 leading-tight line-clamp-2 group-hover:text-amber-800 transition-colors">
-                      {tile.label}
-                    </span>
-                    {count !== undefined && (
-                      <span className="text-[10px] text-stone-500 font-mono mt-1">
-                        {count} {count === 1 ? 'item' : 'items'}
-                      </span>
-                    )}
-                  </div>
+                  <div className="w-12 h-16 rounded-lg bg-[#6D1A33] border-b-4 border-[#C9A45C]" />
                 )}
               </div>
               
-              {/* Label underneath */}
-              <span className="mt-2 text-[11px] sm:text-xs font-semibold text-stone-800 group-hover:text-amber-800 transition-colors line-clamp-1">
+              {/* Labels underneath */}
+              <div className="text-[15px] font-medium text-[#1D1D1F] mt-3 group-hover:text-[#6D1A33] transition-colors truncate">
                 {tile.label}
-              </span>
+              </div>
+              {count !== undefined && (
+                <div className="text-[13px] text-[#6E6E73] mt-0.5 font-normal">
+                  {count} {count === 1 ? 'piece' : 'pieces'}
+                </div>
+              )}
             </button>
           );
         })}

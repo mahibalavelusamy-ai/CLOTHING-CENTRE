@@ -1,43 +1,44 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fdfbf7;
+  --color-bg: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-2: #f5f0eb;
-  --color-border: #e7e5e4;
-  --color-text: #1c1917;
-  --color-text-muted: #78716c;
-  --color-pink: #d97706;
-  --color-pink-strong: #b45309;
-  --color-pink-deep: #78350f;
-  --color-pink-tint: #fef3c7;
+  --color-surface-2: #f5f5f7;
+  --color-border: #e8e8ed;
+  --color-text: #1d1d1f;
+  --color-text-muted: #6e6e73;
+  --color-maroon: #6d1a33;
+  --color-maroon-hover: #561428;
+  --color-maroon-tint: #f3e8eb;
+  --color-gold: #c9a45c;
 }
 
 :root {
-  --color-bg: #fdfbf7;
+  --color-bg: #ffffff;
   --color-surface: #ffffff;
-  --color-surface-2: #f5f0eb;
-  --color-border: #e7e5e4;
-  --color-text: #1c1917;
-  --color-text-muted: #78716c;
-  --color-pink: #d97706;
-  --color-pink-strong: #b45309;
-  --color-pink-deep: #78350f;
-  --color-pink-tint: #fef3c7;
+  --color-surface-2: #f5f5f7;
+  --color-border: #e8e8ed;
+  --color-text: #1d1d1f;
+  --color-text-muted: #6e6e73;
+  --color-maroon: #6d1a33;
+  --color-maroon-hover: #561428;
+  --color-maroon-tint: #f3e8eb;
+  --color-gold: #c9a45c;
 }
 
 @layer base {
   * {
-    border-color: #e7e5e4;
+    border-color: #e8e8ed;
   }
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    color: #1c1917;
-    background-color: #fdfbf7;
+    font-family: -apple-system, BlinkMacSystemFont, 'Plus Jakarta Sans', system-ui, sans-serif;
+    color: #1d1d1f;
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
   }
   ::selection {
-    background-color: #d97706;
-    color: #ffffff;
+    background-color: #f3e8eb;
+    color: #6d1a33;
   }
 }
 
@@ -55,53 +56,71 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f5f0eb;
+  background: #f5f5f7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4c5b9;
+  background: #d2d2d7;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a89f91;
+  background: #86868b;
 }
 
-/* Button & Card utilities (Restored to warm Amber/Gold & Stone Luxury) */
-.btn-primary-glossy {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+/* Apple-style Luxury Pill Buttons */
+.btn-maroon {
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 0;
+  background-color: #6d1a33;
   color: #ffffff;
-  font-weight: 700;
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 15px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
 }
-.btn-primary-glossy:hover {
-  background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
-  box-shadow: 0 0 20px rgba(217, 119, 6, 0.45);
-  transform: translateY(-1px);
+.btn-maroon:hover {
+  background-color: #561428;
+  color: #ffffff;
 }
-.btn-primary-glossy:active {
-  transform: translateY(0);
-}
-
-.btn-secondary-pink {
-  background: transparent;
-  border: 1px solid #d97706;
-  color: #b45309;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-.btn-secondary-pink:hover {
-  background: rgba(217, 119, 6, 0.08);
-  box-shadow: 0 0 12px rgba(217, 119, 6, 0.2);
+.btn-maroon:active {
+  transform: scale(0.98);
 }
 
-.product-card-glow {
+.btn-outline-dark {
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid #1d1d1f;
   background-color: #ffffff;
-  border: 1px solid #e7e5e4;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1d1d1f;
+  font-size: 15px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  cursor: pointer;
+  text-decoration: none;
 }
-.product-card-glow:hover {
-  border-color: rgba(217, 119, 6, 0.5);
-  box-shadow: 0 10px 25px -5px rgba(28, 25, 23, 0.08), 0 8px 10px -6px rgba(28, 25, 23, 0.04);
+.btn-outline-dark:hover {
+  background-color: #f5f5f7;
+}
+
+/* Card Tiles */
+.boutique-tile {
+  background-color: #f5f5f7;
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+}
+.boutique-tile:hover {
+  background-color: #efeff2;
 }
 
 /* Mobile Safe Area & Touch Enhancements */

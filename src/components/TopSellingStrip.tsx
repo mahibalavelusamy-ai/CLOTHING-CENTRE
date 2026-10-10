@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { ChevronLeft, ChevronRight, TrendingUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ClothingItem, Size } from '../types';
 import { ProductCard } from './ProductCard';
 
@@ -22,7 +22,7 @@ export const TopSellingStrip: React.FC<TopSellingStripProps> = ({
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Use items tagged 'Bestseller'; fall back to highest rating if fewer than 4
+  // Bestsellers priority
   const topSellers = React.useMemo(() => {
     const bestsellers = items.filter((i) => i.tags.includes('Bestseller'));
     if (bestsellers.length >= 4) return bestsellers;
@@ -31,7 +31,7 @@ export const TopSellingStrip: React.FC<TopSellingStripProps> = ({
       .filter((i) => !i.tags.includes('Bestseller'))
       .sort((a, b) => b.rating - a.rating);
 
-    return [...bestsellers, ...remaining].slice(0, 6);
+    return [...bestsellers, ...remaining].slice(0, 8);
   }, [items]);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -44,30 +44,29 @@ export const TopSellingStrip: React.FC<TopSellingStripProps> = ({
   if (topSellers.length === 0) return null;
 
   return (
-    <section className="mb-14">
-      <div className="flex items-end justify-between mb-6">
+    <section className="mb-16">
+      <div className="flex items-end justify-between mb-7 flex-wrap gap-4">
         <div>
-          <div className="flex items-center gap-1.5 text-amber-700 text-[10px] sm:text-xs font-bold uppercase tracking-widest">
-            <TrendingUp className="w-3.5 h-3.5" />
-            <span>Weekly Highlights</span>
-          </div>
-          <h2 className="font-serif-display text-2xl sm:text-3xl font-bold text-stone-900 mt-0.5">
-            Top Selling This Week
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#1D1D1F] leading-tight">
+            Bestsellers
           </h2>
+          <p className="text-sm sm:text-base text-[#6E6E73] mt-1 font-normal">
+            The pieces our customers come back for.
+          </p>
         </div>
 
         {/* Scroll Controls */}
-        <div className="hidden sm:flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => scroll('left')}
-            className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-amber-600 text-stone-600 hover:text-amber-700 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+            className="w-10 h-10 rounded-full bg-white border border-[#E8E8ED] hover:border-[#1D1D1F] text-[#1D1D1F] flex items-center justify-center transition-colors cursor-pointer shadow-xs"
             aria-label="Scroll left"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             onClick={() => scroll('right')}
-            className="w-9 h-9 rounded-full bg-white border border-stone-200 hover:border-amber-600 text-stone-600 hover:text-amber-700 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+            className="w-10 h-10 rounded-full bg-white border border-[#E8E8ED] hover:border-[#1D1D1F] text-[#1D1D1F] flex items-center justify-center transition-colors cursor-pointer shadow-xs"
             aria-label="Scroll right"
           >
             <ChevronRight className="w-4 h-4" />
@@ -78,12 +77,12 @@ export const TopSellingStrip: React.FC<TopSellingStripProps> = ({
       {/* Horizontal Scroll Grid */}
       <div
         ref={scrollContainerRef}
-        className="flex gap-3 sm:gap-5 overflow-x-auto no-scrollbar pb-3 scroll-smooth snap-x snap-mandatory touch-scroll"
+        className="flex gap-4 sm:gap-6 overflow-x-auto no-scrollbar pb-3 scroll-smooth snap-x snap-mandatory touch-scroll"
       >
         {topSellers.map((item) => (
           <div
             key={`top-${item.id}`}
-            className="w-[200px] sm:w-[260px] shrink-0 snap-start flex flex-col"
+            className="w-[210px] sm:w-[250px] shrink-0 snap-start flex flex-col"
           >
             <ProductCard
               item={item}

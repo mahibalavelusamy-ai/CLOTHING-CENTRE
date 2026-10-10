@@ -42,7 +42,6 @@ export const CategoryBar: React.FC<CategoryBarProps> = ({
   departmentCounts,
   categoryCounts,
 }) => {
-  // Hide any department or category nav item that currently has zero products
   const visibleItems = BAR_ITEMS.filter((item) => {
     if (!departmentCounts || !categoryCounts) return true;
     if (item.category === 'All') {
@@ -59,8 +58,8 @@ export const CategoryBar: React.FC<CategoryBarProps> = ({
   }
 
   return (
-    <div className="sticky top-[108px] sm:top-[112px] z-30 bg-[#fdfbf7]/95 backdrop-blur-md border-b border-stone-200/90 shadow-2xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2">
+    <div className="sticky top-[60px] z-30 bg-white/95 backdrop-blur-md border-b border-[#E8E8ED]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-2.5">
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory">
           {visibleItems.map((item) => {
             const isActive =
@@ -72,10 +71,10 @@ export const CategoryBar: React.FC<CategoryBarProps> = ({
               <button
                 key={item.id}
                 onClick={() => onSelect(item.department, item.category)}
-                className={`snap-start whitespace-nowrap px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                className={`snap-start whitespace-nowrap px-3.5 py-1.5 rounded-full text-[13px] font-medium transition-colors cursor-pointer border-0 ${
                   isActive
-                    ? 'bg-stone-900 text-white shadow-xs'
-                    : 'bg-stone-100/80 text-stone-700 hover:bg-stone-200/80 hover:text-stone-900 border border-stone-200/60'
+                    ? 'bg-[#1D1D1F] text-white font-semibold'
+                    : 'bg-[#F5F5F7] text-[#424245] hover:bg-[#EFEFF2] hover:text-[#1D1D1F]'
                 }`}
               >
                 {item.label}

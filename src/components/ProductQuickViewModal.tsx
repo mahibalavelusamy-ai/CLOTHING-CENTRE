@@ -333,18 +333,18 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
           {/* Action Row */}
           <div className="mt-6 pt-4 border-t border-stone-200 space-y-3">
             <div className="flex items-center gap-3">
-              <div className="flex items-center border border-stone-200 rounded-lg bg-stone-50">
+              <div className="flex items-center border border-[#D2D2D7] rounded-full bg-white h-[46px]">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-2 text-stone-600 hover:bg-stone-200 hover:text-stone-900 rounded-l-lg cursor-pointer"
+                  className="px-3.5 py-2 text-[#1D1D1F] hover:bg-[#F5F5F7] rounded-l-full cursor-pointer font-bold h-full flex items-center justify-center"
                 >
-                  -
+                  −
                 </button>
-                <span className="px-3 py-2 text-xs font-bold font-mono text-stone-900">{quantity}</span>
+                <span className="px-2 py-2 text-sm font-semibold font-mono text-[#1D1D1F]">{quantity}</span>
                 <button
                   onClick={() => setQuantity(Math.min(availableStock, quantity + 1))}
                   disabled={quantity >= availableStock}
-                  className="px-3 py-2 text-stone-600 hover:bg-stone-200 hover:text-stone-900 rounded-r-lg cursor-pointer disabled:opacity-40"
+                  className="px-3.5 py-2 text-[#1D1D1F] hover:bg-[#F5F5F7] rounded-r-full cursor-pointer disabled:opacity-40 font-bold h-full flex items-center justify-center"
                 >
                   +
                 </button>
@@ -354,16 +354,16 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
                 id="quick-view-add-to-cart-btn"
                 disabled={isOutOfStock}
                 onClick={handleAddToCart}
-                className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm uppercase tracking-wider ${
+                className={`flex-1 py-3 px-6 rounded-full text-sm font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer min-h-[46px] ${
                   isOutOfStock
-                    ? 'bg-stone-100 border border-stone-200 text-stone-400 cursor-not-allowed'
-                    : 'bg-amber-600 hover:bg-amber-700 text-white'
+                    ? 'bg-[#F5F5F7] border border-[#E8E8ED] text-[#86868B] cursor-not-allowed'
+                    : 'bg-[#6D1A33] hover:bg-[#561428] text-white shadow-xs'
                 }`}
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>
                   {isOutOfStock
-                    ? 'Out of Stock'
+                    ? 'Sold Out'
                     : isFreeSize
                     ? `Add to Bag • ${formatPrice(item.price * quantity)}`
                     : `Add (${selectedSize}) to Bag • ${formatPrice(item.price * quantity)}`}
@@ -372,14 +372,14 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
 
               <button
                 onClick={() => onToggleWishlist(item)}
-                className={`p-3 rounded-xl border transition-colors cursor-pointer ${
+                className={`w-11 h-11 rounded-full border flex items-center justify-center transition-colors cursor-pointer ${
                   isWishlisted
-                    ? 'bg-rose-50 border-rose-200 text-rose-600'
-                    : 'border-stone-200 bg-white text-stone-400 hover:text-rose-600 hover:bg-stone-50'
+                    ? 'bg-[#F3E8EB] border-[#6D1A33]/20 text-[#6D1A33]'
+                    : 'border-[#E8E8ED] bg-white text-[#1D1D1F] hover:bg-[#F5F5F7]'
                 }`}
                 title="Save to Wishlist"
               >
-                <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-rose-600 text-rose-600' : ''}`} />
+                <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-[#6D1A33] text-[#6D1A33]' : ''}`} />
               </button>
             </div>
 
@@ -391,7 +391,7 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 transition-colors cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-full text-xs font-semibold flex items-center justify-center gap-2 border border-[#D2D2D7] hover:border-[#2E7D4F] bg-white text-[#2E7D4F] transition-colors cursor-pointer min-h-[42px]"
             >
               <MessageCircle className="w-4 h-4 text-emerald-600" />
               <span>Ask on WhatsApp</span>

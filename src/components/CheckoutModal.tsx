@@ -569,20 +569,20 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   type="button"
                   id="delivery-store-pickup-btn"
                   onClick={() => handleSelectDeliveryType('store_pickup')}
-                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all flex items-start gap-3 ${
+                  className={`p-4 rounded-2xl border text-left cursor-pointer transition-all flex items-start gap-3.5 ${
                     deliveryType === 'store_pickup'
-                      ? 'border-amber-600 bg-amber-50/60 ring-2 ring-amber-600/20'
-                      : 'border-stone-200 hover:border-stone-300 bg-white'
+                      ? 'border-[#1D1D1F] bg-[#F5F5F7] ring-1 ring-[#1D1D1F]'
+                      : 'border-[#E8E8ED] hover:border-[#D2D2D7] bg-white'
                   }`}
                 >
-                  <Store className={`w-5 h-5 shrink-0 ${deliveryType === 'store_pickup' ? 'text-amber-700' : 'text-stone-400'}`} />
+                  <Store className={`w-5 h-5 shrink-0 ${deliveryType === 'store_pickup' ? 'text-[#6D1A33]' : 'text-[#6E6E73]'}`} />
                   <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-stone-900">Boutique Store Pickup</span>
-                      <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.2 rounded">FREE</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[14px] font-semibold text-[#1D1D1F]">Boutique Store Pickup</span>
+                      <span className="text-[10px] bg-[#F3E8EB] text-[#6D1A33] font-bold px-2 py-0.5 rounded-full">FREE</span>
                     </div>
-                    <p className="text-[11px] text-stone-500 mt-0.5">
-                      Collect from Yaazh Boutique, Oddanchatram
+                    <p className="text-[12px] text-[#6E6E73] mt-1">
+                      MR Complex, Kallimandayam. Choose your pickup time.
                     </p>
                   </div>
                 </button>
@@ -591,22 +591,22 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                   type="button"
                   id="delivery-home-btn"
                   onClick={() => handleSelectDeliveryType('home_delivery')}
-                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all flex items-start gap-3 ${
+                  className={`p-4 rounded-2xl border text-left cursor-pointer transition-all flex items-start gap-3.5 ${
                     deliveryType === 'home_delivery'
-                      ? 'border-amber-600 bg-amber-50/60 ring-2 ring-amber-600/20'
-                      : 'border-stone-200 hover:border-stone-300 bg-white'
+                      ? 'border-[#1D1D1F] bg-[#F5F5F7] ring-1 ring-[#1D1D1F]'
+                      : 'border-[#E8E8ED] hover:border-[#D2D2D7] bg-white'
                   }`}
                 >
-                  <Truck className={`w-5 h-5 shrink-0 ${deliveryType === 'home_delivery' ? 'text-amber-700' : 'text-stone-400'}`} />
+                  <Truck className={`w-5 h-5 shrink-0 ${deliveryType === 'home_delivery' ? 'text-[#6D1A33]' : 'text-[#6E6E73]'}`} />
                   <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-stone-900">Doorstep Delivery</span>
-                      <span className="text-[10px] text-stone-500 font-medium">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[14px] font-semibold text-[#1D1D1F]">Home Delivery</span>
+                      <span className="text-[11px] text-[#6E6E73] font-medium">
                         {subtotal >= FREE_DELIVERY_THRESHOLD ? 'FREE' : formatPrice(STANDARD_DELIVERY_FEE)}
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-500 mt-0.5">
-                      Carefully packaged and delivered directly to your doorstep.
+                    <p className="text-[12px] text-[#6E6E73] mt-1">
+                      Free on orders above ₹1,999. Delivered to your doorstep.
                     </p>
                   </div>
                 </button>
@@ -868,14 +868,14 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                 id="place-clothing-order-btn"
                 type="submit"
                 disabled={submitting}
-                className="flex-1 py-3 px-6 bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white font-bold text-sm rounded-xl transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2"
+                className="flex-1 min-h-[50px] py-3.5 px-6 btn-maroon font-semibold text-sm sm:text-base rounded-full disabled:opacity-50 transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <span>Placing Order...</span>
                 ) : !user ? (
                   <span>Sign In & Place Order ({formatPrice(totalAmount)})</span>
                 ) : (
-                  <span>Confirm & Place Order ({formatPrice(totalAmount)})</span>
+                  <span>Place Order, {formatPrice(totalAmount)}</span>
                 )}
               </button>
             </div>
