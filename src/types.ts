@@ -1,4 +1,4 @@
-export type Department = 'all' | 'sarees' | 'blouses' | 'coords' | 'salwar' | 'lounge' | 'decor';
+export type Department = 'all' | 'sarees' | 'kurtis' | 'kids' | 'blouses' | 'coords' | 'salwar' | 'lounge' | 'decor';
 
 export type Size = 
   | 'Free Size' 
@@ -15,7 +15,16 @@ export type Size =
   | '40' 
   | '42' 
   | '44' 
-  | '46';
+  | '46'
+  | '1-2Y'
+  | '2-3Y'
+  | '3-4Y'
+  | '4-5Y'
+  | '5-6Y'
+  | '6-7Y'
+  | '7-8Y'
+  | '8-9Y'
+  | '9-10Y';
 
 export interface ColorOption {
   name: string;

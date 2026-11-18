@@ -4,6 +4,7 @@ import { StaffOutletContext } from './StaffPortalLayout';
 import { ProductFormModal } from './ProductFormModal';
 import { ClothingItem, Department, Size } from '../../types';
 import { DEPARTMENT_CONFIG, DEPARTMENTS } from '../../data/catalogConfig';
+import { STOCK_ITEM_IMAGES } from '../../data/clothingData';
 import { formatPrice } from '../../lib/format';
 import { 
   Package, 
@@ -311,9 +312,9 @@ export const StaffProducts: React.FC = () => {
               >
                 {/* Image Container with Badges */}
                 <div className="relative aspect-[4/5] bg-[#F5F5F7] overflow-hidden">
-                  {item.images?.[0] ? (
+                  {(item.images?.[0] || STOCK_ITEM_IMAGES[item.id]?.[0]) ? (
                     <img
-                      src={item.images[0]}
+                      src={item.images?.[0] || STOCK_ITEM_IMAGES[item.id]?.[0]}
                       alt={item.name}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
@@ -490,8 +491,8 @@ export const StaffProducts: React.FC = () => {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
                           <div className="w-10 h-12 rounded-lg bg-[#F5F5F7] border border-stone-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
-                            {item.images?.[0] ? (
-                              <img src={item.images[0]} alt={item.name} className="w-full h-full object-cover" />
+                            {(item.images?.[0] || STOCK_ITEM_IMAGES[item.id]?.[0]) ? (
+                              <img src={item.images?.[0] || STOCK_ITEM_IMAGES[item.id]?.[0]} alt={item.name} className="w-full h-full object-cover" />
                             ) : (
                               <Package className="w-4 h-4 text-stone-400" />
                             )}

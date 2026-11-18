@@ -10,12 +10,34 @@ export const DEPARTMENT_CONFIG: Record<Exclude<Department, 'all'>, DepartmentMet
   sarees: {
     label: 'Sarees',
     categories: [
+      'Silk Sarees',
+      'Cotton Sarees',
+      'Georgette & Chiffon',
+      'Party Wear Sarees',
       'Tussar Sarees',
       'Handloom Sarees',
       'Silk Blend Sarees',
-      'Cotton Sarees',
     ],
     sizes: ['Free Size'],
+  },
+  kurtis: {
+    label: 'Kurtis & Suits',
+    categories: [
+      'Kurtis',
+      'Chudidar Sets',
+      'Anarkali Suits',
+      'Palazzo & Pant Sets',
+    ],
+    sizes: ['S', 'M', 'L', 'XL', 'XXL'],
+  },
+  kids: {
+    label: 'Kidswear',
+    categories: [
+      'Girls Ethnic Wear',
+      'Girls Frocks',
+      'Boys Kurta Sets',
+    ],
+    sizes: ['1-2Y', '2-3Y', '3-4Y', '4-5Y', '5-6Y', '6-7Y', '7-8Y', '8-9Y', '9-10Y'],
   },
   blouses: {
     label: 'Blouses & Crop Tops',
@@ -60,6 +82,8 @@ export const DEPARTMENT_CONFIG: Record<Exclude<Department, 'all'>, DepartmentMet
 export const DEPARTMENTS: { id: Department; label: string }[] = [
   { id: 'all', label: 'All Collections' },
   { id: 'sarees', label: 'Sarees' },
+  { id: 'kurtis', label: 'Kurtis & Suits' },
+  { id: 'kids', label: 'Kidswear' },
   { id: 'blouses', label: 'Blouses & Crop Tops' },
   { id: 'coords', label: 'Co-ords' },
   { id: 'salwar', label: 'Salwar Materials' },
@@ -69,6 +93,8 @@ export const DEPARTMENTS: { id: Department; label: string }[] = [
 
 export const ALL_CATEGORIES: string[] = [
   ...DEPARTMENT_CONFIG.sarees.categories,
+  ...DEPARTMENT_CONFIG.kurtis.categories,
+  ...DEPARTMENT_CONFIG.kids.categories,
   ...DEPARTMENT_CONFIG.blouses.categories,
   ...DEPARTMENT_CONFIG.coords.categories,
   ...DEPARTMENT_CONFIG.salwar.categories,

@@ -17,7 +17,7 @@ import { WishlistDrawer } from './WishlistDrawer';
 import { CustomerAuthModal } from './CustomerAuthModal';
 import { WhatsAppButton } from './WhatsAppButton';
 import { MobileBottomNav } from './MobileBottomNav';
-import { INITIAL_CLOTHING_ITEMS, STORE_CENTRE_INFO } from '../data/clothingData';
+import { INITIAL_CLOTHING_ITEMS, STORE_CENTRE_INFO, ensureItemImages } from '../data/clothingData';
 import { DEPARTMENTS, DEPARTMENT_CONFIG, ALL_CATEGORIES } from '../data/catalogConfig';
 import { formatPrice } from '../lib/format';
 import { 
@@ -150,9 +150,13 @@ export const Storefront: React.FC = () => {
       (realtimeItems) => {
         if (!isMounted) return;
         if (realtimeItems && realtimeItems.length > 0) {
-          setInventory(realtimeItems);
+          const existingIds = new Set(realtimeItems.map((i) => i.id));
+          const missingInitial = INITIAL_CLOTHING_ITEMS.filter((i) => !existingIds.has(i.id));
+          const combined = [...realtimeItems, ...missingInitial];
+          const hydrated = combined.map(ensureItemImages);
+          setInventory(hydrated);
         } else {
-          setInventory((prev) => (prev && prev.length > 0 ? prev : INITIAL_CLOTHING_ITEMS));
+          setInventory(INITIAL_CLOTHING_ITEMS.map(ensureItemImages));
         }
         setIsRealtimeConnected(true);
       },
@@ -241,6 +245,8 @@ export const Storefront: React.FC = () => {
     const counts: Record<Department, number> = {
       all: inventory.length,
       sarees: 0,
+      kurtis: 0,
+      kids: 0,
       blouses: 0,
       coords: 0,
       salwar: 0,

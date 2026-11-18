@@ -8,7 +8,7 @@ import {
   Sparkles,
   MessageCircle
 } from 'lucide-react';
-import { STORE_CENTRE_INFO } from '../data/clothingData';
+import { STORE_CENTRE_INFO, STOCK_ITEM_IMAGES } from '../data/clothingData';
 import { ClothingItem, Size } from '../types';
 import { formatPrice } from '../lib/format';
 import { buildLink } from '../lib/whatsapp';
@@ -82,27 +82,30 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
         {/* Media / Gallery Column */}
         <div className="md:w-1/2 p-6 bg-stone-50/60 flex flex-col items-center justify-between border-b md:border-b-0 md:border-r border-stone-200">
           <div className="w-full aspect-[4/5] rounded-xl overflow-hidden bg-stone-100 relative shadow-inner border border-stone-200">
-            {item.images && item.images.length > 0 && item.images[activeImageIdx] ? (
-              <img
-                src={item.images[activeImageIdx]}
-                alt={item.name}
-                className="w-full h-full object-cover object-center"
-                referrerPolicy="no-referrer"
-              />
-            ) : (
-              <div className="w-full h-full bg-[#f6f3ed] flex flex-col items-center justify-center p-8 text-center select-none">
-                <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 flex items-center justify-center mb-3.5 shadow-2xs">
-                  <Sparkles className="w-6 h-6 text-amber-600" />
+            {(() => {
+              const itemImages = (item.images && item.images.length > 0) ? item.images : (STOCK_ITEM_IMAGES[item.id] || []);
+              return itemImages.length > 0 && itemImages[activeImageIdx] ? (
+                <img
+                  src={itemImages[activeImageIdx]}
+                  alt={item.name}
+                  className="w-full h-full object-cover object-center"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="w-full h-full bg-[#f6f3ed] flex flex-col items-center justify-center p-8 text-center select-none">
+                  <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 flex items-center justify-center mb-3.5 shadow-2xs">
+                    <Sparkles className="w-6 h-6 text-amber-600" />
+                  </div>
+                  <span className="font-serif-display text-lg font-bold text-stone-900 max-w-xs leading-snug">
+                    {item.name}
+                  </span>
+                  <span className="text-[11px] uppercase font-bold tracking-widest text-amber-800 mt-2 bg-amber-100/70 px-2.5 py-0.5 rounded-full border border-amber-200">
+                    {item.category}
+                  </span>
+                  <span className="text-xs text-stone-500 mt-2">Crafted for Yaazh Boutique</span>
                 </div>
-                <span className="font-serif-display text-lg font-bold text-stone-900 max-w-xs leading-snug">
-                  {item.name}
-                </span>
-                <span className="text-[11px] uppercase font-bold tracking-widest text-amber-800 mt-2 bg-amber-100/70 px-2.5 py-0.5 rounded-full border border-amber-200">
-                  {item.category}
-                </span>
-                <span className="text-xs text-stone-500 mt-2">Crafted for Yaazh Boutique</span>
-              </div>
-            )}
+              );
+            })()}
             {item.discountPercent && (
               <span className="absolute top-3 left-3 bg-rose-600 text-white text-xs font-bold px-2.5 py-1 rounded shadow-sm">
                 Save {item.discountPercent}%
@@ -111,28 +114,31 @@ export const ProductQuickViewModal: React.FC<ProductQuickViewModalProps> = ({
           </div>
 
           {/* Thumbnails */}
-          {item.images.length > 1 && (
-            <div className="flex items-center gap-3 mt-4">
-              {item.images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveImageIdx(idx)}
-                  className={`w-14 h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
-                    activeImageIdx === idx
-                      ? 'border-amber-600 ring-2 ring-amber-600/30'
-                      : 'border-stone-200 opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img
-                    src={img}
-                    alt=""
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </button>
-              ))}
-            </div>
-          )}
+          {(() => {
+            const itemImages = (item.images && item.images.length > 0) ? item.images : (STOCK_ITEM_IMAGES[item.id] || []);
+            return itemImages.length > 1 ? (
+              <div className="flex items-center gap-3 mt-4">
+                {itemImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIdx(idx)}
+                    className={`w-14 h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer ${
+                      activeImageIdx === idx
+                        ? 'border-amber-600 ring-2 ring-amber-600/30'
+                        : 'border-stone-200 opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </button>
+                ))}
+              </div>
+            ) : null;
+          })()}
 
           {/* Barcode & SKU display */}
           <div className="w-full mt-4 pt-3 border-t border-stone-200 flex items-center justify-between text-[11px] text-stone-500">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../lib/authContext';
-import { STORE_CENTRE_INFO } from '../../data/clothingData';
+import { STORE_CENTRE_INFO, STOCK_ITEM_IMAGES, ensureItemImages, INITIAL_CLOTHING_ITEMS } from '../../data/clothingData';
 import { 
   ClothingItem, 
   CustomerOrder, 
@@ -75,8 +75,39 @@ export const StaffPortalLayout: React.FC = () => {
   // Real-time synchronization for staff portal
   useEffect(() => {
     const unsubItems = subscribeToClothingItems((items) => {
-      setInventory(items || []);
+      const rawItems = items || [];
+      const existingIds = new Set(rawItems.map((i) => i.id));
+      const missingInitial = INITIAL_CLOTHING_ITEMS.filter((i) => !existingIds.has(i.id));
+      const combined = [...rawItems, ...missingInitial];
+      const hydrated = combined.map(ensureItemImages);
+      setInventory(hydrated);
       setIsSynced(true);
+
+      // Auto-seed missing catalog items & auto-heal empty images in Firestore when authorized staff is logged in
+      if (isStaff) {
+        if (missingInitial.length > 0) {
+          missingInitial.forEach((item) => {
+            addOrUpdateClothingItemInFirestore(ensureItemImages(item)).catch((err) => {
+              console.warn(`Auto-seed notice for ${item.id}:`, err);
+            });
+          });
+        }
+        if (rawItems.length > 0) {
+          rawItems.forEach((item) => {
+            if (!item.images || item.images.length === 0 || item.images.every((img) => !img || img.trim() === '')) {
+              const fallback = STOCK_ITEM_IMAGES[item.id];
+              if (fallback && fallback.length > 0) {
+                addOrUpdateClothingItemInFirestore({
+                  ...item,
+                  images: fallback
+                }).catch((err) => {
+                  console.warn(`Auto-sync image notice for ${item.id}:`, err);
+                });
+              }
+            }
+          });
+        }
+      }
     });
 
     let unsubOrders: (() => void) | undefined;

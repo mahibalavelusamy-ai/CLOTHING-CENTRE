@@ -3,6 +3,8 @@ import { useOutletContext } from 'react-router-dom';
 import { StaffOutletContext } from './StaffPortalLayout';
 import { ClothingItem, Size, Department } from '../../types';
 import { DEPARTMENT_CONFIG, DEPARTMENTS } from '../../data/catalogConfig';
+import { STOCK_ITEM_IMAGES } from '../../data/clothingData';
+import { VoiceStockAssistant } from './VoiceStockAssistant';
 import { 
   Boxes, 
   Search, 
@@ -16,7 +18,8 @@ import {
   Sparkles,
   PackageCheck,
   X,
-  Package
+  Package,
+  Mic
 } from 'lucide-react';
 
 export const StaffInventory: React.FC = () => {
@@ -28,6 +31,7 @@ export const StaffInventory: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDept, setSelectedDept] = useState<string>('all');
   const [onlyLowStock, setOnlyLowStock] = useState(false);
+  const [voiceAssistantOpen, setVoiceAssistantOpen] = useState(false);
 
   // Local pending stock updates map: `${itemId}-${size}` => number
   const [editingStocks, setEditingStocks] = useState<Record<string, number>>({});
@@ -89,6 +93,14 @@ export const StaffInventory: React.FC = () => {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-6 animate-in fade-in duration-200">
+      {/* Voice AI Assistant Panel */}
+      <VoiceStockAssistant
+        inventory={inventory}
+        onUpdateItemStock={onUpdateItemStock}
+        isOpen={voiceAssistantOpen}
+        onClose={() => setVoiceAssistantOpen(false)}
+      />
+
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -104,8 +116,20 @@ export const StaffInventory: React.FC = () => {
           </p>
         </div>
 
-        {/* Live inventory status chips */}
+        {/* Live inventory status chips + AI Voice button */}
         <div className="flex items-center gap-2.5 flex-wrap self-start sm:self-auto">
+          {/* AI Voice Stock Assistant trigger */}
+          <button
+            type="button"
+            onClick={() => setVoiceAssistantOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#6D1A33] to-[#8B2040] hover:from-[#7e1f3c] hover:to-[#9a2548] text-white rounded-xl text-xs font-bold shadow-md shadow-[#6D1A33]/30 transition-all hover:scale-[1.02] cursor-pointer border border-[#C9A45C]/30"
+            title="Open AI Voice Stock Assistant"
+          >
+            <Mic className="w-3.5 h-3.5 text-[#C9A45C]" />
+            <Sparkles className="w-3 h-3 text-[#C9A45C]" />
+            <span>AI Stock Assist</span>
+          </button>
+
           <div className="bg-white px-3.5 py-1.5 rounded-xl border border-[#E8E8ED] shadow-2xs text-xs">
             <span className="text-[#6E6E73]">Total Units: </span>
             <strong className="text-[#1D1D1F] font-mono font-bold">{totalGarmentUnits}</strong>
@@ -255,9 +279,9 @@ export const StaffInventory: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-100">
                   <div className="flex items-start gap-3 min-w-0">
                     <div className="w-12 h-14 rounded-xl bg-[#F5F5F7] border border-stone-200 flex-shrink-0 overflow-hidden flex items-center justify-center">
-                      {item.images?.[0] ? (
+                      {(item.images?.[0] || STOCK_ITEM_IMAGES[item.id]?.[0]) ? (
                         <img
-                          src={item.images[0]}
+                          src={item.images?.[0] || STOCK_ITEM_IMAGES[item.id]?.[0]}
                           alt={item.name}
                           className="w-full h-full object-cover"
                           loading="lazy"

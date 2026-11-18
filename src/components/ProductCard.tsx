@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Heart, Star, Sparkles } from 'lucide-react';
 import { ClothingItem, Size } from '../types';
 import { formatPrice } from '../lib/format';
+import { STOCK_ITEM_IMAGES } from '../data/clothingData';
 
 interface ProductCardProps {
   item: ClothingItem;
@@ -21,7 +22,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const [selectedColorIdx] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  const activeImage = item.images[isHovered && item.images.length > 1 ? 1 : 0] || item.images[0];
+  const images = (item.images && item.images.length > 0) ? item.images : (STOCK_ITEM_IMAGES[item.id] || []);
+  const activeImage = images[isHovered && images.length > 1 ? 1 : 0] || images[0];
   const isOutOfStock = item.inStockTotal === 0;
 
   // Primary badge tag
